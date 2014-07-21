@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>ERDDAP vignette</title>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{ERDDAP vignette}
+-->
+
+<h1>ERDDAP vignette</h1>
+
+<h3>ERDDAP vignette</h3>
+
+<p><code>ERDDAP</code> is a service provided by NOAA that</p>
+
+<p>ERDDAP gives a simple, consistent way to download subsets of gridded and tabular scientific datasets in common file formats and make graphs and maps. This ERDDAP installation has oceanographic data (for example, data from satellites and buoys).</p>
+
+<p>Find out more about ERDDAP at <a href="http://coastwatch.pfeg.noaa.gov/erddap/index.html">http://coastwatch.pfeg.noaa.gov/erddap/index.html</a>.</p>
+
+<hr/>
+
+<h3>Install <code>rnoaa</code></h3>
+
+<p>Install and load <code>rnoaa</code> into the R session.</p>
+
+<p>If you&#39;re on Windows, you may have to install Rtools. Run <code>devtools::has_devel()</code>. If you get a <code>TRUE</code>, you&#39;re okay. If not, <a href="http://cran.r-project.org/bin/windows/Rtools/">install Rtools</a>.</p>
+
+<pre><code class="r">install.packages(&quot;devtools&quot;)
+library(devtools)
+ropensci::install_github(&quot;ropensci/rnoaa&quot;)
+</code></pre>
+
+<pre><code class="r">library(&#39;rnoaa&#39;)
+library(&#39;plyr&#39;)
+</code></pre>
+
+<h4>Passing the datasetid without fields gives all columns back</h4>
+
+<pre><code class="r">out &lt;- erddap_data(datasetid=&#39;erdCalCOFIfshsiz&#39;)
+nrow(out)
+</code></pre>
+
+<pre><code>## [1] 20939
+</code></pre>
+
+<h4>Pass time constraints</h4>
+
+<pre><code class="r">head(erddap_data(datasetid=&#39;erdCalCOFIfshsiz&#39;, &#39;time&gt;=2001-07-07&#39;, &#39;time&lt;=2001-07-08&#39;)[,c(1:4)])
+</code></pre>
+
+<pre><code>##   cruise               ship ship_code order_occupied
+## 2 200106 DAVID STARR JORDAN        JD             43
+## 3 200106 DAVID STARR JORDAN        JD             43
+## 4 200106 DAVID STARR JORDAN        JD             43
+## 5 200106 DAVID STARR JORDAN        JD             43
+## 6 200106 DAVID STARR JORDAN        JD             43
+## 7 200106 DAVID STARR JORDAN        JD             43
+</code></pre>
+
+<h4>Pass in fields (i.e., columns to retrieve) &amp; time constraints</h4>
+
+<pre><code class="r">head(erddap_data(datasetid=&#39;erdCalCOFIfshsiz&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;fish_size&#39;,&#39;itis_tsn&#39;), &#39;time&gt;=2001-07-07&#39;,&#39;time&lt;=2001-07-10&#39;))
+</code></pre>
+
+<pre><code>##    longitude  latitude fish_size itis_tsn
+## 2    -118.26    33.255      22.9   623745
+## 3    -118.26    33.255      22.9   623745
+## 4 -118.10667 32.738335      31.5   623625
+## 5 -118.10667 32.738335      48.3   623625
+## 6 -118.10667 32.738335      15.5   162221
+## 7 -118.10667 32.738335      16.3   162221
+</code></pre>
+
+<pre><code class="r">head(erddap_data(datasetid=&#39;erdCinpKfmBT&#39;, fields=c(&#39;latitude&#39;,&#39;longitude&#39;,
+   &#39;Aplysia_californica_Mean_Density&#39;,&#39;Muricea_californica_Mean_Density&#39;),
+   &#39;time&gt;=2007-06-24&#39;,&#39;time&lt;=2007-07-01&#39;))
+</code></pre>
+
+<pre><code>##           latitude         longitude Aplysia_californica_Mean_Density
+## 2             34.0 -119.416666666667                      0.009722223
+## 3             34.0 -119.383333333333                              0.0
+## 4             34.0 -119.366666666667                              0.0
+## 5             34.0 -119.383333333333                             0.16
+## 6             34.0 -119.416666666667                             0.03
+## 7 34.0166666666667           -119.35                              0.0
+##   Muricea_californica_Mean_Density
+## 2                             0.01
+## 3                     0.0013888889
+## 4                              0.0
+## 5                             0.01
+## 6                             0.04
+## 7                              0.0
+</code></pre>
+
+<h4>An example workflow</h4>
+
+<p>Search for data</p>
+
+<pre><code class="r">(out &lt;- erddap_search(query=&#39;fish size&#39;))
+</code></pre>
+
+<pre><code>## 7 results, showing first 20 
+##                                         title          dataset_id
+## 1                          CalCOFI Fish Sizes    erdCalCOFIfshsiz
+## 2                        CalCOFI Larvae Sizes    erdCalCOFIlrvsiz
+## 3                                CalCOFI Tows      erdCalCOFItows
+## 4     GLOBEC NEP MOCNESS Plankton (MOC1) Data       erdGlobecMoc1
+## 5 GLOBEC NEP Vertical Plankton Tow (VPT) Data        erdGlobecVpt
+## 6         CalCOFI Larvae Counts Positive Tows erdCalCOFIlrvcntpos
+## 7  OBIS - ARGOS Satellite Tracking of Animals           aadcArgos
+</code></pre>
+
+<p>Using a datasetid, search for information on a datasetid</p>
+
+<pre><code class="r">id &lt;- out$info$dataset_id[1]
+erddap_info(datasetid=id)$variables
+</code></pre>
+
+<pre><code>##           variable_name data_type           actual_range
+## 1  calcofi_species_code       int               19, 1550
+## 2           common_name    String                       
+## 3                cruise    String                       
+## 4           fish_1000m3     float                       
+## 5            fish_count     float                       
+## 6             fish_size     float                       
+## 7              itis_tsn       int                       
+## 8              latitude     float         32.515, 38.502
+## 9                  line     float             46.6, 93.3
+## 10            longitude     float        -128.5, -117.33
+## 11         net_location    String                       
+## 12             net_type    String                       
+## 13       order_occupied       int                       
+## 14       percent_sorted     float                       
+## 15       sample_quality     float                       
+## 16      scientific_name    String                       
+## 17                 ship    String                       
+## 18            ship_code    String                       
+## 19 standard_haul_factor     float                       
+## 20              station     float            28.0, 114.9
+## 21                 time    double 9.94464E8, 9.9510582E8
+## 22           tow_number       int                  2, 10
+## 23             tow_type    String                       
+## 24       volume_sampled     float
+</code></pre>
+
+<p>Get data from the dataset</p>
+
+<pre><code class="r">head(erddap_data(datasetid = id, fields = c(&#39;latitude&#39;,&#39;longitude&#39;,&#39;scientific_name&#39;)))
+</code></pre>
+
+<pre><code>##    latitude  longitude       scientific_name
+## 2 35.038334 -120.88333 Microstomus pacificus
+## 3  34.97167 -121.02333    Cyclothone signata
+## 4  34.97167 -121.02333    Cyclothone signata
+## 5  34.97167 -121.02333    Cyclothone signata
+## 6  34.97167 -121.02333    Cyclothone signata
+## 7  34.97167 -121.02333    Cyclothone signata
+</code></pre>
+
+<h4>Time constraint</h4>
+
+<p>Limit by time with date only</p>
+
+<pre><code class="r">head(erddap_data(datasetid = id, fields = c(&#39;latitude&#39;,&#39;longitude&#39;,&#39;scientific_name&#39;),
+   &#39;time&gt;=2001-07-14&#39;))
+</code></pre>
+
+<pre><code>##   latitude   longitude       scientific_name
+## 2   33.045 -118.113335  Lipolagus ochotensis
+## 3   33.045 -118.113335  Lipolagus ochotensis
+## 4   33.045 -118.113335  Lipolagus ochotensis
+## 5   33.045 -118.113335  Lipolagus ochotensis
+## 6   33.045 -118.113335 Bathylagoides wesethi
+## 7   33.045 -118.113335 Bathylagoides wesethi
+</code></pre>
+
+<h4>Use distinct parameter</h4>
+
+<pre><code class="r">head(erddap_data(datasetid=&#39;erdCalCOFIfshsiz&#39;,fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;fish_size&#39;,&#39;itis_tsn&#39;), &#39;time&gt;=2001-07-07&#39;,&#39;time&lt;=2001-07-10&#39;, distinct=TRUE))
+</code></pre>
+
+<pre><code>##    longitude  latitude fish_size itis_tsn
+## 2 -118.74333 32.873333      14.2   162584
+## 3 -118.74333 32.873333      15.0   162221
+## 4 -118.74333 32.873333      15.2   170085
+## 5 -118.74333 32.873333      17.2   162221
+## 6 -118.74333 32.873333      18.3   162221
+## 7 -118.74333 32.873333      18.7   170085
+</code></pre>
+
+<h4>The units parameter</h4>
+
+<p>In this example, values are the same, but sometimes they can be different given the units value passed</p>
+
+<pre><code class="r">head(erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, units=&#39;udunits&#39;))
+</code></pre>
+
+<pre><code>##   longitude  latitude                 time temperature
+## 2    -120.1 33.883335 2007-09-19T00:13:00Z       16.22
+## 3    -120.1 33.883335 2007-09-19T01:13:00Z       16.38
+## 4    -120.1 33.883335 2007-09-19T02:13:00Z       16.38
+## 5    -120.1 33.883335 2007-09-19T03:13:00Z       16.38
+## 6    -120.1 33.883335 2007-09-19T04:13:00Z       14.48
+## 7    -120.1 33.883335 2007-09-19T05:13:00Z       13.86
+</code></pre>
+
+<pre><code class="r">head(erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, units=&#39;ucum&#39;))
+</code></pre>
+
+<pre><code>##   longitude  latitude                 time temperature
+## 2    -120.1 33.883335 2007-09-19T00:13:00Z       16.22
+## 3    -120.1 33.883335 2007-09-19T01:13:00Z       16.38
+## 4    -120.1 33.883335 2007-09-19T02:13:00Z       16.38
+## 5    -120.1 33.883335 2007-09-19T03:13:00Z       16.38
+## 6    -120.1 33.883335 2007-09-19T04:13:00Z       14.48
+## 7    -120.1 33.883335 2007-09-19T05:13:00Z       13.86
+</code></pre>
+
+<h4>The orderby parameter</h4>
+
+<pre><code class="r">head(erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, orderby=&#39;temperature&#39;))
+</code></pre>
+
+<pre><code>##   longitude  latitude                 time temperature
+## 2    -120.1 33.883335 2007-09-20T12:13:00Z        12.0
+## 3    -120.1 33.883335 2007-09-20T13:13:00Z        12.0
+## 4    -120.1 33.883335 2007-09-20T14:13:00Z        12.0
+## 5    -120.1 33.883335 2007-09-20T11:13:00Z       12.16
+## 6    -120.1 33.883335 2007-09-20T15:13:00Z       12.16
+## 7    -120.1 33.883335 2007-09-20T10:13:00Z       12.31
+</code></pre>
+
+<h4>The orderbymax parameter</h4>
+
+<pre><code class="r">erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, orderbymax=&#39;temperature&#39;)
+</code></pre>
+
+<pre><code>##   longitude  latitude                 time temperature
+## 2    -120.1 33.883335 2007-09-19T03:13:00Z       16.38
+</code></pre>
+
+<h4>The orderbymin parameter</h4>
+
+<pre><code class="r">erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, orderbymin=&#39;temperature&#39;)
+</code></pre>
+
+<pre><code>##   longitude  latitude                 time temperature
+## 2    -120.1 33.883335 2007-09-20T12:13:00Z        12.0
+</code></pre>
+
+<h4>The orderbyminmax parameter</h4>
+
+<pre><code class="r">erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, orderbyminmax=&#39;temperature&#39;)
+</code></pre>
+
+<pre><code>##   longitude  latitude                 time temperature
+## 2    -120.1 33.883335 2007-09-20T12:13:00Z        12.0
+## 3    -120.1 33.883335 2007-09-19T03:13:00Z       16.38
+</code></pre>
+
+<h4>The orderbymin parameter with multiple values</h4>
+
+<pre><code class="r">erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;depth&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-06-10&#39;, &#39;time&lt;=2007-09-21&#39;, orderbymax=c(&#39;depth&#39;,&#39;temperature&#39;))
+</code></pre>
+
+<pre><code>##      longitude  latitude                 time depth temperature
+## 2   -119.53333 34.033333 2007-08-07T02:40:00Z     5       20.54
+## 3   -119.36667      34.0 2007-07-05T03:42:00Z     6       19.72
+## 4      -119.35      34.0 2007-08-05T18:32:00Z     8       21.23
+## 5   -119.51667 34.033333 2007-08-06T04:02:00Z     9       20.47
+## 6   -120.13333      33.9 2007-08-04T22:34:00Z    10       19.35
+## 7   -119.38333      34.0 2007-08-02T15:38:00Z    11       20.86
+## 8  -120.183334 33.916668 2007-08-04T23:50:00Z    12       19.92
+## 9       -119.6 34.033333 2007-08-08T02:47:00Z    13       20.43
+## 10 -119.816666 33.933334 2007-07-17T02:21:00Z    15       18.47
+## 11 -119.416664      34.0 2007-07-10T23:25:00Z    16       19.14
+## 12  -119.38333      34.0 2007-08-05T08:42:00Z    17       20.51
+</code></pre>
+
+<h4>Spatial delimitation</h4>
+
+<pre><code class="r">head(erddap_data(datasetid = &#39;erdCalCOFIfshsiz&#39;, fields = c(&#39;latitude&#39;,&#39;longitude&#39;,&#39;scientific_name&#39;), &#39;latitude&gt;=34.8&#39;, &#39;latitude&lt;=35&#39;, &#39;longitude&gt;=-125&#39;, &#39;longitude&lt;=-124&#39;))
+</code></pre>
+
+<pre><code>##    latitude longitude        scientific_name
+## 2 34.881668   -124.48     Cyclothone atraria
+## 3 34.881668   -124.48   Lipolagus ochotensis
+## 4 34.881668   -124.48  Bathylagoides wesethi
+## 5 34.881668   -124.48 Cyclothone acclinidens
+## 6 34.881668   -124.48 Cyclothone acclinidens
+## 7 34.881668   -124.48     Cyclothone signata
+</code></pre>
+
+<h4>Integrate with taxize</h4>
+
+<pre><code class="r">out &lt;- erddap_data(datasetid = &#39;erdCalCOFIfshsiz&#39;, fields = c(&#39;latitude&#39;,&#39;longitude&#39;,&#39;scientific_name&#39;,&#39;itis_tsn&#39;))
+tsns &lt;- unique(out$itis_tsn[1:100])
+library(&quot;taxize&quot;)
+</code></pre>
+
+<pre><code>## 
+## 
+## New to taxize? Tutorial at http://ropensci.org/tutorials/taxize_tutorial.html 
+## citation(package=&#39;taxize&#39;) for the citation for this package 
+## API key names have changed. Use tropicosApiKey, eolApiKey, ubioApiKey, and pmApiKey in your .Rprofile file. 
+## Use suppressPackageStartupMessages() to suppress these startup messages in the future
+</code></pre>
+
+<pre><code class="r">classif &lt;- classification(tsns, db = &quot;itis&quot;)
+</code></pre>
+
+<pre><code>## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=172887
+## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162168
+## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=623625
+## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162172
+## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162301
+## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162685
+## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162664
+## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162221
+## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=164792
+## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162167
+## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162092
+</code></pre>
+
+<pre><code class="r">head(rbind(classif)); tail(rbind(classif))
+</code></pre>
+
+<pre><code>##   source taxonid          name         rank
+## 1   itis  172887      Animalia      Kingdom
+## 2   itis  172887     Bilateria   Subkingdom
+## 3   itis  172887 Deuterostomia Infrakingdom
+## 4   itis  172887      Chordata       Phylum
+## 5   itis  172887    Vertebrata    Subphylum
+## 6   itis  172887 Gnathostomata  Infraphylum
+</code></pre>
+
+<pre><code>##     source taxonid               name     rank
+## 161   itis  162167       Stomiiformes    Order
+## 162   itis  162167    Gonostomatoidei Suborder
+## 163   itis  162167     Gonostomatidae   Family
+## 164   itis  162167         Cyclothone    Genus
+## 165   itis  162167 Cyclothone pallida  Species
+## 166   itis  162092 Bathylagus wesethi  Species
+</code></pre>
+
+</body>
+
+</html>

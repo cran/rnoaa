@@ -112,7 +112,7 @@
 #'    enddate = '2013-12-01', includemetadata=FALSE)
 #' }
 #'
-#' \donttest{
+#' \dontrun{
 #' # NEXRAD2 data
 #' ## doesn't work yet
 #' ncdc(datasetid='NEXRAD2', startdate = '2013-10-01', enddate = '2013-12-01')
@@ -120,17 +120,16 @@
 
 ncdc <- function(datasetid=NULL, datatypeid=NULL, stationid=NULL, locationid=NULL,
   startdate=NULL, enddate=NULL, sortfield=NULL, sortorder=NULL, limit=25, offset=NULL,
-  callopts=list(), token=NULL, dataset=NULL, datatype=NULL, station=NULL, location=NULL,
+  token=NULL, dataset=NULL, datatype=NULL, station=NULL, location=NULL,
   locationtype=NULL, page=NULL, year=NULL, month=NULL, day=NULL, includemetadata=TRUE,
-  results=NULL)
+  results=NULL, ...)
 {
   calls <- names(sapply(match.call(), deparse))[-1]
   calls_vec <- c("dataset","datatype","station","location","locationtype","page","year","month","day","results") %in% calls
   if(any(calls_vec))
     stop("The parameters name, code, modifiedsince, startindex, and maxresults \n  have been removed, and were only relavant in the old NOAA API v1. \n\nPlease see documentation for ?noaa")
 
-  if(is.null(token))
-    token <- getOption("noaakey", stop("you need an API key NOAA data"))
+  token <- check_key(token)
 
   base = 'http://www.ncdc.noaa.gov/cdo-web/api/v2/data'
   args <- noaa_compact(list(datasetid=datasetid, datatypeid=datatypeid,
@@ -149,8 +148,7 @@ ncdc <- function(datasetid=NULL, datatypeid=NULL, stationid=NULL, locationid=NUL
     for(i in seq_along(startat)){
       args$limit <- repto[i]
       args$offset <- startat[i]
-      callopts <- c(add_headers("token" = token), callopts)
-      temp <- GET(base, query=args, config = callopts)
+      temp <- GET(base, query=args, add_headers("token" = token), ...)
       tt <- check_response(temp)
       if(is(tt, "character")){all <- NULL} else {
         out[[i]] <- do.call(rbind.fill, lapply(tt$results, function(x) data.frame(x,stringsAsFactors=FALSE)))
@@ -162,8 +160,7 @@ ncdc <- function(datasetid=NULL, datatypeid=NULL, stationid=NULL, locationid=NUL
     atts <- list(totalCount=meta$count, pageCount="none", offset="none")
   } else
   {
-    callopts <- c(add_headers("token" = token), callopts)
-    temp <- GET(base, query=args, config = callopts)
+    temp <- GET(base, query=args, add_headers("token" = token), ...)
     tt <- check_response(temp)
     if(is(tt, "character")){all <- list(meta=NA, data=NA)} else {
       tt$results <- lapply(tt$results, split_atts, ds=datasetid)
@@ -174,8 +171,7 @@ ncdc <- function(datasetid=NULL, datatypeid=NULL, stationid=NULL, locationid=NUL
     }
   }
 
-  class(all) <- "ncdc_data"
-  return( all )
+  structure(all, class="ncdc_data")
 }
 
 split_atts <- function(x, ds="GHCNDMS"){

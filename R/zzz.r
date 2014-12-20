@@ -6,30 +6,37 @@
 #'
 #' @param x input
 #' @export
+#' @keywords internal
 is.ncdc_data <- function(x) inherits(x, "ncdc_data")
 
 #' @rdname is.ncdc_data
 #' @export
+#' @keywords internal 
 is.ncdc_datasets <- function(x) inherits(x, "ncdc_datasets")
 
 #' @rdname is.ncdc_data
 #' @export
+#' @keywords internal
 is.ncdc_datatypes <- function(x) inherits(x, "ncdc_datatypes")
 
 #' @rdname is.ncdc_data
 #' @export
+#' @keywords internal
 is.ncdc_datacats <- function(x) inherits(x, "ncdc_datacats")
 
 #' @rdname is.ncdc_data
 #' @export
+#' @keywords internal
 is.ncdc_locs <- function(x) inherits(x, "ncdc_locs")
 
 #' @rdname is.ncdc_data
 #' @export
+#' @keywords internal
 is.ncdc_locs_cats <- function(x) inherits(x, "ncdc_locs_cats")
 
 #' @rdname is.ncdc_data
 #' @export
+#' @keywords internal
 is.ncdc_stations <- function(x) inherits(x, "ncdc_stations")
 
 #' Theme for plotting NOAA data
@@ -43,10 +50,10 @@ ncdc_theme <- function(){
        guides(col = guide_legend(nrow=1)))
 }
 
-#' Function to get UTM zone from a single longitude and latitude pair
-#' originally from David LeBauer I think
-#' @param lon Longitude, in decimal degree style
-#' @param lat Latitude, in decimal degree style
+# Function to get UTM zone from a single longitude and latitude pair
+# originally from David LeBauer I think
+# @param lon Longitude, in decimal degree style
+# @param lat Latitude, in decimal degree style
 long2utm <- function(lon, lat) {
   if(56 <= lat & lat < 64){
     if(0 <= lon & lon < 3){ 31 } else
@@ -62,7 +69,7 @@ long2utm <- function(lon, lat) {
 }
 
 #' Function to calculate bounding box for the extent parameter in ncdc_stations function.
-#' @import assertthat rgeos
+#' @import rgeos
 #' @export
 #' @param lat Latitude, in decimal degree style
 #' @param lon Longitude, in decimal degree style
@@ -75,8 +82,8 @@ long2utm <- function(lon, lat) {
 #' latlong2bbox(lat=33.95, lon=-118.40, radius=0.02) # radius of 20 meters
 latlong2bbox <- function(lat, lon, radius=10)
 {
-  assert_that(is.numeric(lat), is.numeric(lon))
-  assert_that(abs(lat)<=90, abs(lon)<=180)
+  stopifnot(is.numeric(lat), is.numeric(lon))
+  stopifnot(abs(lat)<=90, abs(lon)<=180)
 
   # Make a spatialpoints obj, do settings, transform to UTM with zone
   d <- SpatialPoints(cbind(lon, lat), proj4string = CRS("+proj=longlat +datum=WGS84"))
@@ -108,7 +115,7 @@ check_response <- function(x){
       } else { warning(sprintf("Error: (%s)", x$status_code)) }
     } else { warn_for_status(x) }
   } else {
-    assert_that(x$headers$`content-type`=='application/json;charset=UTF-8')
+    stopifnot(x$headers$`content-type`=='application/json;charset=UTF-8')
     res <- content(x, as = 'text', encoding = "UTF-8")
     out <- jsonlite::fromJSON(res, simplifyVector = FALSE)
     if(!'results' %in% names(out)){
@@ -127,19 +134,19 @@ check_response_erddap <- function(x){
   if(!x$status_code == 200){
     html <- content(x)
     values <- xpathApply(html, "//u", xmlValue)
-    error <- grep("Error", values, ignore.case = TRUE, value = TRUE)
+    error <- grep("Error|Resource", values, ignore.case = TRUE, value = TRUE)
     if(length(error) > 1) error <- error[1]
     #check specifically for no matching results error
     if(grepl("no matching results", error)) error <- 'Error: Your query produced no matching results.'
 
     if(!is.null(error)){
-      if(grepl('Error', error)){
-        warning(sprintf("(%s) - %s", x$status_code, error))
-      } else { warning(sprintf("Error: (%s)", x$status_code)) }
-    } else { warn_for_status(x) }
+      if(grepl('Error|Resource not found', error, ignore.case = TRUE)){
+        stop(sprintf("(%s) - %s", x$status_code, error), call. = FALSE)
+      } else { stop(sprintf("Error: (%s)", x$status_code), call. = FALSE) }
+    } else { stop_for_status(x) }
   } else {
-    assert_that(x$headers$`content-type`=='text/csv;charset=UTF-8')
-    content(x, as = 'text', encoding = "UTF-8")
+    stopifnot(x$headers$`content-type`=='text/csv;charset=UTF-8')
+    return( x )
   }
 }
 
@@ -157,11 +164,11 @@ check_response_swdi <- function(x, format){
     } else { warn_for_status(x) }
   } else {
     if(format=='csv'){
-      assert_that(x$headers$`content-type`=='text/plain; charset=UTF-8')
+      stopifnot(x$headers$`content-type`=='text/plain; charset=UTF-8')
       uu <- content(x, as = 'text', encoding = "UTF-8")
       read.delim(text=uu, sep = ",")
     } else {
-      assert_that(x$headers$`content-type`=='text/xml')
+      stopifnot(x$headers$`content-type`=='text/xml')
       res <- content(x, as = 'text', encoding = "UTF-8")
       xmlParse(res)
     }
@@ -176,3 +183,39 @@ check_response_swdi <- function(x, format){
 }
 
 noaa_compact <- function (l) Filter(Negate(is.null), l)
+
+read_csv <- function(x){
+  tmp <- read.csv(x, header = FALSE, sep = ",", stringsAsFactors=FALSE, skip = 3)
+  nmz <- names(read.csv(x, header = TRUE, sep = ",", stringsAsFactors=FALSE, skip = 1, nrows=1))
+  names(tmp) <- tolower(nmz)
+  tmp
+}
+
+read_upwell <- function(x){
+  if(is(x, "response")) {
+    x <- content(x, "text")
+    tmp <- read.csv(text = x, header = FALSE, sep = ",", stringsAsFactors=FALSE, skip = 2)
+    nmz <- names(read.csv(text = x, header = TRUE, sep = ",", stringsAsFactors=FALSE, nrows=1))
+  } else {  
+    tmp <- read.csv(x, header = FALSE, sep = ",", stringsAsFactors=FALSE, skip = 2)
+    nmz <- names(read.csv(x, header = TRUE, sep = ",", stringsAsFactors=FALSE, nrows=1))
+  }
+  names(tmp) <- tolower(nmz)
+  tmp
+}
+
+read_table <- function(x){
+  if(is(x, "response")) {
+    txt <- gsub('\n$', '', content(x, "text"))
+    read.csv(text = txt, sep = ",", stringsAsFactors=FALSE,
+             blank.lines.skip=FALSE)[-1, , drop=FALSE]
+  } else {  
+    read.delim(x, sep=",", stringsAsFactors=FALSE,
+               blank.lines.skip=FALSE)[-1, , drop=FALSE]
+  }
+}
+
+check_key <- function(x){
+  tmp <- if(is.null(x)) Sys.getenv("NOAA_KEY", "") else x
+  if(tmp == "") getOption("noaakey", stop("need an API key for NOAA data")) else tmp
+}

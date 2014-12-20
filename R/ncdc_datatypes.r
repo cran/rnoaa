@@ -4,7 +4,7 @@
 #' degrees out right now, then the data type is Air Temperature and the data is 64.
 #'
 #' @import httr
-#' @importFrom plyr compact rbind.fill
+#' @importFrom plyr compact
 #' @export
 #' @template rnoaa
 #' @template rnoaa2
@@ -31,16 +31,15 @@
 
 ncdc_datatypes <- function(datasetid=NULL, datatypeid=NULL, datacategoryid=NULL,
   stationid=NULL, locationid=NULL, startdate=NULL, enddate=NULL, sortfield=NULL,
-  sortorder=NULL, limit=25, offset=NULL, callopts=list(), token=NULL,
-  dataset=NULL, page=NULL, filter=NULL)
+  sortorder=NULL, limit=25, offset=NULL, token=NULL,
+  dataset=NULL, page=NULL, filter=NULL, ...)
 {
   calls <- names(sapply(match.call(), deparse))[-1]
   calls_vec <- c("dataset", "page", "filter") %in% calls
   if(any(calls_vec))
     stop("The parameters dataset, page, and filter \n  have been removed, and were only relavant in the old NOAA API v1. \n\nPlease see documentation for ?ncdc_datatypes")
 
-  if(is.null(token))
-    token <- getOption("noaakey", stop("you need an API key NOAA data"))
+  token <- check_key(token)
 
   if(!is.null(datatypeid)){
     url <- sprintf("http://www.ncdc.noaa.gov/cdo-web/api/v2/datatypes/%s", datatypeid)
@@ -53,8 +52,7 @@ ncdc_datatypes <- function(datasetid=NULL, datatypeid=NULL, datacategoryid=NULL,
   args <- as.list(unlist(args))
   names(args) <- gsub("[0-9]+", "", names(args))
 
-  callopts <- c(add_headers("token" = token), callopts)
-  temp <- GET(url, query=args, config=callopts)
+  temp <- GET(url, query=args, add_headers("token" = token), ...)
   out <- check_response(temp)
   if(is(out, "character")){
     all <- list(meta=NULL, data=NULL)

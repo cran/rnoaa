@@ -1,6 +1,6 @@
 #' Get NOAA data for the severe weather data inventory (swdi).
 #'
-#' @import httr XML
+#' @import XML
 #' @importFrom data.table rbindlist
 #' 
 #' @param dataset Dataset to query. See below for details.
@@ -93,13 +93,21 @@
 #' # KMZ format
 #' swdi(dataset='nx3tvs', startdate='20060505', enddate='20060506', format='kmz',
 #'    radius=15, filepath='myfile.kmz')
+#' 
+#' # csv output to SpatialPointsDataFrame
+#' res <- swdi(dataset='nx3tvs', startdate='20060505', enddate='20060506', format="csv")
+#' library('sp')
+#' coordinates(res$data) <- ~lon + lat
+#' res$data
+#' class(res$data)
 #' }
 
 swdi <- function(dataset=NULL, format='xml', startdate=NULL, enddate=NULL, limit=25,
   offset=NULL, radius=NULL, center=NULL, bbox=NULL, tile=NULL, stat=NULL, id=NULL, filepath=NULL,
   callopts=list())
 {
-  assert_that(!is.null(startdate), !is.null(enddate))
+  stopifnot(!is.null(startdate))
+  stopifnot(!is.null(enddate))
 
   format <- match.arg(format, choices = c('xml','csv','shp','kmz'))
   if(is.null(enddate)){

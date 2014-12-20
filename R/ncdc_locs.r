@@ -2,10 +2,9 @@
 #'
 #' From the NOAA NCDC API docs: Locations can be a specific latitude/longitude point
 #' such as a station, or a label representing a bounding area such as a city.
-#'
-#' @import httr
-#' @importFrom plyr compact rbind.fill
+#' 
 #' @export
+#' 
 #' @template location
 #' @param locationid A valid location id or a chain of location ids seperated by
 #'    ampersands. Data returned will contain data for the location(s) specified (optional)
@@ -29,10 +28,9 @@
 
 ncdc_locs <- function(datasetid=NULL, locationid=NULL, locationcategoryid=NULL,
   startdate=NULL, enddate=NULL, sortfield=NULL, sortorder=NULL,
-  limit=25, offset=NULL, callopts=list(), token=NULL)
+  limit=25, offset=NULL, token=NULL, ...)
 {
-  if(is.null(token))
-    token <- getOption("noaakey", stop("you need an API key NOAA data"))
+  token <- check_key(token)
   url <- 'http://www.ncdc.noaa.gov/cdo-web/api/v2/locations'
   if(!is.null(locationid))
     url <- paste(url, "/", locationid, sep="")
@@ -41,8 +39,7 @@ ncdc_locs <- function(datasetid=NULL, locationid=NULL, locationcategoryid=NULL,
                        enddate=enddate,token=token,sortfield=sortfield,
                        sortorder=sortorder,limit=limit,offset=offset))
 
-  callopts <- c(add_headers("token" = token), callopts)
-  temp <- GET(url, query=as.list(args), config=callopts)
+  temp <- GET(url, query=args, add_headers("token" = token), ...)
   tt <- check_response(temp)
   if(is(tt, "character")){
     all <- list(meta=NULL, data=NULL)

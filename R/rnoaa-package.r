@@ -1,15 +1,24 @@
 #' rnoaa is an R interface to NOAA climate data.
 #' 
-#' Specifically, most functions in this package interact
-#' with the National Climatic Data Center application 
-#' programming interface (API) at 
-#' \url{http://www.ncdc.noaa.gov/cdo-web/webservices/v2}.
+#' Many functions in this package interact with the National Climatic Data Center application 
+#' programming interface (API) at \url{http://www.ncdc.noaa.gov/cdo-web/webservices/v2}, all of 
+#' which functions start with \code{ncdc_}. An access token, or API key, is required to use all
+#' the \code{ncdc_} functions. The key is required by NOAA, not the creators of this R package. 
+#' Go to the link given above to get an API key.
 #' 
-#' An access token, or API key, is required to use this 
-#' R package. The key is required by NOAA, not the
-#' creators of this R package. Go to the link given above 
-#' to get an API key.
+#' More NOAA data sources are being added through time. Data sources and their function prefixes
+#' are:
 #' 
+#' \itemize{
+#'  \item \code{buoy_*} - NOAA Buoy data, only on buoy branch in Github repo
+#'  \item \code{erddap_*} - NOAA ERDDAP vignette
+#'  \item \code{ncdc_*} - NOAA National Climatic Data Center (NCDC) vignette (examples)
+#'  \item \code{seaice} - Sea ice vignette
+#'  \item \code{swdi} - Severe Weather Data Inventory (SWDI) vignette
+#'  \item \code{homr_*} - Historical Observing Metadata Repository (HOMR) vignette
+#'  \item \code{storm_} - Storms (IBTrACS) vignette
+#'  \item \code{tornadoes} - From the NOAA Storm Prediction Center
+#' } 
 #' 
 #' @name rnoaa-package
 #' @aliases rnoaa
@@ -36,4 +45,26 @@ NULL
 #' @keywords datasets
 #' @format A data frame with 3142 rows and 5 variables
 #' @name fipscodes
+NULL
+
+#' NOAA storm column descriptions for data from IBTrACS
+#' 
+#' This dataset includes description of the columns of each dataset acquired using 
+#' \code{\link[rnoaa]{storm_data}}
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 195 rows and 8 variables
+#' @name storm_columns
+NULL
+
+#' NOAA storm names from IBTrACS
+#' 
+#' This dataset includes a crosswalk from storm serial numbers to their names. Storm serial numbers
+#' are used to search for storms in the \code{\link[rnoaa]{storm_data}} function.
+#' 
+#' @docType data
+#' @keywords datasets
+#' @format A data frame with 12,209 rows and 2 variables
+#' @name storm_names
 NULL

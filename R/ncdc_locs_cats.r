@@ -5,8 +5,8 @@
 #' Locations can be a specific latitude/longitude point such as a station, or a
 #' label representing a bounding area such as a city.
 #'
-#' @import httr
 #' @export
+#' 
 #' @template location
 #' @return A list containing metadata and the data, or a single data.frame.
 #' @examples \dontrun{
@@ -25,10 +25,9 @@
 
 ncdc_locs_cats <- function(datasetid=NULL, locationcategoryid=NULL,
   startdate=NULL, enddate=NULL, sortfield=NULL, sortorder=NULL,
-  limit=25, offset=NULL, callopts=list(), token=NULL)
+  limit=25, offset=NULL, token=NULL, ...)
 {
-  if(is.null(token))
-    token <- getOption("noaakey", stop("you need an API key NOAA data"))
+  token <- check_key(token)
   url <- 'http://www.ncdc.noaa.gov/cdo-web/api/v2/locationcategories'
   if(!is.null(locationcategoryid))
     url <- paste(url, "/", locationcategoryid, sep="")
@@ -36,8 +35,7 @@ ncdc_locs_cats <- function(datasetid=NULL, locationcategoryid=NULL,
     startdate=startdate, enddate=enddate,token=token,sortfield=sortfield,
     sortorder=sortorder,limit=limit,offset=offset))
 
-  callopts <- c(add_headers("token" = token), callopts)
-  temp <- GET(url, query=as.list(args), config=callopts)
+  temp <- GET(url, query=args, add_headers("token" = token), ...)
   tt <- check_response(temp)
   if(is(tt, "character")){
     all <- list(meta=NULL, data=NULL)

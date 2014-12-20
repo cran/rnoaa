@@ -5,6 +5,18 @@
 
 <title>ERDDAP vignette</title>
 
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
 <!-- Styles for R syntax highlighter -->
 <style type="text/css">
    pre .operator,
@@ -45,9 +57,6 @@ var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/<
 hljs.initHighlightingOnLoad();
 </script>
 
-<!-- MathJax scripts -->
-<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 
 
 <style type="text/css">
@@ -99,7 +108,9 @@ a:visited {
 pre, img {
   max-width: 100%;
 }
-
+pre {
+  overflow-x: auto;
+}
 pre code {
    display: block; padding: 0.5em;
 }
@@ -197,338 +208,433 @@ hr {
 
 <h1>ERDDAP vignette</h1>
 
-<h3>ERDDAP vignette</h3>
-
-<p><code>ERDDAP</code> is a service provided by NOAA that</p>
-
 <p>ERDDAP gives a simple, consistent way to download subsets of gridded and tabular scientific datasets in common file formats and make graphs and maps. This ERDDAP installation has oceanographic data (for example, data from satellites and buoys).</p>
 
 <p>Find out more about ERDDAP at <a href="http://coastwatch.pfeg.noaa.gov/erddap/index.html">http://coastwatch.pfeg.noaa.gov/erddap/index.html</a>.</p>
 
-<hr/>
-
-<h3>Install <code>rnoaa</code></h3>
-
-<p>Install and load <code>rnoaa</code> into the R session.</p>
-
-<p>If you&#39;re on Windows, you may have to install Rtools. Run <code>devtools::has_devel()</code>. If you get a <code>TRUE</code>, you&#39;re okay. If not, <a href="http://cran.r-project.org/bin/windows/Rtools/">install Rtools</a>.</p>
-
-<pre><code class="r">install.packages(&quot;devtools&quot;)
-library(devtools)
-ropensci::install_github(&quot;ropensci/rnoaa&quot;)
-</code></pre>
+<h2>Load rnoaa</h2>
 
 <pre><code class="r">library(&#39;rnoaa&#39;)
-library(&#39;plyr&#39;)
 </code></pre>
 
-<h4>Passing the datasetid without fields gives all columns back</h4>
+<h2>Passing the datasetid without fields gives all columns back</h2>
 
-<pre><code class="r">out &lt;- erddap_data(datasetid=&#39;erdCalCOFIfshsiz&#39;)
-nrow(out)
+<pre><code class="r">erddap_table(&#39;erdCalCOFIfshsiz&#39;)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCalCOFIfshsiz
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/f18cc75d8bf5ca831a96f42486a7bd5d.csv]
+#&gt;    Last updated: [2014-12-19 15:47:55]
+#&gt;    File size:    [4.6 MB]
+#&gt;    Dimensions:   [20939 X 24]
+#&gt; 
+#&gt;    cruise               ship ship_code order_occupied   tow_type net_type
+#&gt; 2  199104 DAVID STARR JORDAN        JD              1 MOCNESS_1m       M1
+#&gt; 3  199104 DAVID STARR JORDAN        JD              2 MOCNESS_1m       M1
+#&gt; 4  199104 DAVID STARR JORDAN        JD              2 MOCNESS_1m       M1
+#&gt; 5  199104 DAVID STARR JORDAN        JD              2 MOCNESS_1m       M1
+#&gt; 6  199104 DAVID STARR JORDAN        JD              4 MOCNESS_1m       M1
+#&gt; 7  199104 DAVID STARR JORDAN        JD              5 MOCNESS_1m       M1
+#&gt; 8  199104 DAVID STARR JORDAN        JD              6 MOCNESS_1m       M1
+#&gt; 9  199104 DAVID STARR JORDAN        JD              7 MOCNESS_1m       M1
+#&gt; 10 199104 DAVID STARR JORDAN        JD             11 MOCNESS_1m       M1
+#&gt; 11 199104 DAVID STARR JORDAN        JD             32 MOCNESS_1m       M1
+#&gt; ..    ...                ...       ...            ...        ...      ...
+#&gt; Variables not shown: tow_number (int), net_location (chr),
+#&gt;      standard_haul_factor (dbl), volume_sampled (chr), percent_sorted
+#&gt;      (chr), sample_quality (dbl), latitude (chr), longitude (chr), line
+#&gt;      (dbl), station (dbl), time (chr), scientific_name (chr), common_name
+#&gt;      (chr), itis_tsn (int), calcofi_species_code (int), fish_size (chr),
+#&gt;      fish_count (dbl), fish_1000m3 (chr)
 </code></pre>
 
-<pre><code>## [1] 20939
+<h2>Pass time constraints</h2>
+
+<pre><code class="r">erddap_table(&#39;erdCalCOFIfshsiz&#39;, &#39;time&gt;=2001-07-07&#39;, &#39;time&lt;=2001-07-08&#39;)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCalCOFIfshsiz
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/9e5119eb5c8ed63b9619be1367b0344c.csv]
+#&gt;    Last updated: [2014-12-19 18:07:32]
+#&gt;    File size:    [0.05 MB]
+#&gt;    Dimensions:   [217 X 24]
+#&gt; 
+#&gt;    cruise               ship ship_code order_occupied    tow_type net_type
+#&gt; 2  200106 DAVID STARR JORDAN        JD             43 MOCNESS_10m       M2
+#&gt; 3  200106 DAVID STARR JORDAN        JD             43 MOCNESS_10m       M2
+#&gt; 4  200106 DAVID STARR JORDAN        JD             43 MOCNESS_10m       M2
+#&gt; 5  200106 DAVID STARR JORDAN        JD             43 MOCNESS_10m       M2
+#&gt; 6  200106 DAVID STARR JORDAN        JD             43 MOCNESS_10m       M2
+#&gt; 7  200106 DAVID STARR JORDAN        JD             43 MOCNESS_10m       M2
+#&gt; 8  200106 DAVID STARR JORDAN        JD             43 MOCNESS_10m       M2
+#&gt; 9  200106 DAVID STARR JORDAN        JD             43 MOCNESS_10m       M2
+#&gt; 10 200106 DAVID STARR JORDAN        JD             43 MOCNESS_10m       M2
+#&gt; 11 200106 DAVID STARR JORDAN        JD             43 MOCNESS_10m       M2
+#&gt; ..    ...                ...       ...            ...         ...      ...
+#&gt; Variables not shown: tow_number (int), net_location (chr),
+#&gt;      standard_haul_factor (dbl), volume_sampled (chr), percent_sorted
+#&gt;      (chr), sample_quality (dbl), latitude (chr), longitude (chr), line
+#&gt;      (dbl), station (dbl), time (chr), scientific_name (chr), common_name
+#&gt;      (chr), itis_tsn (int), calcofi_species_code (int), fish_size (chr),
+#&gt;      fish_count (dbl), fish_1000m3 (chr)
 </code></pre>
 
-<h4>Pass time constraints</h4>
+<h2>Pass in fields (i.e., columns to retrieve) &amp; time constraints</h2>
 
-<pre><code class="r">head(erddap_data(datasetid=&#39;erdCalCOFIfshsiz&#39;, &#39;time&gt;=2001-07-07&#39;, &#39;time&lt;=2001-07-08&#39;)[,c(1:4)])
+<pre><code class="r">erddap_table(&#39;erdCalCOFIfshsiz&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;fish_size&#39;,&#39;itis_tsn&#39;), &#39;time&gt;=2001-07-07&#39;,&#39;time&lt;=2001-07-10&#39;)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCalCOFIfshsiz
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/7b04d4ddfe4ad3540ec6213129fa050c.csv]
+#&gt;    Last updated: [2014-12-19 18:07:47]
+#&gt;    File size:    [0.02 MB]
+#&gt;    Dimensions:   [558 X 4]
+#&gt; 
+#&gt;     longitude  latitude fish_size itis_tsn
+#&gt; 2     -118.26    33.255      22.9   623745
+#&gt; 3     -118.26    33.255      22.9   623745
+#&gt; 4  -118.10667 32.738335      31.5   623625
+#&gt; 5  -118.10667 32.738335      48.3   623625
+#&gt; 6  -118.10667 32.738335      15.5   162221
+#&gt; 7  -118.10667 32.738335      16.3   162221
+#&gt; 8  -118.10667 32.738335      17.8   162221
+#&gt; 9  -118.10667 32.738335      18.2   162221
+#&gt; 10 -118.10667 32.738335      19.2   162221
+#&gt; 11 -118.10667 32.738335      20.0   162221
+#&gt; ..        ...       ...       ...      ...
 </code></pre>
 
-<pre><code>##   cruise               ship ship_code order_occupied
-## 2 200106 DAVID STARR JORDAN        JD             43
-## 3 200106 DAVID STARR JORDAN        JD             43
-## 4 200106 DAVID STARR JORDAN        JD             43
-## 5 200106 DAVID STARR JORDAN        JD             43
-## 6 200106 DAVID STARR JORDAN        JD             43
-## 7 200106 DAVID STARR JORDAN        JD             43
+<pre><code class="r">erddap_table(&#39;erdCinpKfmBT&#39;, fields=c(&#39;latitude&#39;,&#39;longitude&#39;,&#39;Aplysia_californica_Mean_Density&#39;,&#39;Muricea_californica_Mean_Density&#39;), &#39;time&gt;=2007-06-24&#39;,&#39;time&lt;=2007-07-01&#39;)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCinpKfmBT
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/681451f3fee8ee9e426012609975a89e.csv]
+#&gt;    Last updated: [2014-12-19 18:08:22]
+#&gt;    File size:    [1.49 KB]
+#&gt;    Dimensions:   [37 X 4]
+#&gt; 
+#&gt;            latitude         longitude Aplysia_californica_Mean_Density
+#&gt; 2              34.0 -119.416666666667                      0.009722223
+#&gt; 3              34.0 -119.383333333333                              0.0
+#&gt; 4              34.0 -119.366666666667                              0.0
+#&gt; 5              34.0 -119.383333333333                             0.16
+#&gt; 6              34.0 -119.416666666667                             0.03
+#&gt; 7  34.0166666666667           -119.35                              0.0
+#&gt; 8              34.0           -119.35                      0.008333334
+#&gt; 9              33.0 -118.533333333333                              NaN
+#&gt; 10            32.95 -118.533333333333                              NaN
+#&gt; 11             32.8            -118.4                              NaN
+#&gt; ..              ...               ...                              ...
+#&gt; Variables not shown: Muricea_californica_Mean_Density (chr)
 </code></pre>
 
-<h4>Pass in fields (i.e., columns to retrieve) &amp; time constraints</h4>
-
-<pre><code class="r">head(erddap_data(datasetid=&#39;erdCalCOFIfshsiz&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;fish_size&#39;,&#39;itis_tsn&#39;), &#39;time&gt;=2001-07-07&#39;,&#39;time&lt;=2001-07-10&#39;))
-</code></pre>
-
-<pre><code>##    longitude  latitude fish_size itis_tsn
-## 2    -118.26    33.255      22.9   623745
-## 3    -118.26    33.255      22.9   623745
-## 4 -118.10667 32.738335      31.5   623625
-## 5 -118.10667 32.738335      48.3   623625
-## 6 -118.10667 32.738335      15.5   162221
-## 7 -118.10667 32.738335      16.3   162221
-</code></pre>
-
-<pre><code class="r">head(erddap_data(datasetid=&#39;erdCinpKfmBT&#39;, fields=c(&#39;latitude&#39;,&#39;longitude&#39;,
-   &#39;Aplysia_californica_Mean_Density&#39;,&#39;Muricea_californica_Mean_Density&#39;),
-   &#39;time&gt;=2007-06-24&#39;,&#39;time&lt;=2007-07-01&#39;))
-</code></pre>
-
-<pre><code>##           latitude         longitude Aplysia_californica_Mean_Density
-## 2             34.0 -119.416666666667                      0.009722223
-## 3             34.0 -119.383333333333                              0.0
-## 4             34.0 -119.366666666667                              0.0
-## 5             34.0 -119.383333333333                             0.16
-## 6             34.0 -119.416666666667                             0.03
-## 7 34.0166666666667           -119.35                              0.0
-##   Muricea_californica_Mean_Density
-## 2                             0.01
-## 3                     0.0013888889
-## 4                              0.0
-## 5                             0.01
-## 6                             0.04
-## 7                              0.0
-</code></pre>
-
-<h4>An example workflow</h4>
+<h2>An example workflow</h2>
 
 <p>Search for data</p>
 
-<pre><code class="r">(out &lt;- erddap_search(query=&#39;fish size&#39;))
+<pre><code class="r">(out &lt;- erddap_search(query=&#39;size&#39;))
+#&gt; 6 results, showing first 20 
+#&gt;                                                            title
+#&gt; 11               NOAA Global Coral Bleaching Monitoring Products
+#&gt; 12        Coawst 4 use, Best Time Series [time][eta_rho][xi_rho]
+#&gt; 13            Coawst 4 use, Best Time Series [time][eta_u][xi_u]
+#&gt; 14            Coawst 4 use, Best Time Series [time][eta_v][xi_v]
+#&gt; 15 Coawst 4 use, Best Time Series [time][s_rho][eta_rho][xi_rho]
+#&gt; 16  Coawst 4 use, Best Time Series [time][Nbed][eta_rho][xi_rho]
+#&gt;             dataset_id
+#&gt; 11            NOAA_DHW
+#&gt; 12 whoi_ed12_89ce_9592
+#&gt; 13 whoi_61c3_0b5d_cd61
+#&gt; 14 whoi_62d0_9d64_c8ff
+#&gt; 15 whoi_7dd7_db97_4bbe
+#&gt; 16 whoi_a4fb_2c9c_16a7
 </code></pre>
 
-<pre><code>## 7 results, showing first 20 
-##                                         title          dataset_id
-## 1                          CalCOFI Fish Sizes    erdCalCOFIfshsiz
-## 2                        CalCOFI Larvae Sizes    erdCalCOFIlrvsiz
-## 3                                CalCOFI Tows      erdCalCOFItows
-## 4     GLOBEC NEP MOCNESS Plankton (MOC1) Data       erdGlobecMoc1
-## 5 GLOBEC NEP Vertical Plankton Tow (VPT) Data        erdGlobecVpt
-## 6         CalCOFI Larvae Counts Positive Tows erdCalCOFIlrvcntpos
-## 7  OBIS - ARGOS Satellite Tracking of Animals           aadcArgos
+<p>Or, list datasets</p>
+
+<pre><code class="r">tdp &lt;- erddap_datasets(&#39;table&#39;)
 </code></pre>
 
 <p>Using a datasetid, search for information on a datasetid</p>
 
-<pre><code class="r">id &lt;- out$info$dataset_id[1]
-erddap_info(datasetid=id)$variables
-</code></pre>
-
-<pre><code>##           variable_name data_type           actual_range
-## 1  calcofi_species_code       int               19, 1550
-## 2           common_name    String                       
-## 3                cruise    String                       
-## 4           fish_1000m3     float                       
-## 5            fish_count     float                       
-## 6             fish_size     float                       
-## 7              itis_tsn       int                       
-## 8              latitude     float         32.515, 38.502
-## 9                  line     float             46.6, 93.3
-## 10            longitude     float        -128.5, -117.33
-## 11         net_location    String                       
-## 12             net_type    String                       
-## 13       order_occupied       int                       
-## 14       percent_sorted     float                       
-## 15       sample_quality     float                       
-## 16      scientific_name    String                       
-## 17                 ship    String                       
-## 18            ship_code    String                       
-## 19 standard_haul_factor     float                       
-## 20              station     float            28.0, 114.9
-## 21                 time    double 9.94464E8, 9.9510582E8
-## 22           tow_number       int                  2, 10
-## 23             tow_type    String                       
-## 24       volume_sampled     float
+<pre><code class="r">id &lt;- as.character(tdp$Dataset.ID[8])
+erddap_info(id)$variables
+#&gt;               variable_name data_type     actual_range
+#&gt; 1                      cndc     float                 
+#&gt; 2             cndc_adjusted     float                 
+#&gt; 3       cndc_adjusted_error     float                 
+#&gt; 4          cndc_adjusted_qc     float                 
+#&gt; 5                   cndc_qc     float                 
+#&gt; 6                      doxy     float                 
+#&gt; 7             doxy_adjusted     float                 
+#&gt; 8       doxy_adjusted_error     float                 
+#&gt; 9          doxy_adjusted_qc     float                 
+#&gt; 10                  doxy_qc     float                 
+#&gt; 11                       id       int                 
+#&gt; 12                 latitude     float      -90.0, 90.0
+#&gt; 13                longitude     float       0.0, 360.0
+#&gt; 14                     pres     float                 
+#&gt; 15            pres_adjusted     float                 
+#&gt; 16      pres_adjusted_error     float                 
+#&gt; 17         pres_adjusted_qc     float                 
+#&gt; 18                  pres_qc     float                 
+#&gt; 19                     psal     float                 
+#&gt; 20            psal_adjusted     float                 
+#&gt; 21      psal_adjusted_error     float                 
+#&gt; 22         psal_adjusted_qc     float                 
+#&gt; 23                  psal_qc     float                 
+#&gt; 24                     temp     float                 
+#&gt; 25            temp_adjusted     float                 
+#&gt; 26      temp_adjusted_error     float                 
+#&gt; 27         temp_adjusted_qc     float                 
+#&gt; 28                temp_doxy     float                 
+#&gt; 29       temp_doxy_adjusted     float                 
+#&gt; 30 temp_doxy_adjusted_error     float                 
+#&gt; 31    temp_doxy_adjusted_qc     float                 
+#&gt; 32             temp_doxy_qc     float                 
+#&gt; 33                  temp_qc     float                 
+#&gt; 34                     time    double 8.1048066E8, NaN
 </code></pre>
 
 <p>Get data from the dataset</p>
 
-<pre><code class="r">head(erddap_data(datasetid = id, fields = c(&#39;latitude&#39;,&#39;longitude&#39;,&#39;scientific_name&#39;)))
+<pre><code class="r">erddap_table(id, fields = c(&#39;latitude&#39;,&#39;longitude&#39;))
+#&gt; &lt;NOAA ERDDAP tabledap&gt; apdrcArgoAll
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/7b238871e478bf43df2e1f703e6e85e5.csv]
+#&gt;    Last updated: [2014-12-19 18:15:39]
+#&gt;    File size:    [0.07 MB]
+#&gt;    Dimensions:   [5000 X 2]
+#&gt; 
+#&gt;    latitude longitude
+#&gt; 2    49.868   215.335
+#&gt; 3    50.023    215.47
+#&gt; 4    50.115   215.676
+#&gt; 5    50.156   215.676
+#&gt; 6    50.132   215.601
+#&gt; 7      50.1   215.544
+#&gt; 8    50.158   215.582
+#&gt; 9    50.278   215.585
+#&gt; 10   50.417   215.702
+#&gt; 11   50.548   215.779
+#&gt; ..      ...       ...
 </code></pre>
 
-<pre><code>##    latitude  longitude       scientific_name
-## 2 35.038334 -120.88333 Microstomus pacificus
-## 3  34.97167 -121.02333    Cyclothone signata
-## 4  34.97167 -121.02333    Cyclothone signata
-## 5  34.97167 -121.02333    Cyclothone signata
-## 6  34.97167 -121.02333    Cyclothone signata
-## 7  34.97167 -121.02333    Cyclothone signata
-</code></pre>
-
-<h4>Time constraint</h4>
+<h2>Time constraint</h2>
 
 <p>Limit by time with date only</p>
 
-<pre><code class="r">head(erddap_data(datasetid = id, fields = c(&#39;latitude&#39;,&#39;longitude&#39;,&#39;scientific_name&#39;),
-   &#39;time&gt;=2001-07-14&#39;))
+<pre><code class="r">erddap_table(id, fields = c(&#39;latitude&#39;,&#39;longitude&#39;,&#39;time&#39;), &#39;time&gt;=2001-07-14&#39;, &#39;time&lt;=2001-09-14&#39;)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; apdrcArgoAll
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/d449b321be463619aab879c8ca2e40e7.csv]
+#&gt;    Last updated: [2014-12-19 18:22:51]
+#&gt;    File size:    [0.05 MB]
+#&gt;    Dimensions:   [1490 X 3]
+#&gt; 
+#&gt;    latitude longitude                 time
+#&gt; 2    75.005     0.583 2001-07-14T04:29:00Z
+#&gt; 3    73.819     1.418 2001-07-14T01:01:59Z
+#&gt; 4   -24.702    106.08 2001-07-14T00:33:23Z
+#&gt; 5   -12.953   108.299 2001-07-14T04:23:12Z
+#&gt; 6     4.943   164.673 2001-07-14T18:36:46Z
+#&gt; 7    -4.769   189.924 2001-07-14T21:49:35Z
+#&gt; 8    11.312   195.319 2001-07-14T06:15:47Z
+#&gt; 9    48.906   229.489 2001-07-14T14:50:00Z
+#&gt; 10   -10.93   235.776 2001-07-14T08:47:12Z
+#&gt; 11   11.672   264.219 2001-07-14T05:31:14Z
+#&gt; ..      ...       ...                  ...
 </code></pre>
 
-<pre><code>##   latitude   longitude       scientific_name
-## 2   33.045 -118.113335  Lipolagus ochotensis
-## 3   33.045 -118.113335  Lipolagus ochotensis
-## 4   33.045 -118.113335  Lipolagus ochotensis
-## 5   33.045 -118.113335  Lipolagus ochotensis
-## 6   33.045 -118.113335 Bathylagoides wesethi
-## 7   33.045 -118.113335 Bathylagoides wesethi
+<h2>Use distinct parameter</h2>
+
+<pre><code class="r">erddap_table(&#39;erdCalCOFIfshsiz&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;fish_size&#39;,&#39;itis_tsn&#39;), &#39;time&gt;=2001-07-07&#39;,&#39;time&lt;=2001-07-10&#39;, distinct=TRUE)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCalCOFIfshsiz
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/e05d5adb0fecd3bb2276c920e1bd2457.csv]
+#&gt;    Last updated: [2014-12-19 18:16:09]
+#&gt;    File size:    [0.02 MB]
+#&gt;    Dimensions:   [518 X 4]
+#&gt; 
+#&gt;     longitude  latitude fish_size itis_tsn
+#&gt; 2  -118.74333 32.873333      14.2   162584
+#&gt; 3  -118.74333 32.873333      15.0   162221
+#&gt; 4  -118.74333 32.873333      15.2   170085
+#&gt; 5  -118.74333 32.873333      17.2   162221
+#&gt; 6  -118.74333 32.873333      18.3   162221
+#&gt; 7  -118.74333 32.873333      18.7   170085
+#&gt; 8  -118.74333 32.873333      20.0   162664
+#&gt; 9  -118.74333 32.873333      20.2   162664
+#&gt; 10 -118.74333 32.873333      20.4   623745
+#&gt; 11 -118.74333 32.873333      23.1   623745
+#&gt; ..        ...       ...       ...      ...
 </code></pre>
 
-<h4>Use distinct parameter</h4>
-
-<pre><code class="r">head(erddap_data(datasetid=&#39;erdCalCOFIfshsiz&#39;,fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;fish_size&#39;,&#39;itis_tsn&#39;), &#39;time&gt;=2001-07-07&#39;,&#39;time&lt;=2001-07-10&#39;, distinct=TRUE))
-</code></pre>
-
-<pre><code>##    longitude  latitude fish_size itis_tsn
-## 2 -118.74333 32.873333      14.2   162584
-## 3 -118.74333 32.873333      15.0   162221
-## 4 -118.74333 32.873333      15.2   170085
-## 5 -118.74333 32.873333      17.2   162221
-## 6 -118.74333 32.873333      18.3   162221
-## 7 -118.74333 32.873333      18.7   170085
-</code></pre>
-
-<h4>The units parameter</h4>
+<h2>The units parameter</h2>
 
 <p>In this example, values are the same, but sometimes they can be different given the units value passed</p>
 
-<pre><code class="r">head(erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, units=&#39;udunits&#39;))
+<pre><code class="r">erddap_table(&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, units=&#39;udunits&#39;)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCinpKfmT
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/d1aaf6eca896d080b1c2251f7a8cec17.csv]
+#&gt;    Last updated: [2014-12-19 18:16:21]
+#&gt;    File size:    [2.18 KB]
+#&gt;    Dimensions:   [48 X 4]
+#&gt; 
+#&gt;    longitude  latitude                 time temperature
+#&gt; 2     -120.1 33.883335 2007-09-19T00:13:00Z       16.22
+#&gt; 3     -120.1 33.883335 2007-09-19T01:13:00Z       16.38
+#&gt; 4     -120.1 33.883335 2007-09-19T02:13:00Z       16.38
+#&gt; 5     -120.1 33.883335 2007-09-19T03:13:00Z       16.38
+#&gt; 6     -120.1 33.883335 2007-09-19T04:13:00Z       14.48
+#&gt; 7     -120.1 33.883335 2007-09-19T05:13:00Z       13.86
+#&gt; 8     -120.1 33.883335 2007-09-19T06:13:00Z       13.55
+#&gt; 9     -120.1 33.883335 2007-09-19T07:13:00Z       13.24
+#&gt; 10    -120.1 33.883335 2007-09-19T08:13:00Z       13.09
+#&gt; 11    -120.1 33.883335 2007-09-19T09:13:00Z       12.78
+#&gt; ..       ...       ...                  ...         ...
 </code></pre>
 
-<pre><code>##   longitude  latitude                 time temperature
-## 2    -120.1 33.883335 2007-09-19T00:13:00Z       16.22
-## 3    -120.1 33.883335 2007-09-19T01:13:00Z       16.38
-## 4    -120.1 33.883335 2007-09-19T02:13:00Z       16.38
-## 5    -120.1 33.883335 2007-09-19T03:13:00Z       16.38
-## 6    -120.1 33.883335 2007-09-19T04:13:00Z       14.48
-## 7    -120.1 33.883335 2007-09-19T05:13:00Z       13.86
+<pre><code class="r">erddap_table(&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, units=&#39;ucum&#39;)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCinpKfmT
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/a53175d2b882b8054906b46d4efe8218.csv]
+#&gt;    Last updated: [2014-12-19 18:16:34]
+#&gt;    File size:    [2.17 KB]
+#&gt;    Dimensions:   [48 X 4]
+#&gt; 
+#&gt;    longitude  latitude                 time temperature
+#&gt; 2     -120.1 33.883335 2007-09-19T00:13:00Z       16.22
+#&gt; 3     -120.1 33.883335 2007-09-19T01:13:00Z       16.38
+#&gt; 4     -120.1 33.883335 2007-09-19T02:13:00Z       16.38
+#&gt; 5     -120.1 33.883335 2007-09-19T03:13:00Z       16.38
+#&gt; 6     -120.1 33.883335 2007-09-19T04:13:00Z       14.48
+#&gt; 7     -120.1 33.883335 2007-09-19T05:13:00Z       13.86
+#&gt; 8     -120.1 33.883335 2007-09-19T06:13:00Z       13.55
+#&gt; 9     -120.1 33.883335 2007-09-19T07:13:00Z       13.24
+#&gt; 10    -120.1 33.883335 2007-09-19T08:13:00Z       13.09
+#&gt; 11    -120.1 33.883335 2007-09-19T09:13:00Z       12.78
+#&gt; ..       ...       ...                  ...         ...
 </code></pre>
 
-<pre><code class="r">head(erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, units=&#39;ucum&#39;))
+<h2>The orderby parameter</h2>
+
+<pre><code class="r">erddap_table(&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, orderby=&#39;temperature&#39;)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCinpKfmT
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/9339183f5e454127988667d44e8fb0ca.csv]
+#&gt;    Last updated: [2014-12-19 18:16:44]
+#&gt;    File size:    [2.18 KB]
+#&gt;    Dimensions:   [48 X 4]
+#&gt; 
+#&gt;    longitude  latitude                 time temperature
+#&gt; 2     -120.1 33.883335 2007-09-20T12:13:00Z        12.0
+#&gt; 3     -120.1 33.883335 2007-09-20T13:13:00Z        12.0
+#&gt; 4     -120.1 33.883335 2007-09-20T14:13:00Z        12.0
+#&gt; 5     -120.1 33.883335 2007-09-20T11:13:00Z       12.16
+#&gt; 6     -120.1 33.883335 2007-09-20T15:13:00Z       12.16
+#&gt; 7     -120.1 33.883335 2007-09-20T10:13:00Z       12.31
+#&gt; 8     -120.1 33.883335 2007-09-20T16:13:00Z       12.31
+#&gt; 9     -120.1 33.883335 2007-09-20T17:13:00Z       12.62
+#&gt; 10    -120.1 33.883335 2007-09-19T09:13:00Z       12.78
+#&gt; 11    -120.1 33.883335 2007-09-20T09:13:00Z       12.78
+#&gt; ..       ...       ...                  ...         ...
 </code></pre>
 
-<pre><code>##   longitude  latitude                 time temperature
-## 2    -120.1 33.883335 2007-09-19T00:13:00Z       16.22
-## 3    -120.1 33.883335 2007-09-19T01:13:00Z       16.38
-## 4    -120.1 33.883335 2007-09-19T02:13:00Z       16.38
-## 5    -120.1 33.883335 2007-09-19T03:13:00Z       16.38
-## 6    -120.1 33.883335 2007-09-19T04:13:00Z       14.48
-## 7    -120.1 33.883335 2007-09-19T05:13:00Z       13.86
+<h2>The orderbymax parameter</h2>
+
+<pre><code class="r">erddap_table(&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, orderbymax=&#39;temperature&#39;)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCinpKfmT
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/e6e6116b3870afc9c093f6dab56ce6ba.csv]
+#&gt;    Last updated: [2014-12-19 18:16:53]
+#&gt;    File size:    [0.12 KB]
+#&gt;    Dimensions:   [1 X 4]
+#&gt; 
+#&gt;   longitude  latitude                 time temperature
+#&gt; 2    -120.1 33.883335 2007-09-19T03:13:00Z       16.38
 </code></pre>
 
-<h4>The orderby parameter</h4>
+<h2>The orderbymin parameter</h2>
 
-<pre><code class="r">head(erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, orderby=&#39;temperature&#39;))
+<pre><code class="r">erddap_table(&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, orderbymin=&#39;temperature&#39;)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCinpKfmT
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/04557d97f6ecec410b114fc90da503d1.csv]
+#&gt;    Last updated: [2014-12-19 18:17:12]
+#&gt;    File size:    [0.12 KB]
+#&gt;    Dimensions:   [1 X 4]
+#&gt; 
+#&gt;   longitude  latitude                 time temperature
+#&gt; 2    -120.1 33.883335 2007-09-20T12:13:00Z        12.0
 </code></pre>
 
-<pre><code>##   longitude  latitude                 time temperature
-## 2    -120.1 33.883335 2007-09-20T12:13:00Z        12.0
-## 3    -120.1 33.883335 2007-09-20T13:13:00Z        12.0
-## 4    -120.1 33.883335 2007-09-20T14:13:00Z        12.0
-## 5    -120.1 33.883335 2007-09-20T11:13:00Z       12.16
-## 6    -120.1 33.883335 2007-09-20T15:13:00Z       12.16
-## 7    -120.1 33.883335 2007-09-20T10:13:00Z       12.31
+<h2>The orderbyminmax parameter</h2>
+
+<pre><code class="r">erddap_table(&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, orderbyminmax=&#39;temperature&#39;)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCinpKfmT
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/4bd33e3b4de0d050b250fbccfd436ab7.csv]
+#&gt;    Last updated: [2014-12-19 18:17:15]
+#&gt;    File size:    [0.16 KB]
+#&gt;    Dimensions:   [2 X 4]
+#&gt; 
+#&gt;   longitude  latitude                 time temperature
+#&gt; 2    -120.1 33.883335 2007-09-20T12:13:00Z        12.0
+#&gt; 3    -120.1 33.883335 2007-09-19T03:13:00Z       16.38
 </code></pre>
 
-<h4>The orderbymax parameter</h4>
+<h2>The orderbymin parameter with multiple values</h2>
 
-<pre><code class="r">erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, orderbymax=&#39;temperature&#39;)
+<pre><code class="r">erddap_table(&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;depth&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-06-10&#39;, &#39;time&lt;=2007-09-21&#39;, orderbymax=c(&#39;depth&#39;,&#39;temperature&#39;))
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCinpKfmT
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/e84ec03c5003845e4df2208ae39a975a.csv]
+#&gt;    Last updated: [2014-12-19 18:17:24]
+#&gt;    File size:    [0.61 KB]
+#&gt;    Dimensions:   [11 X 5]
+#&gt; 
+#&gt;      longitude  latitude                 time depth temperature
+#&gt; 2   -119.53333 34.033333 2007-08-07T02:40:00Z     5       20.54
+#&gt; 3   -119.36667      34.0 2007-07-05T03:42:00Z     6       19.72
+#&gt; 4      -119.35      34.0 2007-08-05T18:32:00Z     8       21.23
+#&gt; 5   -119.51667 34.033333 2007-08-06T04:02:00Z     9       20.47
+#&gt; 6   -120.13333      33.9 2007-08-04T22:34:00Z    10       19.35
+#&gt; 7   -119.38333      34.0 2007-08-02T15:38:00Z    11       20.86
+#&gt; 8  -120.183334 33.916668 2007-08-04T23:50:00Z    12       19.92
+#&gt; 9       -119.6 34.033333 2007-08-08T02:47:00Z    13       20.43
+#&gt; 10 -119.816666 33.933334 2007-07-17T02:21:00Z    15       18.47
+#&gt; 11 -119.416664      34.0 2007-07-10T23:25:00Z    16       19.14
+#&gt; ..         ...       ...                  ...   ...         ...
 </code></pre>
 
-<pre><code>##   longitude  latitude                 time temperature
-## 2    -120.1 33.883335 2007-09-19T03:13:00Z       16.38
+<h2>Spatial delimitation</h2>
+
+<pre><code class="r">erddap_table(&#39;erdCalCOFIfshsiz&#39;, fields = c(&#39;latitude&#39;,&#39;longitude&#39;,&#39;scientific_name&#39;), &#39;latitude&gt;=34.8&#39;, &#39;latitude&lt;=35&#39;, &#39;longitude&gt;=-125&#39;, &#39;longitude&lt;=-124&#39;)
+#&gt; &lt;NOAA ERDDAP tabledap&gt; erdCalCOFIfshsiz
+#&gt;    Path: [/Users/sacmac/.rnoaa/erddap/8137b5814735d58e2d939b33a975c1a9.csv]
+#&gt;    Last updated: [2014-12-19 15:48:00]
+#&gt;    File size:    [2.2 KB]
+#&gt;    Dimensions:   [56 X 3]
+#&gt; 
+#&gt;     latitude longitude        scientific_name
+#&gt; 2  34.881668   -124.48     Cyclothone atraria
+#&gt; 3  34.881668   -124.48   Lipolagus ochotensis
+#&gt; 4  34.881668   -124.48  Bathylagoides wesethi
+#&gt; 5  34.881668   -124.48 Cyclothone acclinidens
+#&gt; 6  34.881668   -124.48 Cyclothone acclinidens
+#&gt; 7  34.881668   -124.48     Cyclothone signata
+#&gt; 8  34.881668   -124.48     Cyclothone signata
+#&gt; 9  34.881668   -124.48     Cyclothone signata
+#&gt; 10 34.881668   -124.48     Cyclothone signata
+#&gt; 11 34.881668   -124.48     Cyclothone signata
+#&gt; ..       ...       ...                    ...
 </code></pre>
 
-<h4>The orderbymin parameter</h4>
+<h2>Integrate with taxize</h2>
 
-<pre><code class="r">erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, orderbymin=&#39;temperature&#39;)
-</code></pre>
-
-<pre><code>##   longitude  latitude                 time temperature
-## 2    -120.1 33.883335 2007-09-20T12:13:00Z        12.0
-</code></pre>
-
-<h4>The orderbyminmax parameter</h4>
-
-<pre><code class="r">erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-09-19&#39;, &#39;time&lt;=2007-09-21&#39;, orderbyminmax=&#39;temperature&#39;)
-</code></pre>
-
-<pre><code>##   longitude  latitude                 time temperature
-## 2    -120.1 33.883335 2007-09-20T12:13:00Z        12.0
-## 3    -120.1 33.883335 2007-09-19T03:13:00Z       16.38
-</code></pre>
-
-<h4>The orderbymin parameter with multiple values</h4>
-
-<pre><code class="r">erddap_data(datasetid=&#39;erdCinpKfmT&#39;, fields=c(&#39;longitude&#39;,&#39;latitude&#39;,&#39;time&#39;,&#39;depth&#39;,&#39;temperature&#39;), &#39;time&gt;=2007-06-10&#39;, &#39;time&lt;=2007-09-21&#39;, orderbymax=c(&#39;depth&#39;,&#39;temperature&#39;))
-</code></pre>
-
-<pre><code>##      longitude  latitude                 time depth temperature
-## 2   -119.53333 34.033333 2007-08-07T02:40:00Z     5       20.54
-## 3   -119.36667      34.0 2007-07-05T03:42:00Z     6       19.72
-## 4      -119.35      34.0 2007-08-05T18:32:00Z     8       21.23
-## 5   -119.51667 34.033333 2007-08-06T04:02:00Z     9       20.47
-## 6   -120.13333      33.9 2007-08-04T22:34:00Z    10       19.35
-## 7   -119.38333      34.0 2007-08-02T15:38:00Z    11       20.86
-## 8  -120.183334 33.916668 2007-08-04T23:50:00Z    12       19.92
-## 9       -119.6 34.033333 2007-08-08T02:47:00Z    13       20.43
-## 10 -119.816666 33.933334 2007-07-17T02:21:00Z    15       18.47
-## 11 -119.416664      34.0 2007-07-10T23:25:00Z    16       19.14
-## 12  -119.38333      34.0 2007-08-05T08:42:00Z    17       20.51
-</code></pre>
-
-<h4>Spatial delimitation</h4>
-
-<pre><code class="r">head(erddap_data(datasetid = &#39;erdCalCOFIfshsiz&#39;, fields = c(&#39;latitude&#39;,&#39;longitude&#39;,&#39;scientific_name&#39;), &#39;latitude&gt;=34.8&#39;, &#39;latitude&lt;=35&#39;, &#39;longitude&gt;=-125&#39;, &#39;longitude&lt;=-124&#39;))
-</code></pre>
-
-<pre><code>##    latitude longitude        scientific_name
-## 2 34.881668   -124.48     Cyclothone atraria
-## 3 34.881668   -124.48   Lipolagus ochotensis
-## 4 34.881668   -124.48  Bathylagoides wesethi
-## 5 34.881668   -124.48 Cyclothone acclinidens
-## 6 34.881668   -124.48 Cyclothone acclinidens
-## 7 34.881668   -124.48     Cyclothone signata
-</code></pre>
-
-<h4>Integrate with taxize</h4>
-
-<pre><code class="r">out &lt;- erddap_data(datasetid = &#39;erdCalCOFIfshsiz&#39;, fields = c(&#39;latitude&#39;,&#39;longitude&#39;,&#39;scientific_name&#39;,&#39;itis_tsn&#39;))
+<pre><code class="r">out &lt;- erddap_table(&#39;erdCalCOFIfshsiz&#39;, fields = c(&#39;latitude&#39;,&#39;longitude&#39;,&#39;scientific_name&#39;,&#39;itis_tsn&#39;))
 tsns &lt;- unique(out$itis_tsn[1:100])
 library(&quot;taxize&quot;)
-</code></pre>
-
-<pre><code>## 
-## 
-## New to taxize? Tutorial at http://ropensci.org/tutorials/taxize_tutorial.html 
-## citation(package=&#39;taxize&#39;) for the citation for this package 
-## API key names have changed. Use tropicosApiKey, eolApiKey, ubioApiKey, and pmApiKey in your .Rprofile file. 
-## Use suppressPackageStartupMessages() to suppress these startup messages in the future
-</code></pre>
-
-<pre><code class="r">classif &lt;- classification(tsns, db = &quot;itis&quot;)
-</code></pre>
-
-<pre><code>## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=172887
-## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162168
-## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=623625
-## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162172
-## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162301
-## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162685
-## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162664
-## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162221
-## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=164792
-## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162167
-## http://www.itis.gov/ITISWebService/services/ITISService/getFullHierarchyFromTSN?tsn=162092
-</code></pre>
-
-<pre><code class="r">head(rbind(classif)); tail(rbind(classif))
-</code></pre>
-
-<pre><code>##   source taxonid          name         rank
-## 1   itis  172887      Animalia      Kingdom
-## 2   itis  172887     Bilateria   Subkingdom
-## 3   itis  172887 Deuterostomia Infrakingdom
-## 4   itis  172887      Chordata       Phylum
-## 5   itis  172887    Vertebrata    Subphylum
-## 6   itis  172887 Gnathostomata  Infraphylum
-</code></pre>
-
-<pre><code>##     source taxonid               name     rank
-## 161   itis  162167       Stomiiformes    Order
-## 162   itis  162167    Gonostomatoidei Suborder
-## 163   itis  162167     Gonostomatidae   Family
-## 164   itis  162167         Cyclothone    Genus
-## 165   itis  162167 Cyclothone pallida  Species
-## 166   itis  162092 Bathylagus wesethi  Species
+classif &lt;- classification(tsns, db = &quot;itis&quot;)
+head(rbind(classif)); tail(rbind(classif))
+#&gt;            name         rank     id  query   db
+#&gt; 1      Animalia      Kingdom 202423 172887 itis
+#&gt; 2     Bilateria   Subkingdom 914154 172887 itis
+#&gt; 3 Deuterostomia Infrakingdom 914156 172887 itis
+#&gt; 4      Chordata       Phylum 158852 172887 itis
+#&gt; 5    Vertebrata    Subphylum 331030 172887 itis
+#&gt; 6 Gnathostomata  Infraphylum 914179 172887 itis
+#&gt;                   name     rank     id  query   db
+#&gt; 161       Stomiiformes    Order 553138 162167 itis
+#&gt; 162    Gonostomatoidei Suborder 553151 162167 itis
+#&gt; 163     Gonostomatidae   Family 162163 162167 itis
+#&gt; 164         Cyclothone    Genus 162164 162167 itis
+#&gt; 165 Cyclothone pallida  Species 162167 162167 itis
+#&gt; 166 Bathylagus wesethi  Species 162092 162092 itis
 </code></pre>
 
 </body>

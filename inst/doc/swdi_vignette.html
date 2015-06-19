@@ -226,7 +226,7 @@ hr {
 <li>Lightning Strikes from Vaisala NLDN</li>
 </ul>
 
-<p>Find out more about SWDI at <a href="http://www.ncdc.noaa.gov/swdi/#Intro">http://www.ncdc.noaa.gov/swdi/#Intro</a> and the API at <a href="http://www.ncdc.noaa.gov/swdiws/">http://www.ncdc.noaa.gov/swdiws/</a>.</p>
+<p>Find out more about SWDI at <a href="http://www.ncdc.noaa.gov/swdi/#Intro">http://www.ncdc.noaa.gov/swdi/#Intro</a>.</p>
 
 <h2>Load rnoaa</h2>
 
@@ -239,10 +239,10 @@ library(&#39;plyr&#39;)
 <pre><code class="r">swdi(dataset=&#39;nx3tvs&#39;, startdate=&#39;20060505&#39;, enddate=&#39;20060506&#39;)
 #&gt; $meta
 #&gt; $meta$totalCount
-#&gt; [1] 25
+#&gt; numeric(0)
 #&gt; 
 #&gt; $meta$totalTimeInSeconds
-#&gt; [1] 0.01
+#&gt; [1] 0.007
 #&gt; 
 #&gt; 
 #&gt; $data
@@ -337,10 +337,10 @@ library(&#39;plyr&#39;)
 list(out$meta, head(out$data), head(out$shape))
 #&gt; [[1]]
 #&gt; [[1]]$totalCount
-#&gt; [1] 25
+#&gt; numeric(0)
 #&gt; 
 #&gt; [[1]]$totalTimeInSeconds
-#&gt; [1] 0.089
+#&gt; [1] 0.127
 #&gt; 
 #&gt; 
 #&gt; [[2]]
@@ -374,10 +374,10 @@ list(out$meta, head(out$data), head(out$shape))
 <pre><code class="r">swdi(dataset=&#39;plsr&#39;, startdate=&#39;20060505&#39;, enddate=&#39;20060510&#39;, bbox=c(-91,30,-90,31))
 #&gt; $meta
 #&gt; $meta$totalCount
-#&gt; [1] 5
+#&gt; numeric(0)
 #&gt; 
 #&gt; $meta$totalTimeInSeconds
-#&gt; [1] 0.015
+#&gt; [1] 0.001
 #&gt; 
 #&gt; 
 #&gt; $data
@@ -411,10 +411,10 @@ list(out$meta, head(out$data), head(out$shape))
 <pre><code class="r">swdi(dataset=&#39;nx3tvs&#39;, startdate=&#39;20060506&#39;, enddate=&#39;20060507&#39;, tile=c(-102.12,32.62))
 #&gt; $meta
 #&gt; $meta$totalCount
-#&gt; [1] 5
+#&gt; numeric(0)
 #&gt; 
 #&gt; $meta$totalTimeInSeconds
-#&gt; [1] 0.011
+#&gt; [1] 0.001
 #&gt; 
 #&gt; 
 #&gt; $data
@@ -458,10 +458,10 @@ list(out$meta, head(out$data), head(out$shape))
 <pre><code class="r">swdi(dataset=&#39;nx3tvs&#39;, startdate=&#39;20060505&#39;, enddate=&#39;20090516&#39;, stat=&#39;tilesum:-102.0,32.7&#39;)
 #&gt; $meta
 #&gt; $meta$totalCount
-#&gt; [1] 5
+#&gt; numeric(0)
 #&gt; 
 #&gt; $meta$totalTimeInSeconds
-#&gt; [1] 0.022
+#&gt; [1] 0
 #&gt; 
 #&gt; 
 #&gt; $data
@@ -496,13 +496,13 @@ list(out$meta, head(out$data), head(out$shape))
 #&gt; 4 2006-05-05T00:17:31Z   KSJT      B4       TVS    40     297        25
 #&gt; 5 2006-05-05T00:29:13Z   KMAF      H4       TVS    53     333        34
 #&gt; 6 2006-05-05T00:31:25Z   KLBB      N0       TVS    51     241        24
-#&gt;   mxdv   lat     lon rownumber
-#&gt; 1  116 33.08  -86.85         1
-#&gt; 2  120 33.10  -86.82         2
-#&gt; 3   52 31.14  -99.58         3
-#&gt; 4   62 31.67 -101.19         4
-#&gt; 5  111 32.73 -102.66         5
-#&gt; 6   78 33.24 -102.70         6
+#&gt;   mxdv    lat      lon
+#&gt; 1  116 33.079  -86.854
+#&gt; 2  120 33.098  -86.817
+#&gt; 3   52 31.142  -99.577
+#&gt; 4   62 31.672 -101.188
+#&gt; 5  111 32.731 -102.664
+#&gt; 6   78 33.238 -102.700
 </code></pre>
 
 <h3>SHP format</h3>

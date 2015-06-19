@@ -11,7 +11,7 @@ is.ncdc_data <- function(x) inherits(x, "ncdc_data")
 
 #' @rdname is.ncdc_data
 #' @export
-#' @keywords internal 
+#' @keywords internal
 is.ncdc_datasets <- function(x) inherits(x, "ncdc_datasets")
 
 #' @rdname is.ncdc_data
@@ -68,41 +68,6 @@ long2utm <- function(lon, lat) {
   (floor((lon + 180)/6) %% 60) + 1
 }
 
-#' Function to calculate bounding box for the extent parameter in ncdc_stations function.
-#' @import rgeos
-#' @export
-#' @param lat Latitude, in decimal degree style
-#' @param lon Longitude, in decimal degree style
-#' @param radius Amount to create buffer by, in km
-#' @keywords internal
-#' @examples
-#' latlong2bbox(lat=33.95, lon=-118.40) # radius of 10 km
-#' latlong2bbox(lat=33.95, lon=-118.40, radius=2) # radius of 2 km
-#' latlong2bbox(lat=33.95, lon=-118.40, radius=200) # radius of 200 km
-#' latlong2bbox(lat=33.95, lon=-118.40, radius=0.02) # radius of 20 meters
-latlong2bbox <- function(lat, lon, radius=10)
-{
-  stopifnot(is.numeric(lat), is.numeric(lon))
-  stopifnot(abs(lat)<=90, abs(lon)<=180)
-
-  # Make a spatialpoints obj, do settings, transform to UTM with zone
-  d <- SpatialPoints(cbind(lon, lat), proj4string = CRS("+proj=longlat +datum=WGS84"))
-  zone <- long2utm(lon=lon, lat=lat)
-  dd <- spTransform(d, CRS(sprintf("+proj=utm +zone=%s +datum=WGS84 +units=m", zone)))
-
-  # give buffer around point given radius
-  inmeters <- radius*1000
-  ee <- gBuffer(dd, width = inmeters)
-
-  # transform back to decimal degree
-  ff <- spTransform(ee, CRS("+proj=longlat +datum=WGS84"))
-
-  # get bounding box, put in a vector of length 4, and return
-  box <- ff@bbox
-  geometry <- sprintf('%s,%s,%s,%s', box[2,1], box[1,1], box[2,2], box[1,2])
-  return( geometry )
-}
-
 #' Check response from NOAA, including status codes, server error messages, mime-type, etc.
 #' @keywords internal
 check_response <- function(x){
@@ -128,78 +93,40 @@ check_response <- function(x){
   }
 }
 
-#' Check response from NOAA, including status codes, server error messages, mime-type, etc.
-#' @keywords internal
-check_response_erddap <- function(x){
-  if(!x$status_code == 200){
-    html <- content(x)
-    values <- xpathApply(html, "//u", xmlValue)
-    error <- grep("Error|Resource", values, ignore.case = TRUE, value = TRUE)
-    if(length(error) > 1) error <- error[1]
-    #check specifically for no matching results error
-    if(grepl("no matching results", error)) error <- 'Error: Your query produced no matching results.'
-
-    if(!is.null(error)){
-      if(grepl('Error|Resource not found', error, ignore.case = TRUE)){
-        stop(sprintf("(%s) - %s", x$status_code, error), call. = FALSE)
-      } else { stop(sprintf("Error: (%s)", x$status_code), call. = FALSE) }
-    } else { stop_for_status(x) }
-  } else {
-    stopifnot(x$headers$`content-type`=='text/csv;charset=UTF-8')
-    return( x )
-  }
-}
-
 #' Check response from NOAA SWDI service, including status codes, server error messages,
 #' mime-type, etc.
 #' @keywords internal
 check_response_swdi <- function(x, format){
-  if(!x$status_code == 200){
+  if (!x$status_code == 200) {
     res <- content(x)
     err <- gsub("\n", "", xpathApply(res, "//error", xmlValue)[[1]])
-    if(!is.null(err)){
-      if(grepl('ERROR', err, ignore.case = TRUE)){
+    if (!is.null(err)) {
+      if (grepl('ERROR', err, ignore.case = TRUE)) {
         warning(sprintf("(%s) - %s", x$status_code, err))
-      } else { warn_for_status(x) }
-    } else { warn_for_status(x) }
+      } else { 
+        warn_for_status(x) 
+      }
+    } else { 
+      warn_for_status(x) 
+    }
   } else {
-    if(format=='csv'){
-      stopifnot(x$headers$`content-type`=='text/plain; charset=UTF-8')
+    if (format == 'csv') {
+      stopifnot(grepl('text/plain', x$headers$`content-type`))
       uu <- content(x, as = 'text', encoding = "UTF-8")
-      read.delim(text=uu, sep = ",")
+      read.delim(text = uu, sep = ",")
     } else {
-      stopifnot(x$headers$`content-type`=='text/xml')
+      stopifnot(grepl('text/xml', x$headers$`content-type`))
       res <- content(x, as = 'text', encoding = "UTF-8")
       xmlParse(res)
     }
   }
-
-#   if(!'results' %in% names(tt)){
-#     if(length(out)==0){ warning("Sorry, no data found") }
-#   } else {
-#     if( class(try(out$results, silent=TRUE))=="try-error" | is.null(try(out$results, silent=TRUE)) )
-#       warning("Sorry, no data found")
-#   }
 }
 
-noaa_compact <- function (l) Filter(Negate(is.null), l)
+noaa_compact <- function(l) Filter(Negate(is.null), l)
 
 read_csv <- function(x){
   tmp <- read.csv(x, header = FALSE, sep = ",", stringsAsFactors=FALSE, skip = 3)
   nmz <- names(read.csv(x, header = TRUE, sep = ",", stringsAsFactors=FALSE, skip = 1, nrows=1))
-  names(tmp) <- tolower(nmz)
-  tmp
-}
-
-read_upwell <- function(x){
-  if(is(x, "response")) {
-    x <- content(x, "text")
-    tmp <- read.csv(text = x, header = FALSE, sep = ",", stringsAsFactors=FALSE, skip = 2)
-    nmz <- names(read.csv(text = x, header = TRUE, sep = ",", stringsAsFactors=FALSE, nrows=1))
-  } else {  
-    tmp <- read.csv(x, header = FALSE, sep = ",", stringsAsFactors=FALSE, skip = 2)
-    nmz <- names(read.csv(x, header = TRUE, sep = ",", stringsAsFactors=FALSE, nrows=1))
-  }
   names(tmp) <- tolower(nmz)
   tmp
 }
@@ -209,7 +136,7 @@ read_table <- function(x){
     txt <- gsub('\n$', '', content(x, "text"))
     read.csv(text = txt, sep = ",", stringsAsFactors=FALSE,
              blank.lines.skip=FALSE)[-1, , drop=FALSE]
-  } else {  
+  } else {
     read.delim(x, sep=",", stringsAsFactors=FALSE,
                blank.lines.skip=FALSE)[-1, , drop=FALSE]
   }

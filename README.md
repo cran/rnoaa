@@ -5,31 +5,14 @@ rnoaa
 
 [![Build Status](https://api.travis-ci.org/ropensci/rnoaa.png)](https://travis-ci.org/ropensci/rnoaa)
 [![Build status](https://ci.appveyor.com/api/projects/status/8daqtllo2sg6me07/branch/master)](https://ci.appveyor.com/project/sckott/rnoaa/branch/master)
-
-## IMPORTANT - BUOY DATA
-
-NOAA buoy data requires an R pacakage `ncdf4` that is difficult to use on Windows. Therefore, we have moved functions for working with buoy data into a separate branch called `buoy`, and the `CRAN` version does not include buoy functions. Thus, if you're on a Linux machine or on OSX you should be able to use the `buoy` branch just fine after installing the `netcdf` as:
-
-OSX
-
-```
-brew install netcdf
-```
-
-Linux (Ubuntu)
-
-```
-sudo apt-get install netcdf*
-```
-
-Then `rnoaa` with the buoy functions should install and load correctly. See [this stackoverflow post](http://stackoverflow.com/questions/22805123/netcdf-make-command-test/22806048#22806048) and [this blog post](http://mazamascience.com/WorkingWithData/?p=1429) for more Linux/OSX `netcdf` installation help.
+[![Coverage Status](https://coveralls.io/repos/ropensci/rnoaa/badge.svg)](https://coveralls.io/r/ropensci/rnoaa)
+[![cran version](http://www.r-pkg.org/badges/version/rnoaa)](http://cran.rstudio.com/web/packages/rnoaa)
 
 ## Help
 
-There is a tutorial on the [rOpenSci website](http://ropensci.org/tutorials/rncdc_tutorial.html), and there are many tutorials in the package itself, available in your R session, or [on CRAN](http://cran.r-project.org/web/packages/rnoaa/index.html). The tutorials:
+There is a tutorial on the [rOpenSci website](http://ropensci.org/tutorials/rnoaa_tutorial.html), and there are many tutorials in the package itself, available in your R session, or [on CRAN](http://cran.r-project.org/web/packages/rnoaa/index.html). The tutorials:
 
 * NOAA Buoy vignette
-* NOAA ERDDAP vignette
 * NOAA National Climatic Data Center (NCDC) vignette (examples)
 * NOAA NCDC attributes vignette
 * NOAA NCDC workflow vignette
@@ -40,21 +23,23 @@ There is a tutorial on the [rOpenSci website](http://ropensci.org/tutorials/rncd
 
 ## Data sources used in rnoaa
 
-The majority of functions in this package work with NOAA NCDC data.
-
 * NOAA NCDC climate data:
-    * We are using the NOAA API version 2. A previous version of this software was using their V1 API - older versions of this software use the old API - let us know if you want to use that.
-    * The docs for the NCDC data API are [here](http://www.ncdc.noaa.gov/cdo-web/webservices/v2)
-    * GHCN Daily data is available [here](http://www.ncdc.noaa.gov/oa/climate/ghcn-daily/) via FTP and HTTP
-* Severe weather data docs are [here](http://www.ncdc.noaa.gov/swdiws/)
-* Sea ice data [ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/shapefiles](ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/shapefiles)
-* NOAA buoy data [http://www.ndbc.noaa.gov/](http://www.ndbc.noaa.gov/)
-* ERDDAP data [http://upwell.pfeg.noaa.gov/erddap/index.html](http://upwell.pfeg.noaa.gov/erddap/index.html)
-  * griddap - gridded data
-  * tabledap - tablular data
-* Tornadoes! Data from the NOAA Storm Prediction Center [http://www.spc.noaa.gov/gis/svrgis/]()
-* HOMR - Historical Observing Metadata Repository - from the NOAA NCDC  [http://www.ncdc.noaa.gov/homr/api]()
-* Storm data - from the International Best Track Archive for Climate Stewardship (IBTrACS)   [http://www.ncdc.noaa.gov/ibtracs/index.php?name=wmo-data]()
+    * We are using the NOAA API version 2
+    * Docs for the NCDC API are at http://www.ncdc.noaa.gov/cdo-web/webservices/v2
+    * GHCN Daily data is available at http://www.ncdc.noaa.gov/oa/climate/ghcn-daily/ via FTP and HTTP
+* Severe weather data docs are at http://www.ncdc.noaa.gov/swdiws/
+* [Sea ice data](ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/shapefiles)
+* [NOAA buoy data](http://www.ndbc.noaa.gov/)
+* [ERDDAP data](http://upwell.pfeg.noaa.gov/erddap/index.html)
+  * Now in package [rerddap](https://github.com/ropensci/rerddap)
+* Tornadoes! Data from the [NOAA Storm Prediction Center](http://www.spc.noaa.gov/gis/svrgis/)
+* HOMR - Historical Observing Metadata Repository - from [NOAA NCDC](http://www.ncdc.noaa.gov/homr/api)
+* Storm data - from the [International Best Track Archive for Climate Stewardship (IBTrACS)](http://www.ncdc.noaa.gov/ibtracs/index.php?name=wmo-data)
+* [GHCND FTP data](ftp://ftp.ncdc.noaa.gov/pub/data/noaa) - NOAA NCDC API has some/all (not sure really) of this data, but FTP allows to get more data more quickly
+
+## netcdf data
+
+Functions to work with buoy data use netcdf files. You'll need the `ncdf` package for those functions, and those only. `ncdf` is in Suggests in this package, meaning you only need `ncdf` if you are using the buoy functions. You'll get an informative error telling you to install `ncdf` if you don't have it and you try to use the buoy functions. Installation of `ncdf` should be straightforward on Mac and Windows, but on Linux you may have issues. See http://cran.r-project.org/web/packages/ncdf/INSTALL
 
 ## NOAA NCDC Datasets
 
@@ -76,15 +61,15 @@ There are many NOAA NCDC datasets. All data sources work, except `NEXRAD2` and `
 
 ## NOAA NCDC Attributes
 
-Each NOAA dataset has a different set of attributes that you can potentially get back in your search. See [the NOAA docs](http://www.ncdc.noaa.gov/cdo-web/datasets) for detailed info on each dataset. We provide some information on the attributes in this package; see the [vignette for attributes](inst/vign/rncdc_attributes.md) to find out more
+Each NOAA dataset has a different set of attributes that you can potentially get back in your search. See http://www.ncdc.noaa.gov/cdo-web/datasets for detailed info on each dataset. We provide some information on the attributes in this package; see the [vignette for attributes](inst/vign/rncdc_attributes.md) to find out more
 
 ## Authentication
 
-You'll need an API key to use the NOAA NCDC functions (those starting with `ncdc*()`) in this package (essentially a password). Go [here](http://www.ncdc.noaa.gov/cdo-web/token) to get one. *You can't use this package without an API key.*
+You'll need an API key to use the NOAA NCDC functions (those starting with `ncdc*()`) in this package (essentially a password). Go to http://www.ncdc.noaa.gov/cdo-web/token to get one. *You can't use this package without an API key.*
 
 Once you obtain a key, there are two ways to use it.
 
-a) Pass it inline with each function call (somewhat cumbersome)  
+a) Pass it inline with each function call (somewhat cumbersome)
 
 
 ```r
@@ -158,7 +143,7 @@ library('rnoaa')
 ncdc_locs(locationcategoryid='CITY', sortfield='name', sortorder='desc')
 #> $meta
 #> $meta$totalCount
-#> [1] 1656
+#> [1] 1657
 #> 
 #> $meta$pageCount
 #> [1] 25
@@ -168,32 +153,32 @@ ncdc_locs(locationcategoryid='CITY', sortfield='name', sortorder='desc')
 #> 
 #> 
 #> $data
-#>               id                  name datacoverage    mindate    maxdate
-#> 1  CITY:NL000012            Zwolle, NL       1.0000 1892-08-01 2014-11-30
-#> 2  CITY:SZ000007            Zurich, SZ       1.0000 1901-01-01 2014-12-16
-#> 3  CITY:NG000004            Zinder, NG       0.8678 1906-01-01 1980-12-31
-#> 4  CITY:UP000025         Zhytomyra, UP       0.9729 1938-01-01 2014-12-16
-#> 5  CITY:KZ000017        Zhezkazgan, KZ       0.9288 1948-03-01 2014-12-16
-#> 6  CITY:CH000045         Zhengzhou, CH       1.0000 1951-01-01 2014-12-16
-#> 7  CITY:SP000021          Zaragoza, SP       1.0000 1941-01-01 2012-08-31
-#> 8  CITY:UP000024      Zaporiyhzhya, UP       0.9739 1936-01-01 2009-06-16
-#> 9  CITY:US390029     Zanesville, OH US       1.0000 1893-01-01 2014-12-18
-#> 10 CITY:LE000004             Zahle, LE       0.7811 1912-01-01 1971-12-31
-#> 11 CITY:IR000019           Zahedan, IR       0.9930 1951-01-01 2010-05-19
-#> 12 CITY:HR000002            Zagreb, HR       1.0000 1860-12-01 2013-12-31
-#> 13 CITY:RS000081 Yuzhno-Sakhalinsk, RS       1.0000 1947-01-01 2014-12-16
-#> 14 CITY:US040015           Yuma, AZ US       1.0000 1893-01-01 2014-12-18
-#> 15 CITY:US060048   Yucca Valley, CA US       1.0000 1942-02-01 2014-12-18
-#> 16 CITY:US060047      Yuba City, CA US       1.0000 1893-01-01 2014-12-18
-#> 17 CITY:US390028     Youngstown, OH US       1.0000 1893-01-01 2014-12-18
-#> 18 CITY:US420024           York, PA US       1.0000 1941-01-01 2014-12-18
-#> 19 CITY:US360031        Yonkers, NY US       1.0000 1876-01-01 2014-12-18
-#> 20 CITY:JA000017          Yokohama, JA       1.0000 1949-01-01 2014-12-16
-#> 21 CITY:CH000044          Yinchuan, CH       1.0000 1951-01-01 2014-12-16
-#> 22 CITY:AM000001           Yerevan, AM       0.9751 1885-06-01 2014-12-16
-#> 23 CITY:US280020     Yazoo City, MS US       1.0000 1948-01-01 2014-12-18
-#> 24 CITY:RS000080         Yaroslavl, RS       0.9850 1959-07-01 1987-05-20
-#> 25 CITY:US460009        Yankton, SD US       1.0000 1932-01-01 2014-12-18
+#>       mindate    maxdate                  name datacoverage            id
+#> 1  1892-08-01 2015-05-31            Zwolle, NL       1.0000 CITY:NL000012
+#> 2  1901-01-01 2015-06-15            Zurich, SZ       1.0000 CITY:SZ000007
+#> 3  1906-01-01 1980-12-31            Zinder, NG       0.8678 CITY:NG000004
+#> 4  1938-01-01 2015-06-15         Zhytomyra, UP       0.9731 CITY:UP000025
+#> 5  1948-03-01 2015-06-15        Zhezkazgan, KZ       0.9294 CITY:KZ000017
+#> 6  1951-01-01 2015-06-15         Zhengzhou, CH       1.0000 CITY:CH000045
+#> 7  1941-01-01 2014-12-22          Zaragoza, SP       1.0000 CITY:SP000021
+#> 8  1936-01-01 2009-06-16      Zaporiyhzhya, UP       0.9739 CITY:UP000024
+#> 9  1893-01-01 2015-06-18     Zanesville, OH US       1.0000 CITY:US390029
+#> 10 1912-01-01 1971-12-31             Zahle, LE       0.7972 CITY:LE000004
+#> 11 1951-01-01 2010-05-19           Zahedan, IR       0.9930 CITY:IR000019
+#> 12 1860-12-01 2013-12-31            Zagreb, HR       1.0000 CITY:HR000002
+#> 13 1947-01-01 2015-05-30 Yuzhno-Sakhalinsk, RS       1.0000 CITY:RS000081
+#> 14 1893-01-01 2015-06-18           Yuma, AZ US       1.0000 CITY:US040015
+#> 15 1942-02-01 2015-06-18   Yucca Valley, CA US       1.0000 CITY:US060048
+#> 16 1893-01-01 2015-06-18      Yuba City, CA US       1.0000 CITY:US060047
+#> 17 1893-01-01 2015-06-18     Youngstown, OH US       1.0000 CITY:US390028
+#> 18 1941-01-01 2015-06-18           York, PA US       1.0000 CITY:US420024
+#> 19 1876-01-01 2015-06-18        Yonkers, NY US       1.0000 CITY:US360031
+#> 20 1949-01-01 2015-06-15          Yokohama, JA       1.0000 CITY:JA000017
+#> 21 1951-01-01 2015-06-15          Yinchuan, CH       1.0000 CITY:CH000044
+#> 22 1885-06-01 2015-06-15           Yerevan, AM       0.9751 CITY:AM000001
+#> 23 1948-01-01 2015-06-18     Yazoo City, MS US       1.0000 CITY:US280020
+#> 24 1959-07-01 1987-05-20         Yaroslavl, RS       0.9850 CITY:RS000080
+#> 25 1932-01-01 2015-06-18        Yankton, SD US       1.0000 CITY:US460009
 #> 
 #> attr(,"class")
 #> [1] "ncdc_locs"
@@ -208,10 +193,10 @@ ncdc_stations(datasetid='GHCND', locationid='FIPS:12017', stationid='GHCND:USC00
 #> NULL
 #> 
 #> $data
-#>                  id elevation                  name elevationUnit
-#> 1 GHCND:USC00084289      12.2 INVERNESS 3 SE, FL US        METERS
-#>   datacoverage longitude    mindate latitude    maxdate
-#> 1            1  -82.3126 1899-02-01  28.8029 2014-12-17
+#>   elevation    mindate    maxdate latitude                  name
+#> 1      12.2 1899-02-01 2015-06-16  28.8029 INVERNESS 3 SE, FL US
+#>   datacoverage                id elevationUnit longitude
+#> 1            1 GHCND:USC00084289        METERS  -82.3126
 #> 
 #> attr(,"class")
 #> [1] "ncdc_stations"
@@ -230,13 +215,13 @@ out <- ncdc(datasetid='NORMAL_DLY', stationid='GHCND:USW00014895', datatypeid='d
 
 ```r
 head( out$data )
-#>             station value        datatype                date fl_c
-#> 1 GHCND:USW00014895   652 DLY-TMAX-NORMAL 2010-05-01T00:00:00    S
-#> 2 GHCND:USW00014895   655 DLY-TMAX-NORMAL 2010-05-02T00:00:00    S
-#> 3 GHCND:USW00014895   658 DLY-TMAX-NORMAL 2010-05-03T00:00:00    S
-#> 4 GHCND:USW00014895   661 DLY-TMAX-NORMAL 2010-05-04T00:00:00    S
-#> 5 GHCND:USW00014895   663 DLY-TMAX-NORMAL 2010-05-05T00:00:00    S
-#> 6 GHCND:USW00014895   666 DLY-TMAX-NORMAL 2010-05-06T00:00:00    S
+#>                  date        datatype           station value fl_c
+#> 1 2010-05-01T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   652    S
+#> 2 2010-05-02T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   655    S
+#> 3 2010-05-03T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   658    S
+#> 4 2010-05-04T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   661    S
+#> 5 2010-05-05T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   663    S
+#> 6 2010-05-06T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   666    S
 ```
 
 ### Plot data, super simple, but it's a start
@@ -268,41 +253,41 @@ ncdc_plot(out1, out2, breaks="45 days")
 ```r
 ncdc_datasets()
 #> $meta
-#> $meta$limit
-#> [1] 25
+#> $meta$offset
+#> [1] 1
 #> 
 #> $meta$count
 #> [1] 11
 #> 
-#> $meta$offset
-#> [1] 1
+#> $meta$limit
+#> [1] 25
 #> 
 #> 
 #> $data
-#>                     uid         id                      name datacoverage
-#> 1  gov.noaa.ncdc:C00040     ANNUAL          Annual Summaries         1.00
-#> 2  gov.noaa.ncdc:C00861      GHCND           Daily Summaries         1.00
-#> 3  gov.noaa.ncdc:C00841    GHCNDMS         Monthly Summaries         1.00
-#> 4  gov.noaa.ncdc:C00345    NEXRAD2  Weather Radar (Level II)         0.95
-#> 5  gov.noaa.ncdc:C00708    NEXRAD3 Weather Radar (Level III)         0.95
-#> 6  gov.noaa.ncdc:C00821 NORMAL_ANN   Normals Annual/Seasonal         1.00
-#> 7  gov.noaa.ncdc:C00823 NORMAL_DLY             Normals Daily         1.00
-#> 8  gov.noaa.ncdc:C00824 NORMAL_HLY            Normals Hourly         1.00
-#> 9  gov.noaa.ncdc:C00822 NORMAL_MLY           Normals Monthly         1.00
-#> 10 gov.noaa.ncdc:C00505  PRECIP_15   Precipitation 15 Minute         0.25
-#> 11 gov.noaa.ncdc:C00313 PRECIP_HLY      Precipitation Hourly         1.00
-#>       mindate    maxdate
-#> 1  1831-02-01 2014-07-01
-#> 2  1763-01-01 2014-12-18
-#> 3  1763-01-01 2014-11-01
-#> 4  1991-06-05 2014-12-18
-#> 5  1994-05-20 2014-12-14
-#> 6  2010-01-01 2010-01-01
-#> 7  2010-01-01 2010-12-31
-#> 8  2010-01-01 2010-12-31
-#> 9  2010-01-01 2010-12-01
-#> 10 1970-05-12 2013-07-01
-#> 11 1900-01-01 2013-10-01
+#>                     uid    mindate    maxdate                      name
+#> 1  gov.noaa.ncdc:C00040 1831-02-01 2015-01-01          Annual Summaries
+#> 2  gov.noaa.ncdc:C00861 1763-01-01 2015-06-17           Daily Summaries
+#> 3  gov.noaa.ncdc:C00841 1763-01-01 2015-05-01         Monthly Summaries
+#> 4  gov.noaa.ncdc:C00345 1991-06-05 2015-06-18  Weather Radar (Level II)
+#> 5  gov.noaa.ncdc:C00708 1994-05-20 2015-06-14 Weather Radar (Level III)
+#> 6  gov.noaa.ncdc:C00821 2010-01-01 2010-01-01   Normals Annual/Seasonal
+#> 7  gov.noaa.ncdc:C00823 2010-01-01 2010-12-31             Normals Daily
+#> 8  gov.noaa.ncdc:C00824 2010-01-01 2010-12-31            Normals Hourly
+#> 9  gov.noaa.ncdc:C00822 2010-01-01 2010-12-01           Normals Monthly
+#> 10 gov.noaa.ncdc:C00505 1970-05-12 2014-01-01   Precipitation 15 Minute
+#> 11 gov.noaa.ncdc:C00313 1900-01-01 2014-01-01      Precipitation Hourly
+#>    datacoverage         id
+#> 1          1.00     ANNUAL
+#> 2          1.00      GHCND
+#> 3          1.00    GHCNDMS
+#> 4          0.95    NEXRAD2
+#> 5          0.95    NEXRAD3
+#> 6          1.00 NORMAL_ANN
+#> 7          1.00 NORMAL_DLY
+#> 8          1.00 NORMAL_HLY
+#> 9          1.00 NORMAL_MLY
+#> 10         0.25  PRECIP_15
+#> 11         1.00 PRECIP_HLY
 #> 
 #> attr(,"class")
 #> [1] "ncdc_datasets"
@@ -325,32 +310,32 @@ ncdc_datacats(locationid='CITY:US390029')
 #> 
 #> 
 #> $data
-#>               id                  name
-#> 1         ANNAGR   Annual Agricultural
-#> 2          ANNDD    Annual Degree Days
-#> 3        ANNPRCP  Annual Precipitation
-#> 4        ANNTEMP    Annual Temperature
-#> 5          AUAGR   Autumn Agricultural
-#> 6           AUDD    Autumn Degree Days
-#> 7         AUPRCP  Autumn Precipitation
-#> 8         AUTEMP    Autumn Temperature
-#> 9           COMP              Computed
-#> 10       COMPAGR Computed Agricultural
-#> 11            DD           Degree Days
-#> 12 DUALPOLMOMENT      Dual-Pol Moments
-#> 13       ECHOTOP             Echo Tops
-#> 14   HYDROMETEOR      Hydrometeor Type
-#> 15         OTHER                 Other
-#> 16       OVERLAY               Overlay
-#> 17          PRCP         Precipitation
-#> 18  REFLECTIVITY          Reflectivity
-#> 19           SKY    Sky cover & clouds
-#> 20         SPAGR   Spring Agricultural
-#> 21          SPDD    Spring Degree Days
-#> 22        SPPRCP  Spring Precipitation
-#> 23        SPTEMP    Spring Temperature
-#> 24         SUAGR   Summer Agricultural
-#> 25          SUDD    Summer Degree Days
+#>                     name            id
+#> 1    Annual Agricultural        ANNAGR
+#> 2     Annual Degree Days         ANNDD
+#> 3   Annual Precipitation       ANNPRCP
+#> 4     Annual Temperature       ANNTEMP
+#> 5    Autumn Agricultural         AUAGR
+#> 6     Autumn Degree Days          AUDD
+#> 7   Autumn Precipitation        AUPRCP
+#> 8     Autumn Temperature        AUTEMP
+#> 9               Computed          COMP
+#> 10 Computed Agricultural       COMPAGR
+#> 11           Degree Days            DD
+#> 12      Dual-Pol Moments DUALPOLMOMENT
+#> 13             Echo Tops       ECHOTOP
+#> 14      Hydrometeor Type   HYDROMETEOR
+#> 15                 Other         OTHER
+#> 16               Overlay       OVERLAY
+#> 17         Precipitation          PRCP
+#> 18          Reflectivity  REFLECTIVITY
+#> 19    Sky cover & clouds           SKY
+#> 20   Spring Agricultural         SPAGR
+#> 21    Spring Degree Days          SPDD
+#> 22  Spring Precipitation        SPPRCP
+#> 23    Spring Temperature        SPTEMP
+#> 24   Summer Agricultural         SUAGR
+#> 25    Summer Degree Days          SUDD
 #> 
 #> attr(,"class")
 #> [1] "ncdc_datacats"
@@ -365,8 +350,8 @@ The function `tornadoes()` simply gets __all the data__. So the call takes a whi
 shp <- tornadoes()
 #> OGR data source with driver: ESRI Shapefile 
 #> Source: "/Users/sacmac/.rnoaa/tornadoes/tornadoes", layer: "tornado"
-#> with 57988 features and 21 fields
-#> Feature type: wkbLineString with 2 dimensions
+#> with 57988 features
+#> It has 21 fields
 library('sp')
 plot(shp)
 ```
@@ -594,198 +579,9 @@ storm_data(year=2010)
 #>      jtwc_.._wrad64_rad3 (dbl), jtwc_.._wrad64_rad4 (dbl)
 ```
 
-## ERDDAP data
-
-ERDDAP is a server built on top of OPenDAP, which serves some NOAA data. You can get gridded data ([griddap](http://upwell.pfeg.noaa.gov/erddap/griddap/documentation.html)), which lets you query from gridded datasets, or table data ([tabledap](http://upwell.pfeg.noaa.gov/erddap/tabledap/documentation.html)) which lets you query from tabular datasets. In terms of how we interface with them, there are similarties, but some differences too. We try to make a similar interface to both data types in `rnoaa`.
-
-First, you likely want to search for data, specify either `griddadp` or `tabledap`
-
-
-```r
-erddap_search(query='size', which = "table")
-#> 11 results, showing first 20 
-#>                                                                                         title
-#> 1                Channel Islands, Kelp Forest Monitoring, Size and Frequency, Natural Habitat
-#> 2                                                                          CalCOFI Fish Sizes
-#> 3                                                                        CalCOFI Larvae Sizes
-#> 4                                                  OBIS - ARGOS Satellite Tracking of Animals
-#> 5                                                     GLOBEC NEP MOCNESS Plankton (MOC1) Data
-#> 6                                                 GLOBEC NEP Vertical Plankton Tow (VPT) Data
-#> 7                             NWFSC Observer Fixed Gear Data, off West Coast of US, 2002-2006
-#> 8                                  NWFSC Observer Trawl Data, off West Coast of US, 2002-2006
-#> 9                                                         CalCOFI Larvae Counts Positive Tows
-#> 10                                                                               CalCOFI Tows
-#> 16 AN EXPERIMENTAL DATASET: Underway Sea Surface Temperature and Salinity Aboard the Oleander
-#>             dataset_id
-#> 1       erdCinpKfmSFNH
-#> 2     erdCalCOFIfshsiz
-#> 3     erdCalCOFIlrvsiz
-#> 4            aadcArgos
-#> 5        erdGlobecMoc1
-#> 6         erdGlobecVpt
-#> 7   nwioosObsFixed2002
-#> 8   nwioosObsTrawl2002
-#> 9  erdCalCOFIlrvcntpos
-#> 10      erdCalCOFItows
-#> 16            nodcPJJU
-```
-
-
-```r
-erddap_search(query='size', which = "grid")
-#> 5 results, showing first 20 
-#>                                                            title
-#> 11               NOAA Global Coral Bleaching Monitoring Products
-#> 12            Coawst 4 use, Best Time Series [time][eta_u][xi_u]
-#> 13            Coawst 4 use, Best Time Series [time][eta_v][xi_v]
-#> 14 Coawst 4 use, Best Time Series [time][s_rho][eta_rho][xi_rho]
-#> 15  Coawst 4 use, Best Time Series [time][Nbed][eta_rho][xi_rho]
-#>               dataset_id
-#> 11 hawaii_3b41_0c0b_72bc
-#> 12   whoi_61c3_0b5d_cd61
-#> 13   whoi_62d0_9d64_c8ff
-#> 14   whoi_7dd7_db97_4bbe
-#> 15   whoi_a4fb_2c9c_16a7
-```
-
-Then you can get information on a single dataset
-
-
-```r
-erddap_info('hawaii_3b41_0c0b_72bc')
-#> <ERDDAP Dataset> hawaii_3b41_0c0b_72bc 
-#>  Dimensions (range):  
-#>      time: (2000-11-28T00:00:00Z, 2014-12-04T00:00:00Z) 
-#>      latitude: (85.0, -80.0) 
-#>      longitude: (-180.0, 179.5) 
-#>  Variables:  
-#>      CRW_DHW: 
-#>          Units: Celsius weeks 
-#>      CRW_HOTSPOT: 
-#>          Units: Celsius 
-#>      CRW_SST: 
-#>          Units: Celsius 
-#>      CRW_SSTANOMALY: 
-#>          Units: Celsius
-```
-
-__griddap data__
-
-
-```r
-(out <- erddap_info('noaa_esrl_027d_0fb5_5d38'))
-#> <ERDDAP Dataset> noaa_esrl_027d_0fb5_5d38 
-#>  Dimensions (range):  
-#>      time: (1850-01-01T00:00:00Z, 2014-05-01T00:00:00Z) 
-#>      latitude: (87.5, -87.5) 
-#>      longitude: (-177.5, 177.5) 
-#>  Variables:  
-#>      air: 
-#>          Range: -20.9, 19.5 
-#>          Units: degC
-```
-
-
-```r
-(res <- erddap_grid(out,
-  time = c('2012-01-01','2012-06-12'),
-  latitude = c(21, 18),
-  longitude = c(-80, -75)
-))
-#> <NOAA ERDDAP griddap> noaa_esrl_027d_0fb5_5d38
-#>    Path: [/Users/sacmac/.rnoaa/erddap/noaa_esrl_027d_0fb5_5d38.csv]
-#>    Last updated: [2014-11-04 10:36:20]
-#>    File size:    [0 mb]
-#>    Dimensions:   [24 X 4]
-#> 
-#>                    time latitude longitude  air
-#> 1  2012-01-01T00:00:00Z     22.5     -77.5  NaN
-#> 2  2012-01-01T00:00:00Z     22.5     -72.5  NaN
-#> 3  2012-01-01T00:00:00Z     17.5     -77.5 -0.1
-#> 4  2012-01-01T00:00:00Z     17.5     -72.5  NaN
-#> 5  2012-02-01T00:00:00Z     22.5     -77.5  NaN
-#> 6  2012-02-01T00:00:00Z     22.5     -72.5  NaN
-#> 7  2012-02-01T00:00:00Z     17.5     -77.5  0.4
-#> 8  2012-02-01T00:00:00Z     17.5     -72.5  NaN
-#> 9  2012-03-01T00:00:00Z     22.5     -77.5  NaN
-#> 10 2012-03-01T00:00:00Z     22.5     -72.5  NaN
-#> ..                  ...      ...       ...  ...
-```
-
-__tabledap data__
-
-
-```r
-(out <- erddap_info('erdCalCOFIfshsiz'))
-#> <ERDDAP Dataset> erdCalCOFIfshsiz 
-#>  Variables:  
-#>      calcofi_species_code: 
-#>          Range: 19, 1550 
-#>      common_name: 
-#>      cruise: 
-#>      fish_1000m3: 
-#>          Units: Fish per 1,000 cubic meters of water sampled 
-#>      fish_count: 
-#>      fish_size: 
-#>          Units: mm 
-#>      itis_tsn: 
-#>      latitude: 
-#>          Range: 32.515, 38.502 
-#>          Units: degrees_north 
-#>      line: 
-#>          Range: 46.6, 93.3 
-#>      longitude: 
-#>          Range: -128.5, -117.33 
-#>          Units: degrees_east 
-#>      net_location: 
-#>      net_type: 
-#>      order_occupied: 
-#>      percent_sorted: 
-#>          Units: %/100 
-#>      sample_quality: 
-#>      scientific_name: 
-#>      ship: 
-#>      ship_code: 
-#>      standard_haul_factor: 
-#>      station: 
-#>          Range: 28.0, 114.9 
-#>      time: 
-#>          Range: 9.94464E8, 9.9510582E8 
-#>          Units: seconds since 1970-01-01T00:00:00Z 
-#>      tow_number: 
-#>          Range: 2, 10 
-#>      tow_type: 
-#>      volume_sampled: 
-#>          Units: cubic meters
-```
-
-
-```r
-erddap_table(out, fields=c('longitude','latitude','fish_size','itis_tsn'),
-    'time>=2001-07-07','time<=2001-07-10')
-#> <NOAA ERDDAP tabledap> erdCalCOFIfshsiz
-#>    Path: [~/.rnoaa/erddap/erdCalCOFIfshsiz.csv]
-#>    Last updated: [2014-12-19 09:14:01]
-#>    File size:    [0.02 mb]
-#>    Dimensions:   [558 X 4]
-#> 
-#>     longitude  latitude fish_size itis_tsn
-#> 2     -118.26    33.255      22.9   623745
-#> 3     -118.26    33.255      22.9   623745
-#> 4  -118.10667 32.738335      31.5   623625
-#> 5  -118.10667 32.738335      48.3   623625
-#> 6  -118.10667 32.738335      15.5   162221
-#> 7  -118.10667 32.738335      16.3   162221
-#> 8  -118.10667 32.738335      17.8   162221
-#> 9  -118.10667 32.738335      18.2   162221
-#> 10 -118.10667 32.738335      19.2   162221
-#> 11 -118.10667 32.738335      20.0   162221
-#> ..        ...       ...       ...      ...
-```
-
 ## Meta
 
-* [Please report any issues or bugs](https://github.com/ropensci/rnoaa/issues).
+* Please [report any issues or bugs](https://github.com/ropensci/rnoaa/issues).
 * License: MIT
 * Get citation information for `rnoaa` in R doing `citation(package = 'rnoaa')`
 

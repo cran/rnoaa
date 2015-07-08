@@ -38,7 +38,7 @@ ncdc_locs <- function(datasetid=NULL, locationid=NULL, locationcategoryid=NULL,
                        locationcategoryid=locationcategoryid,startdate=startdate,
                        enddate=enddate,token=token,sortfield=sortfield,
                        sortorder=sortorder,limit=limit,offset=offset))
-
+  if (length(args) == 0) args <- NULL
   temp <- GET(url, query=args, add_headers("token" = token), ...)
   tt <- check_response(temp)
   if(is(tt, "character")){
@@ -53,7 +53,7 @@ ncdc_locs <- function(datasetid=NULL, locationid=NULL, locationcategoryid=NULL,
         all <- list(meta=NULL, data=NULL)
         warning("Sorry, no data found")
       } else {
-        dat <- do.call(rbind.fill, lapply(tt$results, function(x) data.frame(x,stringsAsFactors=FALSE)))
+        dat <- dplyr::bind_rows(lapply(tt$results, function(x) data.frame(x,stringsAsFactors=FALSE)))
         meta <- tt$metadata$resultset
         atts <- list(totalCount=meta$count, pageCount=meta$limit, offset=meta$offset)
         all <- list(meta=atts, data=dat)

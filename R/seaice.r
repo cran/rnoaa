@@ -21,23 +21,10 @@
 #' ggplot(out, aes(long, lat, group=group)) +
 #'    geom_polygon(fill="steelblue") +
 #'    theme_ice()
-#'
-#' # Map all years for April only for North pole
-#' library('plyr')
-#' library('doMC')
-#' urls <- seaiceeurls(mo='Apr', pole='N')
-#' registerDoMC(cores=4)
-#' out <- llply(urls, seaice, .parallel=TRUE)
-#' names(out) <- seq(1979,2013,1)
-#' df <- ldply(out)
-#' ggplot(df, aes(long, lat, group=group)) +
-#'   geom_polygon(fill="steelblue") +
-#'   theme_ice() +
-#'   facet_wrap(~ .id)
 #' }
 seaice <- function(url, ...) {
   tt <- readshpfile(url, ...)
-  fortify(tt)
+  suppressMessages(fortify(tt))
 }
 
 #' Make all urls for sea ice data
@@ -83,6 +70,7 @@ seaiceeurls <- function(yr=NULL, mo=NULL, pole=NULL) {
   if (!is.null(pole)) pole <- sprintf("_%s_", pole)
   if (!is.null(yr)) yr <- sprintf("_%s", yr)
 
+  ss <- allurls
   if (!is.null(yr) & is.null(mo) & is.null(pole))
     ss <- grep(yr, allurls, value = TRUE)
   if (is.null(yr) & !is.null(mo) & is.null(pole))
@@ -117,14 +105,14 @@ readshpfile <- function(x, storepath = NULL) {
   }
   path_write <- paste0(storepath, '/', filename_noending)
   path <- paste0(storepath, '/', filename)
-  bb <- try(download.file(x, path), silent = TRUE)
+  bb <- try(download.file(x, path, quiet = TRUE), silent = TRUE)
   if (class(bb) == "try-error") {
     stop('Data not available, ftp server may be down')
   }
   dir.create(path_write, showWarnings = FALSE)
   unzip(path, exdir = path_write)
   my_layer <- ogrListLayers(path.expand(path_write))
-  readOGR(path.expand(path_write), layer = my_layer)
+  readOGR(path.expand(path_write), layer = my_layer, verbose = FALSE)
 }
 
 #' ggplot2 map theme

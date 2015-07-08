@@ -2,11 +2,7 @@
 #'
 #' @export
 #' @importFrom jsonlite fromJSON
-#'
-#' @param ... Named parameters, such as \code{query}, \code{path}, etc, passed on to
-#' \code{\link[httr]{modify_url}}. Unnamed parameters will be combined with
-#' \code{\link[httr]{config}}.
-#'
+#' @param ... Curl options passed on to \code{\link[httr]{GET}} (optional)
 #' @examples \dontrun{
 #' head( homr_definitions() )
 #' }
@@ -19,5 +15,5 @@ homr_definitions <- function(...){
 }
 
 parse_defs <- function(x){
-  if(is.null(x)) NULL else do.call(rbind.fill, lapply(x, data.frame, stringsAsFactors = FALSE))
+  if(is.null(x)) NULL else dplyr::bind_rows(lapply(x, data.frame, stringsAsFactors = FALSE))
 }

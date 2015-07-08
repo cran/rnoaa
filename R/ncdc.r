@@ -1,7 +1,7 @@
 #' Search for and get NOAA NCDC data.
 #'
-#' @importFrom httr GET add_headers content warn_for_status stop_for_status write_disk parse_url build_url
-#' @importFrom plyr round_any rbind.fill
+#' @importFrom httr GET add_headers content warn_for_status stop_for_status
+#' write_disk parse_url build_url
 #' @export
 #' @template rnoaa
 #' @template noaa
@@ -137,13 +137,14 @@ ncdc <- function(datasetid=NULL, datatypeid=NULL, stationid=NULL, locationid=NUL
                          limit=limit, offset=offset, includemetadata=includemetadata))
   args <- as.list(unlist(args))
   names(args) <- gsub("[0-9]+", "", names(args))
+  if (length(args) == 0) args <- NULL
   temp <- GET(base, query=args, add_headers("token" = token), ...)
   tt <- check_response(temp)
   if(is(tt, "character")){
     all <- list(meta=NA, data=NA)
   } else {
     tt$results <- lapply(tt$results, split_atts, ds=datasetid)
-    dat <- do.call(rbind.fill, lapply(tt$results, function(x) data.frame(x,stringsAsFactors=FALSE)))
+    dat <- dplyr::bind_rows(lapply(tt$results, function(x) data.frame(x,stringsAsFactors=FALSE)))
     meta <- tt$metadata$resultset
     atts <- list(totalCount=meta$count, pageCount=meta$limit, offset=meta$offset)
     all <- list(meta=atts, data=dat)

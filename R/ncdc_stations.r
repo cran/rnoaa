@@ -50,7 +50,7 @@
 
 ncdc_stations <- function(stationid=NULL, datasetid=NULL, datatypeid=NULL, locationid=NULL,
   startdate=NULL, enddate=NULL, sortfield=NULL, sortorder=NULL, limit=25, offset=NULL,
-  datacategoryid=NULL, extent=NULL, radius=10, token=NULL, dataset=NULL,
+  datacategoryid=NULL, extent=NULL, token=NULL, dataset=NULL,
   station=NULL, location=NULL, locationtype=NULL, page=NULL, ...) {
 
   token <- check_key(token)
@@ -72,6 +72,7 @@ ncdc_stations <- function(stationid=NULL, datasetid=NULL, datatypeid=NULL, locat
                          extent = extent))
   }
 
+  if (length(args) == 0) args <- NULL
   temp <- GET(url, query = args, add_headers("token" = token), ...)
   tt <- check_response(temp)
   if (is(temp, "character")) {
@@ -81,7 +82,7 @@ ncdc_stations <- function(stationid=NULL, datasetid=NULL, datatypeid=NULL, locat
       dat <- data.frame(tt, stringsAsFactors = FALSE)
       all <- list(meta = NULL, data = dat)
     } else {
-      dat <- do.call(rbind.fill, lapply(tt$results, function(x) data.frame(x, stringsAsFactors = FALSE)))
+      dat <- dplyr::bind_rows(lapply(tt$results, function(x) data.frame(x, stringsAsFactors = FALSE)))
       meta <- tt$metadata$resultset
       atts <- list(totalCount = meta$count, pageCount = meta$limit, offset = meta$offset)
       all <- list(meta = atts, data = dat)

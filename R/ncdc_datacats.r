@@ -22,7 +22,7 @@
 #'
 #' ## Data categories for a given date
 #' ncdc_datacats(startdate = '2013-10-01')
-#' 
+#'
 #' ## Curl debugging
 #' ncdc_datacats(limit=10, config=verbose())
 #' out <- ncdc_datacats(limit=10, config=progress())
@@ -40,8 +40,9 @@ ncdc_datacats <- function(datasetid=NULL, datacategoryid=NULL, stationid=NULL,
             startdate=startdate, enddate=enddate, sortfield=sortfield,
             sortorder=sortorder, limit=limit, offset=offset)
   names(args) <- sapply(names(args), function(y) gsub("[0-9+]", "", y), USE.NAMES=FALSE)
-
-  temp <- GET(url, query=as.list(args), add_headers("token" = token), ...)
+  args <- as.list(args)
+  if (length(args) == 0) args <- NULL
+  temp <- GET(url, query=args, add_headers("token" = token), ...)
   tt <- check_response(temp)
   if(is(tt, "character")){
     all <- list(meta=NULL, data=NULL)
@@ -55,7 +56,7 @@ ncdc_datacats <- function(datasetid=NULL, datacategoryid=NULL, stationid=NULL,
         all <- list(meta=NULL, data=NULL)
         warning("Sorry, no data found")
       } else {
-        dat <- do.call(rbind.fill, lapply(tt$results, function(x) data.frame(x,stringsAsFactors=FALSE)))
+        dat <- dplyr::bind_rows(lapply(tt$results, function(x) data.frame(x,stringsAsFactors=FALSE)))
         meta <- tt$metadata$resultset
         atts <- list(totalCount=meta$count, pageCount=meta$limit, offset=meta$offset)
         all <- list(meta=atts, data=dat)

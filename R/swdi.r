@@ -1,7 +1,6 @@
 #' Get NOAA data for the severe weather data inventory (swdi).
 #'
 #' @importFrom XML xpathSApply xpathApply xmlValue xmlParse xmlToList
-#' @importFrom data.table rbindlist
 #'
 #' @param dataset Dataset to query. See below for details.
 #' @param format File format to download. One of xml, csv, shp, or kmz.
@@ -22,7 +21,7 @@
 #' @param id An identifier, e.g., 533623. Not sure how you find these ids?
 #' @param filepath If kmz or shp chosen the file name and optionally path to write to. Ignored
 #'    format=xml or format=csv (optional)
-#' @param ... Curl options passed on to the API GET call. (optional)
+#' @param ... Curl options passed on to \code{\link[httr]{GET}} (optional)
 #'
 #' @details
 #' Options for the dataset parameter. One of (and their data formats):
@@ -141,7 +140,8 @@ swdi <- function(dataset=NULL, format='xml', startdate=NULL, enddate=NULL, limit
       message(sprintf("kmz file downloaded to %s", filepath))
     }
   } else {
-    temp <- GET(url, query = args)
+    if (length(args) == 0) args <- NULL
+    temp <- GET(url, query = args, ...)
     temp <- check_response_swdi(temp, format)
 
     if (is(temp, "character")) {
@@ -156,7 +156,7 @@ swdi <- function(dataset=NULL, format='xml', startdate=NULL, enddate=NULL, limit
       } else if (format == 'xml') {
         xml <- xpathSApply(temp, "//result")
         aslist <- lapply(xml, xmlToList)
-        dat <- data.frame(rbindlist(aslist), stringsAsFactors = FALSE)
+        dat <- dplyr::bind_rows(lapply(aslist, data.frame, stringsAsFactors = FALSE))
         shp <- data.frame(shape = dat[, names(dat) %in% 'shape'], stringsAsFactors = FALSE)
         dat <- dat[, !names(dat) %in% c('shape','rownumber')]
 

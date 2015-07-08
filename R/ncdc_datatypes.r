@@ -49,7 +49,7 @@ ncdc_datatypes <- function(datasetid=NULL, datatypeid=NULL, datacategoryid=NULL,
                        limit=limit, offset=offset))
   args <- as.list(unlist(args))
   names(args) <- gsub("[0-9]+", "", names(args))
-
+  if (length(args) == 0) args <- NULL
   temp <- GET(url, query=args, add_headers("token" = token), ...)
   out <- check_response(temp)
   if(is(out, "character")){
@@ -61,7 +61,7 @@ ncdc_datatypes <- function(datasetid=NULL, datatypeid=NULL, datacategoryid=NULL,
       all <- list(data = dat, meta = metadat)
     } else
     {
-      dat <- do.call(rbind.fill, lapply(out$results, function(x) data.frame(x, stringsAsFactors=FALSE)))
+      dat <- dplyr::bind_rows(lapply(out$results, function(x) data.frame(x, stringsAsFactors=FALSE)))
       metadat <- data.frame(out$metadata$resultset, stringsAsFactors=FALSE)
       all <- list(meta = metadat, data = dat)
     }

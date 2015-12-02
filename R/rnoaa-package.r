@@ -1,16 +1,21 @@
-#' rnoaa is an R interface to NOAA climate data.
+#' @title rnoaa
+#' 
+#' @description rnoaa is an R interface to NOAA climate data.
 #'
-#' Many functions in this package interact with the National Climatic Data Center application
-#' programming interface (API) at http://www.ncdc.noaa.gov/cdo-web/webservices/v2, all of
+#' @section Data Sources: 
+#' Many functions in this package interact with the National Climatic Data 
+#' Center application programming interface (API) at 
+#' http://www.ncdc.noaa.gov/cdo-web/webservices/v2, all of
 #' which functions start with \code{ncdc_}. An access token, or API key, is required to use all
-#' the \code{ncdc_} functions. The key is required by NOAA, not the creators of this R package.
-#' Go to the link given above to get an API key.
+#' the \code{ncdc_} functions. The key is required by NOAA, not us. Go to the link given above 
+#' to get an API key.
 #'
 #' More NOAA data sources are being added through time. Data sources and their function prefixes
 #' are:
 #'
 #' \itemize{
 #'  \item \code{buoy_*} - NOAA Buoy data from the National Buoy Data Center
+#'  \item \code{gefs_*} - GEFS forecast ensemble data
 #'  \item \code{ghcnd_*} - GHCND daily data from NOAA
 #'  \item \code{isd_*} - ISD/ISH data from NOAA
 #'  \item \code{homr_*} - Historical Observing Metadata Repository (HOMR) vignette
@@ -21,24 +26,32 @@
 #'  \item \code{tornadoes} - From the NOAA Storm Prediction Center
 #' }
 #' 
-#' @section A note about ncdf:
+#' @section A note about NCDF data:
 #' 
-#' Functions to work with buoy data use netcdf files. You'll need the \code{ncdf}
-#' package for those functions, and those only. \code{ncdf} is in Suggests in 
-#' this package, meaning you only need \code{ncdf} if you are using the buoy 
-#' functions. You'll get an informative error telling you to install \code{ncdf}
+#' Functions to work with buoy data use netcdf files. You'll need the \code{ncdf4}
+#' package for those functions, and those only. \code{ncdf4} is in Suggests in 
+#' this package, meaning you only need \code{ncdf4} if you are using the buoy 
+#' functions. You'll get an informative error telling you to install \code{ncdf4}
 #' if you don't have it and you try to use the buoy functions.
 #' 
-#' Installation of \code{ncdf} should be straightforward on Mac and Windows, but 
-#' on Linux you may have issues. See http://cran.r-project.org/web/packages/ncdf/INSTALL
-#'
 #' @importFrom methods is
-#' @importFrom stats var setNames
-#' @importFrom utils head download.file read.csv read.delim read.fwf write.csv untar unzip
+#' @importFrom stats var setNames complete.cases
+#' @importFrom utils head download.file read.csv read.delim read.fwf write.csv 
+#' untar unzip
+#' @importFrom lubridate ymd year today month
+#' @importFrom scales date_breaks date_format
+#' @importFrom ggplot2 ggplot aes facet_wrap theme theme_bw geom_line labs 
+#' guides guide_legend fortify scale_x_datetime element_blank
+#' @importFrom httr GET add_headers content warn_for_status stop_for_status
+#' write_disk parse_url build_url http_status
+#' @importFrom XML xpathSApply xpathApply xmlValue xmlParse xmlToList htmlParse
+#' @importFrom rgdal ogrListLayers readOGR
+#' @importFrom jsonlite fromJSON
+#' @importFrom tidyr gather
+#' @importFrom dplyr %>% rbind_all select mutate rename tbl_df filter bind_rows
 #' @name rnoaa-package
 #' @aliases rnoaa
 #' @docType package
-#' @title General purpose R interface to NOAA datasets.
 #' @keywords package
 NULL
 

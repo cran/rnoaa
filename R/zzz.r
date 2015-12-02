@@ -99,6 +99,9 @@ check_response <- function(x){
 check_response_swdi <- function(x, format){
   if (!x$status_code == 200) {
     res <- content(x)
+    if (length(res) == 0) {
+      stop(http_status(x)$message, call. = FALSE)
+    }
     err <- gsub("\n", "", xpathApply(res, "//error", xmlValue)[[1]])
     if (!is.null(err)) {
       if (grepl('ERROR', err, ignore.case = TRUE)) {
@@ -145,4 +148,13 @@ read_table <- function(x){
 check_key <- function(x){
   tmp <- if(is.null(x)) Sys.getenv("NOAA_KEY", "") else x
   if(tmp == "") getOption("noaakey", stop("need an API key for NOAA data")) else tmp
+}
+
+# check for a package
+check4pkg <- function(x) {
+  if (!requireNamespace(x, quietly = TRUE)) {
+    stop(sprintf("Please install '%s'", x), call. = FALSE)
+  } else {
+    invisible(TRUE)
+  }
 }

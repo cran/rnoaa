@@ -1,20 +1,19 @@
 #' Get NOAA buoy data from the National Buoy Data Center
-#' 
-#' @importFrom XML htmlParse
+#'
 #' @export
 #'
 #' @param dataset (character) Dataset name to query. See below for Details. Required
-#' @param buoyid (integer) Buoy ID. Required
-#' @param datatype (character) Data type, one of 'c', 'cc', 'p', 'o'
-#' @param year (integer) Year of data collection
-#' @param ... Curl options passed on to \code{\link[httr]{GET}} (optional)
+#' @param buoyid Buoy ID, can be numeric/integer/character. Required
+#' @param datatype (character) Data type, one of 'c', 'cc', 'p', 'o'. Optional
+#' @param year (integer) Year of data collection. Optional
+#' @param ... Curl options passed on to \code{\link[httr]{GET}}. Optional
 #'
 #' @details Functions:
 #' \itemize{
 #'  \item buoys Get available buoys given a dataset name
 #'  \item buoy Get data given some combination of dataset name, buoy ID, year, and datatype
 #' }
-#' 
+#'
 #' Options for the dataset parameter. One of:
 #' \itemize{
 #'  \item adcp - Acoustic Doppler Current Profiler data
@@ -24,7 +23,7 @@
 #'  \item mmbcur - Marsh-McBirney Current Measurements data
 #'  \item ocean - Oceanographic data
 #'  \item pwind - Peak Winds data
-#'  \item stdmet- Standard Meteorological data
+#'  \item stdmet - Standard Meteorological data
 #'  \item swden - Spectral Wave Density data with Spectral Wave Direction data
 #'  \item wlevel - Water Level data
 #' }
@@ -32,35 +31,41 @@
 #' @examples \dontrun{
 #' # Get available buoys
 #' buoys(dataset = 'cwind')
-#' 
+#'
 #' # Get data for a buoy
 #' ## if no year or datatype specified, we get the first file
 #' buoy(dataset = 'cwind', buoyid = 46085)
-#' 
+#'
 #' # Including specific year
 #' buoy(dataset = 'cwind', buoyid = 41001, year = 1999)
-#' 
+#'
 #' # Including specific year and datatype
 #' buoy(dataset = 'cwind', buoyid = 41001, year = 2008, datatype = "cc")
 #' buoy(dataset = 'cwind', buoyid = 41001, year = 2008, datatype = "cc")
-#' 
+#'
 #' # Other datasets
 #' buoy(dataset = 'ocean', buoyid = 42856)
 #'
 #' # curl debugging
 #' library('httr')
 #' buoy(dataset = 'cwind', buoyid = 46085, config=verbose())
+#' 
+#' # some buoy ids are character, case doesn't matter, we'll account for it
+#' buoy(dataset = "stdmet", buoyid = "VCAF1")
+#' buoy(dataset = "stdmet", buoyid = "wplf1")
+#' buoy(dataset = "dart", buoyid = "dartu")
 #' }
 buoy <- function(dataset, buoyid, year=NULL, datatype=NULL, ...) {
-  check4ncdf()
+  check4pkg("ncdf4")
   availbuoys <- buoys(dataset, ...)
-  page <- availbuoys[grep(buoyid, availbuoys$id), "url"]
-  files <- buoy_files(page, buoyid, ...)
+  buoyid <- tolower(buoyid)
+  page <- availbuoys[grep(buoyid, availbuoys$id, ignore.case = TRUE), "url"]
+  files <- buoy_files(path = page, buoyid, ...)
   if (length(files) == 0) stop("No data files found, try a different search", call. = FALSE)
   fileuse <- pick_year_type(files, year, datatype)
   toget <- buoy_single_file_url(dataset, buoyid, fileuse)
   output <- tempdir()
-  ncfile <- get_ncdf_file(toget, buoyid, files[[1]], output)
+  ncfile <- get_ncdf_file(path = toget, buoyid, file = files[[1]], output)
   buoy_collect_data(ncfile)
 }
 
@@ -105,7 +110,7 @@ buoy_files <- function(path, buoyid, ...){
   tt_sbf <- content(singlebuoy_files, as = "text")
   html_sbf <- htmlParse(tt_sbf)
   files_sbf <- grep(".nc$", xpathSApply(html_sbf, "//a//tt", xmlValue), value = TRUE)
-  gsub(buoyid, "", files_sbf)
+  gsub(tolower(buoyid), "", files_sbf)
 }
 
 # Make url for a single NOAA buoy data file
@@ -123,37 +128,36 @@ get_ncdf_file <- function(path, buoyid, file, output){
 }
 
 # Download a single ncdf file
-buoy_collect_data <- function(path){
-  nc <- ncdf::open.ncdf(path)
+buoy_collect_data <- function(path) {
+  nc <- ncdf4::nc_open(path)
   
   out <- list()
   dims <- names(nc$dim)
   for (i in seq_along(dims)) {
-    out[[dims[i]]] <- ncdf::get.var.ncdf(nc, nc$dim[[dims[i]]])
+    out[[dims[i]]] <- ncdf4::ncvar_get(nc, nc$dim[[dims[i]]])
   }
   out$time <- sapply(out$time, convert_time)
   
   vars <- names(nc$var)
   outvars <- list()
   for (i in seq_along(vars)) {
-    outvars[[ vars[i] ]] <- as.vector(ncdf::get.var.ncdf(nc, vars[i]))
+    outvars[[ vars[i] ]] <- as.vector(ncdf4::ncvar_get(nc, vars[i]))
   }
   df <- do.call("cbind.data.frame", outvars)
   
   rows <- length(outvars[[1]])
-  out <- lapply(out, function(z) rep(z, each = rows/length(z)))
-  
-  meta <- data.frame(out, stringsAsFactors = FALSE)
+  time <- rep(out$time, each = rows/length(out$time))
+  lat <- rep(rep(out$latitude, each = length(out$longitude)), length(out$time))
+  lon <- rep(rep(out$longitude, times = length(out$latitude)), times = length(out$time))
+  meta <- data.frame(time, lat, lon, stringsAsFactors = FALSE)
   alldf <- cbind(meta, df)
   
   nms <- c('name','prec','units','longname','missval','hasAddOffset','hasScaleFact')
   meta <- lapply(vars, function(x) nc$var[[x]][names(nc$var[[x]]) %in% nms])
   names(meta) <- vars
   
-  invisible(ncdf::close.ncdf(nc))
-  all <- list(meta = meta, data = alldf)
-  class(all) <- "buoy"
-  return( all )
+  on.exit(ncdf4::nc_close(nc))
+  structure(list(meta = meta, data = alldf), class = "buoy")
 }
 
 #' @export
@@ -171,22 +175,4 @@ convert_time <- function(n = NULL, isoTime = NULL) {
 #   check1notboth(n, isoTime)
   format(as.POSIXct(noaa_compact(list(n, isoTime))[[1]], origin = "1970-01-01T00:00:00Z", tz = "UTC"),
          format = "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
-}
-
-# check1notboth <- function(x, y) {
-#   if (is.null(x) && is.null(y)) {
-#     stop(sprintf("One of %s or %s must be non-NULL", deparse(substitute(x)), deparse(substitute(y))), call. = FALSE)
-#   }
-#   if (!is.null(x) && !is.null(y)) {
-#     stop(sprintf("Supply only one of %s or %s", deparse(substitute(x)), deparse(substitute(y))), call. = FALSE)
-#   }
-# }
-
-# check for ncdf
-check4ncdf <- function() {
-  if (!requireNamespace("ncdf", quietly = TRUE)) {
-    stop("Please install ncdf", call. = FALSE)
-  } else {
-    invisible(TRUE)
-  }
 }

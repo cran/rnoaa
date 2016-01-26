@@ -10,8 +10,8 @@
 #' the \code{ncdc_} functions. The key is required by NOAA, not us. Go to the link given above 
 #' to get an API key.
 #'
-#' More NOAA data sources are being added through time. Data sources and their function prefixes
-#' are:
+#' More NOAA data sources are being added through time. Data sources and their 
+#' function prefixes are:
 #'
 #' \itemize{
 #'  \item \code{buoy_*} - NOAA Buoy data from the National Buoy Data Center
@@ -24,6 +24,8 @@
 #'  \item \code{storm_} - Storms (IBTrACS) vignette
 #'  \item \code{swdi} - Severe Weather Data Inventory (SWDI) vignette
 #'  \item \code{tornadoes} - From the NOAA Storm Prediction Center
+#'  \item \code{argo_*} - Argo buoys
+#'  \item \code{coops_search} - NOAA CO-OPS - tides and currents data
 #' }
 #' 
 #' @section A note about NCDF data:
@@ -36,8 +38,8 @@
 #' 
 #' @importFrom methods is
 #' @importFrom stats var setNames complete.cases
-#' @importFrom utils head download.file read.csv read.delim read.fwf write.csv 
-#' untar unzip
+#' @importFrom utils head download.file read.csv read.delim read.fwf read.table 
+#' write.csv untar unzip
 #' @importFrom lubridate ymd year today month
 #' @importFrom scales date_breaks date_format
 #' @importFrom ggplot2 ggplot aes facet_wrap theme theme_bw geom_line labs 
@@ -45,7 +47,6 @@
 #' @importFrom httr GET add_headers content warn_for_status stop_for_status
 #' write_disk parse_url build_url http_status
 #' @importFrom XML xpathSApply xpathApply xmlValue xmlParse xmlToList htmlParse
-#' @importFrom rgdal ogrListLayers readOGR
 #' @importFrom jsonlite fromJSON
 #' @importFrom tidyr gather
 #' @importFrom dplyr %>% rbind_all select mutate rename tbl_df filter bind_rows

@@ -1,6 +1,6 @@
 context("isd")
 
-test_that("get data", {
+test_that("isd gets data", {
   skip_on_cran()
      
   data_a <- suppressMessages(isd(usaf = "011490", wban = "99999", year = 1986))
@@ -10,5 +10,12 @@ test_that("get data", {
   expect_is(data_a$data, "data.frame")
   expect_is(data_a$data$quality, "character")
   
-  expect_less_than(NROW(data_a$data), NROW(data_b$data))
+  expect_lt(NROW(data_a$data), NROW(data_b$data))
+})
+
+test_that("isd fails well", {
+  skip_on_cran()
+  
+  expect_error(isd(usaf = "702700", wban = "489", year = 2014), 
+               "download failed for")
 })

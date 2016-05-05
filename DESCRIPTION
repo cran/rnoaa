@@ -7,7 +7,7 @@ Description: Client for many 'NOAA' data sources including the 'NCDC' climate
     for 'NOAA' sea ice data, the 'NOAA' severe weather inventory, 'NOAA' Historical
     Observing 'Metadata' Repository ('HOMR') data, 'NOAA' storm data via 'IBTrACS',
     tornado data via the 'NOAA' storm prediction center, and more.
-Version: 0.5.2
+Version: 0.5.6
 License: MIT + file LICENSE
 Authors@R: c(
     person("Scott", "Chamberlain", role = c("aut","cre"), email = "myrmecocystus@gmail.com"),
@@ -24,10 +24,10 @@ VignetteBuilder: knitr
 Imports: methods, stats, utils, httr (>= 1.0.0), lubridate, dplyr,
         tidyr, ggplot2, scales, XML, jsonlite
 Suggests: testthat, roxygen2, knitr, taxize, ncdf4, leaflet, geojsonio,
-        lawn, rgdal
+        lawn, rgdal, covr
 RoxygenNote: 5.0.1
 NeedsCompilation: no
-Packaged: 2016-01-25 19:49:01 UTC; sacmac
+Packaged: 2016-05-05 04:59:08 UTC; sacmac
 Author: Scott Chamberlain [aut, cre],
   Karthik Ram [ctb],
   Adam Erickson [ctb],
@@ -36,4 +36,4 @@ Author: Scott Chamberlain [aut, cre],
   Hart Edmund [ctb]
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
 Repository: CRAN
-Date/Publication: 2016-01-26 00:13:17
+Date/Publication: 2016-05-05 10:58:36

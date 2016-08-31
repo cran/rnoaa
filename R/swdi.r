@@ -6,7 +6,7 @@
 #' @param format File format to download. One of xml, csv, shp, or kmz.
 #' @param startdate Start date. See details.
 #' @param enddate End date. See details.
-#' @param limit Number of results to return. Defaults to 25. Any number from 1 to 10000000.
+#' @param limit Number of results to return. Defaults to 25. Any number from 1 to 10000000. Time out issues likely to occur at higher limits.
 #' @param offset Any number from 1 to 10000000. Default is NULL, no offset, start from 1.
 #' @param radius Search radius in miles (current limit is 15 miles)
 #' @param center Center coordinate in lon,lat decimal degree format, e.g.: c(-95.45,36.88)
@@ -145,7 +145,7 @@ swdi <- function(dataset=NULL, format='xml', startdate=NULL, enddate=NULL, limit
     temp <- GET(url, query = args, ...)
     temp <- check_response_swdi(temp, format)
 
-    if (is(temp, "character")) {
+    if (inherits(temp, "character")) {
       all <- list(meta = NA, data = NA, shape = NA)
     } else {
       if (format == 'csv') {

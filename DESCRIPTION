@@ -7,33 +7,40 @@ Description: Client for many 'NOAA' data sources including the 'NCDC' climate
     for 'NOAA' sea ice data, the 'NOAA' severe weather inventory, 'NOAA' Historical
     Observing 'Metadata' Repository ('HOMR') data, 'NOAA' storm data via 'IBTrACS',
     tornado data via the 'NOAA' storm prediction center, and more.
-Version: 0.5.6
+Version: 0.6.0
 License: MIT + file LICENSE
+Encoding: UTF-8
 Authors@R: c(
     person("Scott", "Chamberlain", role = c("aut","cre"), email = "myrmecocystus@gmail.com"),
-    person("Karthik", "Ram", role = "ctb", email = "karthik.ram@gmail.com"),
-    person("Adam", "Erickson", role = "ctb", email = "adam.erickson@ubc.ca"),
-    person("Nicholas", "Potter", role = "ctb", email = "potterzot@gmail.com"),
-    person("Joseph", "Stachelek", role = "ctb", email = "jstachel@sfwmd.gov"),
-    person("Hart", "Edmund", role = "ctb", email = "Edmund.m.hart@gmail.com")
+    person("Brooke", "Anderson", role = "ctb"),
+    person("Maëlle", "Salmon", role = "ctb"),
+    person("Adam", "Erickson", role = "ctb"),
+    person("Nicholas", "Potter", role = "ctb"),
+    person("Joseph", "Stachelek", role = "ctb"),
+    person("Alex", "Simmons", role = "ctb"),
+    person("Karthik", "Ram", role = "ctb"),
+    person("Hart", "Edmund", role = "ctb")
   )
 URL: https://github.com/ropensci/rnoaa
 BugReports: http://www.github.com/ropensci/rnoaa/issues
 LazyData: true
 VignetteBuilder: knitr
-Imports: methods, stats, utils, httr (>= 1.0.0), lubridate, dplyr,
-        tidyr, ggplot2, scales, XML, jsonlite
-Suggests: testthat, roxygen2, knitr, taxize, ncdf4, leaflet, geojsonio,
-        lawn, rgdal, covr
+Imports: utils, httr (>= 1.0.0), lubridate, dplyr, tidyr, ggplot2,
+        scales, XML, jsonlite, rappdirs, gridExtra, tibble
+Suggests: roxygen2 (>= 5.0.1), testthat, knitr, taxize, ncdf4, leaflet,
+        rgdal, rmarkdown, purrr, covr, ggmap
 RoxygenNote: 5.0.1
 NeedsCompilation: no
-Packaged: 2016-05-05 04:59:08 UTC; sacmac
+Packaged: 2016-08-30 23:48:06 UTC; sacmac
 Author: Scott Chamberlain [aut, cre],
-  Karthik Ram [ctb],
+  Brooke Anderson [ctb],
+  Maëlle Salmon [ctb],
   Adam Erickson [ctb],
   Nicholas Potter [ctb],
   Joseph Stachelek [ctb],
+  Alex Simmons [ctb],
+  Karthik Ram [ctb],
   Hart Edmund [ctb]
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
 Repository: CRAN
-Date/Publication: 2016-05-05 10:58:36
+Date/Publication: 2016-08-31 08:23:10

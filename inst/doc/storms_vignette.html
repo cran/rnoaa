@@ -271,83 +271,53 @@ hr {
 <pre><code class="r">storm_data(basin=&#39;WP&#39;)
 </code></pre>
 
-<pre><code>#&gt; &lt;NOAA Storm Data&gt;
-#&gt; Size: 109150 X 195
-#&gt; 
-#&gt;       serial_num season num basin sub_basin      name            iso_time
-#&gt; 1  1884177N17124   1884   1    WP        MM NOT NAMED 1884-06-24 18:00:00
-#&gt; 2  1884177N17124   1884   1    WP        MM NOT NAMED 1884-06-25 00:00:00
-#&gt; 3  1884177N17124   1884   1    WP        MM NOT NAMED 1884-06-25 06:00:00
-#&gt; 4  1884177N17124   1884   1    WP        MM NOT NAMED 1884-06-25 12:00:00
-#&gt; 5  1884177N17124   1884   1    WP        MM NOT NAMED 1884-06-25 18:00:00
-#&gt; 6  1884177N17124   1884   1    WP        MM NOT NAMED 1884-06-26 00:00:00
-#&gt; 7  1884177N17124   1884   1    WP        MM NOT NAMED 1884-06-26 06:00:00
-#&gt; 8  1884177N17124   1884   1    WP        MM NOT NAMED 1884-06-26 12:00:00
-#&gt; 9  1884177N17124   1884   1    WP        MM NOT NAMED 1884-06-26 18:00:00
-#&gt; 10 1884177N17124   1884   1    WP        MM NOT NAMED 1884-06-27 00:00:00
-#&gt; ..           ...    ... ...   ...       ...       ...                 ...
-#&gt; Variables not shown: nature (chr), latitude (dbl), longitude (dbl),
-#&gt;      wind.wmo. (dbl), pres.wmo. (dbl), center (chr), wind.wmo..percentile
-#&gt;      (dbl), pres.wmo..percentile (dbl), track_type (chr),
-#&gt;      latitude_for_mapping (dbl), longitude_for_mapping (dbl),
-#&gt;      current.basin (chr), hurdat_atl_lat (dbl), hurdat_atl_lon (dbl),
-#&gt;      hurdat_atl_grade (dbl), hurdat_atl_wind (dbl), hurdat_atl_pres (dbl),
-#&gt;      td9636_lat (dbl), td9636_lon (dbl), td9636_grade (dbl), td9636_wind
-#&gt;      (dbl), td9636_pres (dbl), reunion_lat (dbl), reunion_lon (dbl),
-#&gt;      reunion_grade (dbl), reunion_wind (dbl), reunion_pres (dbl), atcf_lat
-#&gt;      (dbl), atcf_lon (dbl), atcf_grade (dbl), atcf_wind (dbl), atcf_pres
-#&gt;      (dbl), ds824_sh_lat (dbl), ds824_sh_lon (dbl), ds824_sh_grade (dbl),
-#&gt;      ds824_sh_wind (dbl), ds824_sh_pres (dbl), ds824_ni_lat (dbl),
-#&gt;      ds824_ni_lon (dbl), ds824_ni_grade (dbl), ds824_ni_wind (dbl),
-#&gt;      ds824_ni_pres (dbl), bom_lat (dbl), bom_lon (dbl), bom_grade (dbl),
-#&gt;      bom_wind (dbl), bom_pres (dbl), ds824_au_lat (dbl), ds824_au_lon
-#&gt;      (dbl), ds824_au_grade (dbl), ds824_au_wind (dbl), ds824_au_pres
-#&gt;      (dbl), jtwc_sh_lat (dbl), jtwc_sh_lon (dbl), jtwc_sh_grade (dbl),
-#&gt;      jtwc_sh_wind (dbl), jtwc_sh_pres (dbl), jtwc_wp_lat (dbl),
-#&gt;      jtwc_wp_lon (dbl), jtwc_wp_grade (dbl), jtwc_wp_wind (dbl),
-#&gt;      jtwc_wp_pres (dbl), td9635_lat (dbl), td9635_lon (dbl), td9635_grade
-#&gt;      (dbl), td9635_wind (dbl), td9635_pres (dbl), ds824_wp_lat (dbl),
-#&gt;      ds824_wp_lon (dbl), ds824_wp_grade (dbl), ds824_wp_wind (dbl),
-#&gt;      ds824_wp_pres (dbl), jtwc_io_lat (dbl), jtwc_io_lon (dbl),
-#&gt;      jtwc_io_grade (dbl), jtwc_io_wind (dbl), jtwc_io_pres (dbl), cma_lat
-#&gt;      (dbl), cma_lon (dbl), cma_grade (dbl), cma_wind (dbl), cma_pres
-#&gt;      (dbl), hurdat_epa_lat (dbl), hurdat_epa_lon (dbl), hurdat_epa_grade
-#&gt;      (dbl), hurdat_epa_wind (dbl), hurdat_epa_pres (dbl), jtwc_ep_lat
-#&gt;      (dbl), jtwc_ep_lon (dbl), jtwc_ep_grade (dbl), jtwc_ep_wind (dbl),
-#&gt;      jtwc_ep_pres (dbl), ds824_ep_lat (dbl), ds824_ep_lon (dbl),
-#&gt;      ds824_ep_grade (dbl), ds824_ep_wind (dbl), ds824_ep_pres (dbl),
-#&gt;      jtwc_cp_lat (dbl), jtwc_cp_lon (dbl), jtwc_cp_grade (dbl),
-#&gt;      jtwc_cp_wind (dbl), jtwc_cp_pres (dbl), tokyo_lat (dbl), tokyo_lon
-#&gt;      (dbl), tokyo_grade (dbl), tokyo_wind (dbl), tokyo_pres (dbl),
-#&gt;      neumann_lat (dbl), neumann_lon (dbl), neumann_grade (dbl),
-#&gt;      neumann_wind (dbl), neumann_pres (dbl), hko_lat (dbl), hko_lon (dbl),
-#&gt;      hko_grade (dbl), hko_wind (dbl), hko_pres (dbl), cphc_lat (dbl),
-#&gt;      cphc_lon (dbl), cphc_grade (dbl), cphc_wind (dbl), cphc_pres (dbl),
-#&gt;      wellington_lat (dbl), wellington_lon (dbl), wellington_grade (dbl),
-#&gt;      wellington_wind (dbl), wellington_pres (dbl), newdelhi_lat (dbl),
-#&gt;      newdelhi_lon (dbl), newdelhi_grade (dbl), newdelhi_wind (dbl),
-#&gt;      newdelhi_pres (dbl), nadi_lat (dbl), nadi_lon (dbl), nadi_grade
-#&gt;      (dbl), nadi_wind (dbl), nadi_pres (dbl), reunion_rmw (dbl),
-#&gt;      reunion_wind_radii_1_ne (dbl), reunion_wind_radii_1_se (dbl),
-#&gt;      reunion_wind_radii_1_sw (dbl), reunion_wind_radii_1_nw (dbl),
-#&gt;      reunion_wind_radii_2_ne (dbl), reunion_wind_radii_2_se (dbl),
-#&gt;      reunion_wind_radii_2_sw (dbl), reunion_wind_radii_2_nw (dbl),
-#&gt;      bom_mn_hurr_xtnt (dbl), bom_mn_gale_xtnt (dbl), bom_mn_eye_diam
-#&gt;      (dbl), bom_roci (dbl), atcf_rmw (dbl), atcf_poci (dbl), atcf_roci
-#&gt;      (dbl), atcf_eye (dbl), atcf_wrad34_rad1 (dbl), atcf_wrad34_rad2
-#&gt;      (dbl), atcf_wrad34_rad3 (dbl), atcf_wrad34_rad4 (dbl),
-#&gt;      atcf_wrad50_rad1 (dbl), atcf_wrad50_rad2 (dbl), atcf_wrad50_rad3
-#&gt;      (dbl), atcf_wrad50_rad4 (dbl), atcf_wrad64_rad1 (dbl),
-#&gt;      atcf_wrad64_rad2 (dbl), atcf_wrad64_rad3 (dbl), atcf_wrad64_rad4
-#&gt;      (dbl), tokyo_dir50 (dbl), tokyo_long50 (dbl), tokyo_short50 (dbl),
-#&gt;      tokyo_dir30 (dbl), tokyo_long30 (dbl), tokyo_short30 (dbl),
-#&gt;      jtwc_.._rmw (dbl), jtwc_.._poci (dbl), jtwc_.._roci (dbl),
-#&gt;      jtwc_.._eye (dbl), jtwc_.._wrad34_rad1 (dbl), jtwc_.._wrad34_rad2
-#&gt;      (dbl), jtwc_.._wrad34_rad3 (dbl), jtwc_.._wrad34_rad4 (dbl),
-#&gt;      jtwc_.._wrad50_rad1 (dbl), jtwc_.._wrad50_rad2 (dbl),
-#&gt;      jtwc_.._wrad50_rad3 (dbl), jtwc_.._wrad50_rad4 (dbl),
-#&gt;      jtwc_.._wrad64_rad1 (dbl), jtwc_.._wrad64_rad2 (dbl),
-#&gt;      jtwc_.._wrad64_rad3 (dbl), jtwc_.._wrad64_rad4 (dbl)
+<pre><code>#&gt; # A tibble: 109,150 × 195
+#&gt;       serial_num season   num basin sub_basin      name
+#&gt;            &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;
+#&gt; 1  1884177N17124   1884     1    WP        MM NOT NAMED
+#&gt; 2  1884177N17124   1884     1    WP        MM NOT NAMED
+#&gt; 3  1884177N17124   1884     1    WP        MM NOT NAMED
+#&gt; 4  1884177N17124   1884     1    WP        MM NOT NAMED
+#&gt; 5  1884177N17124   1884     1    WP        MM NOT NAMED
+#&gt; 6  1884177N17124   1884     1    WP        MM NOT NAMED
+#&gt; 7  1884177N17124   1884     1    WP        MM NOT NAMED
+#&gt; 8  1884177N17124   1884     1    WP        MM NOT NAMED
+#&gt; 9  1884177N17124   1884     1    WP        MM NOT NAMED
+#&gt; 10 1884177N17124   1884     1    WP        MM NOT NAMED
+#&gt; # ... with 109,140 more rows, and 189 more variables: iso_time &lt;chr&gt;,
+#&gt; #   nature &lt;chr&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, wind.wmo. &lt;dbl&gt;,
+#&gt; #   pres.wmo. &lt;dbl&gt;, center &lt;chr&gt;, wind.wmo..percentile &lt;dbl&gt;,
+#&gt; #   pres.wmo..percentile &lt;dbl&gt;, track_type &lt;chr&gt;,
+#&gt; #   latitude_for_mapping &lt;dbl&gt;, longitude_for_mapping &lt;dbl&gt;,
+#&gt; #   current.basin &lt;chr&gt;, hurdat_atl_lat &lt;dbl&gt;, hurdat_atl_lon &lt;dbl&gt;,
+#&gt; #   hurdat_atl_grade &lt;dbl&gt;, hurdat_atl_wind &lt;dbl&gt;, hurdat_atl_pres &lt;dbl&gt;,
+#&gt; #   td9636_lat &lt;dbl&gt;, td9636_lon &lt;dbl&gt;, td9636_grade &lt;dbl&gt;,
+#&gt; #   td9636_wind &lt;dbl&gt;, td9636_pres &lt;dbl&gt;, reunion_lat &lt;dbl&gt;,
+#&gt; #   reunion_lon &lt;dbl&gt;, reunion_grade &lt;dbl&gt;, reunion_wind &lt;dbl&gt;,
+#&gt; #   reunion_pres &lt;dbl&gt;, atcf_lat &lt;dbl&gt;, atcf_lon &lt;dbl&gt;, atcf_grade &lt;dbl&gt;,
+#&gt; #   atcf_wind &lt;dbl&gt;, atcf_pres &lt;dbl&gt;, ds824_sh_lat &lt;dbl&gt;,
+#&gt; #   ds824_sh_lon &lt;dbl&gt;, ds824_sh_grade &lt;dbl&gt;, ds824_sh_wind &lt;dbl&gt;,
+#&gt; #   ds824_sh_pres &lt;dbl&gt;, ds824_ni_lat &lt;dbl&gt;, ds824_ni_lon &lt;dbl&gt;,
+#&gt; #   ds824_ni_grade &lt;dbl&gt;, ds824_ni_wind &lt;dbl&gt;, ds824_ni_pres &lt;dbl&gt;,
+#&gt; #   bom_lat &lt;dbl&gt;, bom_lon &lt;dbl&gt;, bom_grade &lt;dbl&gt;, bom_wind &lt;dbl&gt;,
+#&gt; #   bom_pres &lt;dbl&gt;, ds824_au_lat &lt;dbl&gt;, ds824_au_lon &lt;dbl&gt;,
+#&gt; #   ds824_au_grade &lt;dbl&gt;, ds824_au_wind &lt;dbl&gt;, ds824_au_pres &lt;dbl&gt;,
+#&gt; #   jtwc_sh_lat &lt;dbl&gt;, jtwc_sh_lon &lt;dbl&gt;, jtwc_sh_grade &lt;dbl&gt;,
+#&gt; #   jtwc_sh_wind &lt;dbl&gt;, jtwc_sh_pres &lt;dbl&gt;, jtwc_wp_lat &lt;dbl&gt;,
+#&gt; #   jtwc_wp_lon &lt;dbl&gt;, jtwc_wp_grade &lt;dbl&gt;, jtwc_wp_wind &lt;dbl&gt;,
+#&gt; #   jtwc_wp_pres &lt;dbl&gt;, td9635_lat &lt;dbl&gt;, td9635_lon &lt;dbl&gt;,
+#&gt; #   td9635_grade &lt;dbl&gt;, td9635_wind &lt;dbl&gt;, td9635_pres &lt;dbl&gt;,
+#&gt; #   ds824_wp_lat &lt;dbl&gt;, ds824_wp_lon &lt;dbl&gt;, ds824_wp_grade &lt;dbl&gt;,
+#&gt; #   ds824_wp_wind &lt;dbl&gt;, ds824_wp_pres &lt;dbl&gt;, jtwc_io_lat &lt;dbl&gt;,
+#&gt; #   jtwc_io_lon &lt;dbl&gt;, jtwc_io_grade &lt;dbl&gt;, jtwc_io_wind &lt;dbl&gt;,
+#&gt; #   jtwc_io_pres &lt;dbl&gt;, cma_lat &lt;dbl&gt;, cma_lon &lt;dbl&gt;, cma_grade &lt;dbl&gt;,
+#&gt; #   cma_wind &lt;dbl&gt;, cma_pres &lt;dbl&gt;, hurdat_epa_lat &lt;dbl&gt;,
+#&gt; #   hurdat_epa_lon &lt;dbl&gt;, hurdat_epa_grade &lt;dbl&gt;, hurdat_epa_wind &lt;dbl&gt;,
+#&gt; #   hurdat_epa_pres &lt;dbl&gt;, jtwc_ep_lat &lt;dbl&gt;, jtwc_ep_lon &lt;dbl&gt;,
+#&gt; #   jtwc_ep_grade &lt;dbl&gt;, jtwc_ep_wind &lt;dbl&gt;, jtwc_ep_pres &lt;dbl&gt;,
+#&gt; #   ds824_ep_lat &lt;dbl&gt;, ds824_ep_lon &lt;dbl&gt;, ds824_ep_grade &lt;dbl&gt;,
+#&gt; #   ds824_ep_wind &lt;dbl&gt;, ds824_ep_pres &lt;dbl&gt;, jtwc_cp_lat &lt;dbl&gt;,
+#&gt; #   jtwc_cp_lon &lt;dbl&gt;, ...
 </code></pre>
 
 <p>Or by storm id, see <code>storm_meta(&#39;storm_names&#39;)</code> for storm ids and their names.</p>
@@ -355,77 +325,48 @@ hr {
 <pre><code class="r">storm_data(storm=&#39;1970143N19091&#39;)
 </code></pre>
 
-<pre><code>#&gt; &lt;NOAA Storm Data&gt;
-#&gt; Size: 5 X 195
-#&gt; 
-#&gt;      serial_num season num basin sub_basin name            iso_time nature
-#&gt; 1 1970143N19091   1970   2    NI        BB  02B 1970-05-22 18:00:00     TS
-#&gt; 2 1970143N19091   1970   2    NI        BB  02B 1970-05-23 00:00:00     TS
-#&gt; 3 1970143N19091   1970   2    NI        BB  02B 1970-05-23 06:00:00     TS
-#&gt; 4 1970143N19091   1970   2    NI        BB  02B 1970-05-23 12:00:00     TS
-#&gt; 5 1970143N19091   1970   2    NI        BB  02B 1970-05-23 18:00:00     NR
-#&gt; Variables not shown: latitude (dbl), longitude (dbl), wind.wmo. (dbl),
-#&gt;      pres.wmo. (dbl), center (chr), wind.wmo..percentile (dbl),
-#&gt;      pres.wmo..percentile (dbl), track_type (chr), latitude_for_mapping
-#&gt;      (dbl), longitude_for_mapping (dbl), current.basin (chr),
-#&gt;      hurdat_atl_lat (dbl), hurdat_atl_lon (dbl), hurdat_atl_grade (dbl),
-#&gt;      hurdat_atl_wind (dbl), hurdat_atl_pres (dbl), td9636_lat (dbl),
-#&gt;      td9636_lon (dbl), td9636_grade (dbl), td9636_wind (dbl), td9636_pres
-#&gt;      (dbl), reunion_lat (dbl), reunion_lon (dbl), reunion_grade (dbl),
-#&gt;      reunion_wind (dbl), reunion_pres (dbl), atcf_lat (dbl), atcf_lon
-#&gt;      (dbl), atcf_grade (dbl), atcf_wind (dbl), atcf_pres (dbl),
-#&gt;      ds824_sh_lat (dbl), ds824_sh_lon (dbl), ds824_sh_grade (dbl),
-#&gt;      ds824_sh_wind (dbl), ds824_sh_pres (dbl), ds824_ni_lat (dbl),
-#&gt;      ds824_ni_lon (dbl), ds824_ni_grade (dbl), ds824_ni_wind (dbl),
-#&gt;      ds824_ni_pres (dbl), bom_lat (dbl), bom_lon (dbl), bom_grade (dbl),
-#&gt;      bom_wind (dbl), bom_pres (dbl), ds824_au_lat (dbl), ds824_au_lon
-#&gt;      (dbl), ds824_au_grade (dbl), ds824_au_wind (dbl), ds824_au_pres
-#&gt;      (dbl), jtwc_sh_lat (dbl), jtwc_sh_lon (dbl), jtwc_sh_grade (dbl),
-#&gt;      jtwc_sh_wind (dbl), jtwc_sh_pres (dbl), jtwc_wp_lat (dbl),
-#&gt;      jtwc_wp_lon (dbl), jtwc_wp_grade (dbl), jtwc_wp_wind (dbl),
-#&gt;      jtwc_wp_pres (dbl), td9635_lat (dbl), td9635_lon (dbl), td9635_grade
-#&gt;      (dbl), td9635_wind (dbl), td9635_pres (dbl), ds824_wp_lat (dbl),
-#&gt;      ds824_wp_lon (dbl), ds824_wp_grade (dbl), ds824_wp_wind (dbl),
-#&gt;      ds824_wp_pres (dbl), jtwc_io_lat (dbl), jtwc_io_lon (dbl),
-#&gt;      jtwc_io_grade (dbl), jtwc_io_wind (dbl), jtwc_io_pres (dbl), cma_lat
-#&gt;      (dbl), cma_lon (dbl), cma_grade (dbl), cma_wind (dbl), cma_pres
-#&gt;      (dbl), hurdat_epa_lat (dbl), hurdat_epa_lon (dbl), hurdat_epa_grade
-#&gt;      (dbl), hurdat_epa_wind (dbl), hurdat_epa_pres (dbl), jtwc_ep_lat
-#&gt;      (dbl), jtwc_ep_lon (dbl), jtwc_ep_grade (dbl), jtwc_ep_wind (dbl),
-#&gt;      jtwc_ep_pres (dbl), ds824_ep_lat (dbl), ds824_ep_lon (dbl),
-#&gt;      ds824_ep_grade (dbl), ds824_ep_wind (dbl), ds824_ep_pres (dbl),
-#&gt;      jtwc_cp_lat (dbl), jtwc_cp_lon (dbl), jtwc_cp_grade (dbl),
-#&gt;      jtwc_cp_wind (dbl), jtwc_cp_pres (dbl), tokyo_lat (dbl), tokyo_lon
-#&gt;      (dbl), tokyo_grade (dbl), tokyo_wind (dbl), tokyo_pres (dbl),
-#&gt;      neumann_lat (dbl), neumann_lon (dbl), neumann_grade (dbl),
-#&gt;      neumann_wind (dbl), neumann_pres (dbl), hko_lat (dbl), hko_lon (dbl),
-#&gt;      hko_grade (dbl), hko_wind (dbl), hko_pres (dbl), cphc_lat (dbl),
-#&gt;      cphc_lon (dbl), cphc_grade (dbl), cphc_wind (dbl), cphc_pres (dbl),
-#&gt;      wellington_lat (dbl), wellington_lon (dbl), wellington_grade (dbl),
-#&gt;      wellington_wind (dbl), wellington_pres (dbl), newdelhi_lat (dbl),
-#&gt;      newdelhi_lon (dbl), newdelhi_grade (dbl), newdelhi_wind (dbl),
-#&gt;      newdelhi_pres (dbl), nadi_lat (dbl), nadi_lon (dbl), nadi_grade
-#&gt;      (dbl), nadi_wind (dbl), nadi_pres (dbl), reunion_rmw (dbl),
-#&gt;      reunion_wind_radii_1_ne (dbl), reunion_wind_radii_1_se (dbl),
-#&gt;      reunion_wind_radii_1_sw (dbl), reunion_wind_radii_1_nw (dbl),
-#&gt;      reunion_wind_radii_2_ne (dbl), reunion_wind_radii_2_se (dbl),
-#&gt;      reunion_wind_radii_2_sw (dbl), reunion_wind_radii_2_nw (dbl),
-#&gt;      bom_mn_hurr_xtnt (dbl), bom_mn_gale_xtnt (dbl), bom_mn_eye_diam
-#&gt;      (dbl), bom_roci (dbl), atcf_rmw (dbl), atcf_poci (dbl), atcf_roci
-#&gt;      (dbl), atcf_eye (dbl), atcf_wrad34_rad1 (dbl), atcf_wrad34_rad2
-#&gt;      (dbl), atcf_wrad34_rad3 (dbl), atcf_wrad34_rad4 (dbl),
-#&gt;      atcf_wrad50_rad1 (dbl), atcf_wrad50_rad2 (dbl), atcf_wrad50_rad3
-#&gt;      (dbl), atcf_wrad50_rad4 (dbl), atcf_wrad64_rad1 (dbl),
-#&gt;      atcf_wrad64_rad2 (dbl), atcf_wrad64_rad3 (dbl), atcf_wrad64_rad4
-#&gt;      (dbl), tokyo_dir50 (dbl), tokyo_long50 (dbl), tokyo_short50 (dbl),
-#&gt;      tokyo_dir30 (dbl), tokyo_long30 (dbl), tokyo_short30 (dbl),
-#&gt;      jtwc_.._rmw (dbl), jtwc_.._poci (dbl), jtwc_.._roci (dbl),
-#&gt;      jtwc_.._eye (dbl), jtwc_.._wrad34_rad1 (dbl), jtwc_.._wrad34_rad2
-#&gt;      (dbl), jtwc_.._wrad34_rad3 (dbl), jtwc_.._wrad34_rad4 (dbl),
-#&gt;      jtwc_.._wrad50_rad1 (dbl), jtwc_.._wrad50_rad2 (dbl),
-#&gt;      jtwc_.._wrad50_rad3 (dbl), jtwc_.._wrad50_rad4 (dbl),
-#&gt;      jtwc_.._wrad64_rad1 (dbl), jtwc_.._wrad64_rad2 (dbl),
-#&gt;      jtwc_.._wrad64_rad3 (dbl), jtwc_.._wrad64_rad4 (dbl)
+<pre><code>#&gt; # A tibble: 5 × 195
+#&gt;      serial_num season   num basin sub_basin  name            iso_time
+#&gt;           &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;               &lt;chr&gt;
+#&gt; 1 1970143N19091   1970     2    NI        BB   02B 1970-05-22 18:00:00
+#&gt; 2 1970143N19091   1970     2    NI        BB   02B 1970-05-23 00:00:00
+#&gt; 3 1970143N19091   1970     2    NI        BB   02B 1970-05-23 06:00:00
+#&gt; 4 1970143N19091   1970     2    NI        BB   02B 1970-05-23 12:00:00
+#&gt; 5 1970143N19091   1970     2    NI        BB   02B 1970-05-23 18:00:00
+#&gt; # ... with 188 more variables: nature &lt;chr&gt;, latitude &lt;dbl&gt;,
+#&gt; #   longitude &lt;dbl&gt;, wind.wmo. &lt;dbl&gt;, pres.wmo. &lt;dbl&gt;, center &lt;chr&gt;,
+#&gt; #   wind.wmo..percentile &lt;dbl&gt;, pres.wmo..percentile &lt;dbl&gt;,
+#&gt; #   track_type &lt;chr&gt;, latitude_for_mapping &lt;dbl&gt;,
+#&gt; #   longitude_for_mapping &lt;dbl&gt;, current.basin &lt;chr&gt;,
+#&gt; #   hurdat_atl_lat &lt;dbl&gt;, hurdat_atl_lon &lt;dbl&gt;, hurdat_atl_grade &lt;dbl&gt;,
+#&gt; #   hurdat_atl_wind &lt;dbl&gt;, hurdat_atl_pres &lt;dbl&gt;, td9636_lat &lt;dbl&gt;,
+#&gt; #   td9636_lon &lt;dbl&gt;, td9636_grade &lt;dbl&gt;, td9636_wind &lt;dbl&gt;,
+#&gt; #   td9636_pres &lt;dbl&gt;, reunion_lat &lt;dbl&gt;, reunion_lon &lt;dbl&gt;,
+#&gt; #   reunion_grade &lt;dbl&gt;, reunion_wind &lt;dbl&gt;, reunion_pres &lt;dbl&gt;,
+#&gt; #   atcf_lat &lt;dbl&gt;, atcf_lon &lt;dbl&gt;, atcf_grade &lt;dbl&gt;, atcf_wind &lt;dbl&gt;,
+#&gt; #   atcf_pres &lt;dbl&gt;, ds824_sh_lat &lt;dbl&gt;, ds824_sh_lon &lt;dbl&gt;,
+#&gt; #   ds824_sh_grade &lt;dbl&gt;, ds824_sh_wind &lt;dbl&gt;, ds824_sh_pres &lt;dbl&gt;,
+#&gt; #   ds824_ni_lat &lt;dbl&gt;, ds824_ni_lon &lt;dbl&gt;, ds824_ni_grade &lt;dbl&gt;,
+#&gt; #   ds824_ni_wind &lt;dbl&gt;, ds824_ni_pres &lt;dbl&gt;, bom_lat &lt;dbl&gt;,
+#&gt; #   bom_lon &lt;dbl&gt;, bom_grade &lt;dbl&gt;, bom_wind &lt;dbl&gt;, bom_pres &lt;dbl&gt;,
+#&gt; #   ds824_au_lat &lt;dbl&gt;, ds824_au_lon &lt;dbl&gt;, ds824_au_grade &lt;dbl&gt;,
+#&gt; #   ds824_au_wind &lt;dbl&gt;, ds824_au_pres &lt;dbl&gt;, jtwc_sh_lat &lt;dbl&gt;,
+#&gt; #   jtwc_sh_lon &lt;dbl&gt;, jtwc_sh_grade &lt;dbl&gt;, jtwc_sh_wind &lt;dbl&gt;,
+#&gt; #   jtwc_sh_pres &lt;dbl&gt;, jtwc_wp_lat &lt;dbl&gt;, jtwc_wp_lon &lt;dbl&gt;,
+#&gt; #   jtwc_wp_grade &lt;dbl&gt;, jtwc_wp_wind &lt;dbl&gt;, jtwc_wp_pres &lt;dbl&gt;,
+#&gt; #   td9635_lat &lt;dbl&gt;, td9635_lon &lt;dbl&gt;, td9635_grade &lt;dbl&gt;,
+#&gt; #   td9635_wind &lt;dbl&gt;, td9635_pres &lt;dbl&gt;, ds824_wp_lat &lt;dbl&gt;,
+#&gt; #   ds824_wp_lon &lt;dbl&gt;, ds824_wp_grade &lt;dbl&gt;, ds824_wp_wind &lt;dbl&gt;,
+#&gt; #   ds824_wp_pres &lt;dbl&gt;, jtwc_io_lat &lt;dbl&gt;, jtwc_io_lon &lt;dbl&gt;,
+#&gt; #   jtwc_io_grade &lt;dbl&gt;, jtwc_io_wind &lt;dbl&gt;, jtwc_io_pres &lt;dbl&gt;,
+#&gt; #   cma_lat &lt;dbl&gt;, cma_lon &lt;dbl&gt;, cma_grade &lt;dbl&gt;, cma_wind &lt;dbl&gt;,
+#&gt; #   cma_pres &lt;dbl&gt;, hurdat_epa_lat &lt;dbl&gt;, hurdat_epa_lon &lt;dbl&gt;,
+#&gt; #   hurdat_epa_grade &lt;dbl&gt;, hurdat_epa_wind &lt;dbl&gt;, hurdat_epa_pres &lt;dbl&gt;,
+#&gt; #   jtwc_ep_lat &lt;dbl&gt;, jtwc_ep_lon &lt;dbl&gt;, jtwc_ep_grade &lt;dbl&gt;,
+#&gt; #   jtwc_ep_wind &lt;dbl&gt;, jtwc_ep_pres &lt;dbl&gt;, ds824_ep_lat &lt;dbl&gt;,
+#&gt; #   ds824_ep_lon &lt;dbl&gt;, ds824_ep_grade &lt;dbl&gt;, ds824_ep_wind &lt;dbl&gt;,
+#&gt; #   ds824_ep_pres &lt;dbl&gt;, jtwc_cp_lat &lt;dbl&gt;, jtwc_cp_lon &lt;dbl&gt;,
+#&gt; #   jtwc_cp_grade &lt;dbl&gt;, ...
 </code></pre>
 
 <p>Or by year, from 1842 to 2014.</p>
@@ -433,83 +374,53 @@ hr {
 <pre><code class="r">storm_data(year=1941)
 </code></pre>
 
-<pre><code>#&gt; &lt;NOAA Storm Data&gt;
-#&gt; Size: 1766 X 195
-#&gt; 
-#&gt;       serial_num season num basin sub_basin      name            iso_time
-#&gt; 1  1940215S18149   1941   1    SP        EA NOT NAMED 1940-08-01 12:00:00
-#&gt; 2  1940215S18149   1941   1    SP        EA NOT NAMED 1940-08-01 18:00:00
-#&gt; 3  1940215S18149   1941   1    SP        EA NOT NAMED 1940-08-02 00:00:00
-#&gt; 4  1940215S18149   1941   1    SP        EA NOT NAMED 1940-08-02 06:00:00
-#&gt; 5  1940215S18149   1941   1    SP        EA NOT NAMED 1940-08-02 12:00:00
-#&gt; 6  1940215S18149   1941   1    SP        EA NOT NAMED 1940-08-02 18:00:00
-#&gt; 7  1940215S18149   1941   1    SP        EA NOT NAMED 1940-08-03 00:00:00
-#&gt; 8  1940215S18149   1941   1    SP        EA NOT NAMED 1940-08-03 06:00:00
-#&gt; 9  1940215S18149   1941   1    SP        EA NOT NAMED 1940-08-03 12:00:00
-#&gt; 10 1940215S18149   1941   1    SP        EA NOT NAMED 1940-08-03 18:00:00
-#&gt; ..           ...    ... ...   ...       ...       ...                 ...
-#&gt; Variables not shown: nature (chr), latitude (dbl), longitude (dbl),
-#&gt;      wind.wmo. (dbl), pres.wmo. (dbl), center (chr), wind.wmo..percentile
-#&gt;      (dbl), pres.wmo..percentile (dbl), track_type (chr),
-#&gt;      latitude_for_mapping (dbl), longitude_for_mapping (dbl),
-#&gt;      current.basin (chr), hurdat_atl_lat (dbl), hurdat_atl_lon (dbl),
-#&gt;      hurdat_atl_grade (dbl), hurdat_atl_wind (dbl), hurdat_atl_pres (dbl),
-#&gt;      td9636_lat (dbl), td9636_lon (dbl), td9636_grade (dbl), td9636_wind
-#&gt;      (dbl), td9636_pres (dbl), reunion_lat (dbl), reunion_lon (dbl),
-#&gt;      reunion_grade (dbl), reunion_wind (dbl), reunion_pres (dbl), atcf_lat
-#&gt;      (dbl), atcf_lon (dbl), atcf_grade (dbl), atcf_wind (dbl), atcf_pres
-#&gt;      (dbl), ds824_sh_lat (dbl), ds824_sh_lon (dbl), ds824_sh_grade (dbl),
-#&gt;      ds824_sh_wind (dbl), ds824_sh_pres (dbl), ds824_ni_lat (dbl),
-#&gt;      ds824_ni_lon (dbl), ds824_ni_grade (dbl), ds824_ni_wind (dbl),
-#&gt;      ds824_ni_pres (dbl), bom_lat (dbl), bom_lon (dbl), bom_grade (dbl),
-#&gt;      bom_wind (dbl), bom_pres (dbl), ds824_au_lat (dbl), ds824_au_lon
-#&gt;      (dbl), ds824_au_grade (dbl), ds824_au_wind (dbl), ds824_au_pres
-#&gt;      (dbl), jtwc_sh_lat (dbl), jtwc_sh_lon (dbl), jtwc_sh_grade (dbl),
-#&gt;      jtwc_sh_wind (dbl), jtwc_sh_pres (dbl), jtwc_wp_lat (dbl),
-#&gt;      jtwc_wp_lon (dbl), jtwc_wp_grade (dbl), jtwc_wp_wind (dbl),
-#&gt;      jtwc_wp_pres (dbl), td9635_lat (dbl), td9635_lon (dbl), td9635_grade
-#&gt;      (dbl), td9635_wind (dbl), td9635_pres (dbl), ds824_wp_lat (dbl),
-#&gt;      ds824_wp_lon (dbl), ds824_wp_grade (dbl), ds824_wp_wind (dbl),
-#&gt;      ds824_wp_pres (dbl), jtwc_io_lat (dbl), jtwc_io_lon (dbl),
-#&gt;      jtwc_io_grade (dbl), jtwc_io_wind (dbl), jtwc_io_pres (dbl), cma_lat
-#&gt;      (dbl), cma_lon (dbl), cma_grade (dbl), cma_wind (dbl), cma_pres
-#&gt;      (dbl), hurdat_epa_lat (dbl), hurdat_epa_lon (dbl), hurdat_epa_grade
-#&gt;      (dbl), hurdat_epa_wind (dbl), hurdat_epa_pres (dbl), jtwc_ep_lat
-#&gt;      (dbl), jtwc_ep_lon (dbl), jtwc_ep_grade (dbl), jtwc_ep_wind (dbl),
-#&gt;      jtwc_ep_pres (dbl), ds824_ep_lat (dbl), ds824_ep_lon (dbl),
-#&gt;      ds824_ep_grade (dbl), ds824_ep_wind (dbl), ds824_ep_pres (dbl),
-#&gt;      jtwc_cp_lat (dbl), jtwc_cp_lon (dbl), jtwc_cp_grade (dbl),
-#&gt;      jtwc_cp_wind (dbl), jtwc_cp_pres (dbl), tokyo_lat (dbl), tokyo_lon
-#&gt;      (dbl), tokyo_grade (dbl), tokyo_wind (dbl), tokyo_pres (dbl),
-#&gt;      neumann_lat (dbl), neumann_lon (dbl), neumann_grade (dbl),
-#&gt;      neumann_wind (dbl), neumann_pres (dbl), hko_lat (dbl), hko_lon (dbl),
-#&gt;      hko_grade (dbl), hko_wind (dbl), hko_pres (dbl), cphc_lat (dbl),
-#&gt;      cphc_lon (dbl), cphc_grade (dbl), cphc_wind (dbl), cphc_pres (dbl),
-#&gt;      wellington_lat (dbl), wellington_lon (dbl), wellington_grade (dbl),
-#&gt;      wellington_wind (dbl), wellington_pres (dbl), newdelhi_lat (dbl),
-#&gt;      newdelhi_lon (dbl), newdelhi_grade (dbl), newdelhi_wind (dbl),
-#&gt;      newdelhi_pres (dbl), nadi_lat (dbl), nadi_lon (dbl), nadi_grade
-#&gt;      (dbl), nadi_wind (dbl), nadi_pres (dbl), reunion_rmw (dbl),
-#&gt;      reunion_wind_radii_1_ne (dbl), reunion_wind_radii_1_se (dbl),
-#&gt;      reunion_wind_radii_1_sw (dbl), reunion_wind_radii_1_nw (dbl),
-#&gt;      reunion_wind_radii_2_ne (dbl), reunion_wind_radii_2_se (dbl),
-#&gt;      reunion_wind_radii_2_sw (dbl), reunion_wind_radii_2_nw (dbl),
-#&gt;      bom_mn_hurr_xtnt (dbl), bom_mn_gale_xtnt (dbl), bom_mn_eye_diam
-#&gt;      (dbl), bom_roci (dbl), atcf_rmw (dbl), atcf_poci (dbl), atcf_roci
-#&gt;      (dbl), atcf_eye (dbl), atcf_wrad34_rad1 (dbl), atcf_wrad34_rad2
-#&gt;      (dbl), atcf_wrad34_rad3 (dbl), atcf_wrad34_rad4 (dbl),
-#&gt;      atcf_wrad50_rad1 (dbl), atcf_wrad50_rad2 (dbl), atcf_wrad50_rad3
-#&gt;      (dbl), atcf_wrad50_rad4 (dbl), atcf_wrad64_rad1 (dbl),
-#&gt;      atcf_wrad64_rad2 (dbl), atcf_wrad64_rad3 (dbl), atcf_wrad64_rad4
-#&gt;      (dbl), tokyo_dir50 (dbl), tokyo_long50 (dbl), tokyo_short50 (dbl),
-#&gt;      tokyo_dir30 (dbl), tokyo_long30 (dbl), tokyo_short30 (dbl),
-#&gt;      jtwc_.._rmw (dbl), jtwc_.._poci (dbl), jtwc_.._roci (dbl),
-#&gt;      jtwc_.._eye (dbl), jtwc_.._wrad34_rad1 (dbl), jtwc_.._wrad34_rad2
-#&gt;      (dbl), jtwc_.._wrad34_rad3 (dbl), jtwc_.._wrad34_rad4 (dbl),
-#&gt;      jtwc_.._wrad50_rad1 (dbl), jtwc_.._wrad50_rad2 (dbl),
-#&gt;      jtwc_.._wrad50_rad3 (dbl), jtwc_.._wrad50_rad4 (dbl),
-#&gt;      jtwc_.._wrad64_rad1 (dbl), jtwc_.._wrad64_rad2 (dbl),
-#&gt;      jtwc_.._wrad64_rad3 (dbl), jtwc_.._wrad64_rad4 (dbl)
+<pre><code>#&gt; # A tibble: 1,766 × 195
+#&gt;       serial_num season   num basin sub_basin      name
+#&gt;            &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;
+#&gt; 1  1940215S18149   1941     1    SP        EA NOT NAMED
+#&gt; 2  1940215S18149   1941     1    SP        EA NOT NAMED
+#&gt; 3  1940215S18149   1941     1    SP        EA NOT NAMED
+#&gt; 4  1940215S18149   1941     1    SP        EA NOT NAMED
+#&gt; 5  1940215S18149   1941     1    SP        EA NOT NAMED
+#&gt; 6  1940215S18149   1941     1    SP        EA NOT NAMED
+#&gt; 7  1940215S18149   1941     1    SP        EA NOT NAMED
+#&gt; 8  1940215S18149   1941     1    SP        EA NOT NAMED
+#&gt; 9  1940215S18149   1941     1    SP        EA NOT NAMED
+#&gt; 10 1940215S18149   1941     1    SP        EA NOT NAMED
+#&gt; # ... with 1,756 more rows, and 189 more variables: iso_time &lt;chr&gt;,
+#&gt; #   nature &lt;chr&gt;, latitude &lt;dbl&gt;, longitude &lt;dbl&gt;, wind.wmo. &lt;dbl&gt;,
+#&gt; #   pres.wmo. &lt;dbl&gt;, center &lt;chr&gt;, wind.wmo..percentile &lt;dbl&gt;,
+#&gt; #   pres.wmo..percentile &lt;dbl&gt;, track_type &lt;chr&gt;,
+#&gt; #   latitude_for_mapping &lt;dbl&gt;, longitude_for_mapping &lt;dbl&gt;,
+#&gt; #   current.basin &lt;chr&gt;, hurdat_atl_lat &lt;dbl&gt;, hurdat_atl_lon &lt;dbl&gt;,
+#&gt; #   hurdat_atl_grade &lt;dbl&gt;, hurdat_atl_wind &lt;dbl&gt;, hurdat_atl_pres &lt;dbl&gt;,
+#&gt; #   td9636_lat &lt;dbl&gt;, td9636_lon &lt;dbl&gt;, td9636_grade &lt;dbl&gt;,
+#&gt; #   td9636_wind &lt;dbl&gt;, td9636_pres &lt;dbl&gt;, reunion_lat &lt;dbl&gt;,
+#&gt; #   reunion_lon &lt;dbl&gt;, reunion_grade &lt;dbl&gt;, reunion_wind &lt;dbl&gt;,
+#&gt; #   reunion_pres &lt;dbl&gt;, atcf_lat &lt;dbl&gt;, atcf_lon &lt;dbl&gt;, atcf_grade &lt;dbl&gt;,
+#&gt; #   atcf_wind &lt;dbl&gt;, atcf_pres &lt;dbl&gt;, ds824_sh_lat &lt;dbl&gt;,
+#&gt; #   ds824_sh_lon &lt;dbl&gt;, ds824_sh_grade &lt;dbl&gt;, ds824_sh_wind &lt;dbl&gt;,
+#&gt; #   ds824_sh_pres &lt;dbl&gt;, ds824_ni_lat &lt;dbl&gt;, ds824_ni_lon &lt;dbl&gt;,
+#&gt; #   ds824_ni_grade &lt;dbl&gt;, ds824_ni_wind &lt;dbl&gt;, ds824_ni_pres &lt;dbl&gt;,
+#&gt; #   bom_lat &lt;dbl&gt;, bom_lon &lt;dbl&gt;, bom_grade &lt;dbl&gt;, bom_wind &lt;dbl&gt;,
+#&gt; #   bom_pres &lt;dbl&gt;, ds824_au_lat &lt;dbl&gt;, ds824_au_lon &lt;dbl&gt;,
+#&gt; #   ds824_au_grade &lt;dbl&gt;, ds824_au_wind &lt;dbl&gt;, ds824_au_pres &lt;dbl&gt;,
+#&gt; #   jtwc_sh_lat &lt;dbl&gt;, jtwc_sh_lon &lt;dbl&gt;, jtwc_sh_grade &lt;dbl&gt;,
+#&gt; #   jtwc_sh_wind &lt;dbl&gt;, jtwc_sh_pres &lt;dbl&gt;, jtwc_wp_lat &lt;dbl&gt;,
+#&gt; #   jtwc_wp_lon &lt;dbl&gt;, jtwc_wp_grade &lt;dbl&gt;, jtwc_wp_wind &lt;dbl&gt;,
+#&gt; #   jtwc_wp_pres &lt;dbl&gt;, td9635_lat &lt;dbl&gt;, td9635_lon &lt;dbl&gt;,
+#&gt; #   td9635_grade &lt;dbl&gt;, td9635_wind &lt;dbl&gt;, td9635_pres &lt;dbl&gt;,
+#&gt; #   ds824_wp_lat &lt;dbl&gt;, ds824_wp_lon &lt;dbl&gt;, ds824_wp_grade &lt;dbl&gt;,
+#&gt; #   ds824_wp_wind &lt;dbl&gt;, ds824_wp_pres &lt;dbl&gt;, jtwc_io_lat &lt;dbl&gt;,
+#&gt; #   jtwc_io_lon &lt;dbl&gt;, jtwc_io_grade &lt;dbl&gt;, jtwc_io_wind &lt;dbl&gt;,
+#&gt; #   jtwc_io_pres &lt;dbl&gt;, cma_lat &lt;dbl&gt;, cma_lon &lt;dbl&gt;, cma_grade &lt;dbl&gt;,
+#&gt; #   cma_wind &lt;dbl&gt;, cma_pres &lt;dbl&gt;, hurdat_epa_lat &lt;dbl&gt;,
+#&gt; #   hurdat_epa_lon &lt;dbl&gt;, hurdat_epa_grade &lt;dbl&gt;, hurdat_epa_wind &lt;dbl&gt;,
+#&gt; #   hurdat_epa_pres &lt;dbl&gt;, jtwc_ep_lat &lt;dbl&gt;, jtwc_ep_lon &lt;dbl&gt;,
+#&gt; #   jtwc_ep_grade &lt;dbl&gt;, jtwc_ep_wind &lt;dbl&gt;, jtwc_ep_pres &lt;dbl&gt;,
+#&gt; #   ds824_ep_lat &lt;dbl&gt;, ds824_ep_lon &lt;dbl&gt;, ds824_ep_grade &lt;dbl&gt;,
+#&gt; #   ds824_ep_wind &lt;dbl&gt;, ds824_ep_pres &lt;dbl&gt;, jtwc_cp_lat &lt;dbl&gt;,
+#&gt; #   jtwc_cp_lon &lt;dbl&gt;, ...
 </code></pre>
 
 <h2>shp files</h2>
@@ -520,7 +431,7 @@ hr {
 </code></pre>
 
 <pre><code>#&gt; &lt;NOAA Storm Shp Files&gt;
-#&gt; Path: ~/.rnoaa/storms/year/Year.2013.ibtracs_all_points.v03r06.shp
+#&gt; Path: /Users/sacmac/Library/Caches/rnoaa/storms/year/Year.2013.ibtracs_all_points.v03r06.shp
 #&gt; Basin: &lt;NA&gt;
 #&gt; Storm: &lt;NA&gt;
 #&gt; Year: 2013

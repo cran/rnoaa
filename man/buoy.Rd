@@ -2,15 +2,19 @@
 % Please edit documentation in R/buoy.R
 \name{buoy}
 \alias{buoy}
+\alias{buoy_stations}
 \alias{buoys}
 \title{Get NOAA buoy data from the National Buoy Data Center}
 \usage{
 buoy(dataset, buoyid, year = NULL, datatype = NULL, ...)
 
 buoys(dataset, ...)
+
+buoy_stations(refresh = FALSE, ...)
 }
 \arguments{
-\item{dataset}{(character) Dataset name to query. See below for Details. Required}
+\item{dataset}{(character) Dataset name to query. See below for Details.
+Required}
 
 \item{buoyid}{Buoy ID, can be numeric/integer/character. Required}
 
@@ -19,6 +23,9 @@ buoys(dataset, ...)
 \item{datatype}{(character) Data type, one of 'c', 'cc', 'p', 'o'. Optional}
 
 \item{...}{Curl options passed on to \code{\link[httr]{GET}}. Optional}
+
+\item{refresh}{(logical) Whether to use cached data (\code{FALSE}) or get
+new data (\code{FALSE}). Default: \code{FALSE}}
 }
 \description{
 Get NOAA buoy data from the National Buoy Data Center
@@ -26,8 +33,12 @@ Get NOAA buoy data from the National Buoy Data Center
 \details{
 Functions:
 \itemize{
- \item buoys Get available buoys given a dataset name
- \item buoy Get data given some combination of dataset name, buoy ID, year, and datatype
+ \item buoy_stations - Get buoy stations. A cached version of the dataset
+ is available in the package. Beware, takes a long time to run if you
+ do \code{refresh = TRUE}
+ \item buoys - Get available buoys given a dataset name
+ \item buoy - Get data given some combination of dataset name, buoy ID,
+ year, and datatype
 }
 
 Options for the dataset parameter. One of:
@@ -46,6 +57,13 @@ Options for the dataset parameter. One of:
 }
 \examples{
 \dontrun{
+# Get buoy station information
+x <- buoy_stations()
+library("leaflet")
+leaflet(data = na.omit(x)) \%>\%
+  leaflet::addTiles() \%>\%
+  leaflet::addCircles(~lon, ~lat, opacity = 0.5)
+
 # Get available buoys
 buoys(dataset = 'cwind')
 
@@ -74,6 +92,6 @@ buoy(dataset = "dart", buoyid = "dartu")
 }
 }
 \references{
-\url{http://www.ndbc.noaa.gov/} and \url{http://dods.ndbc.noaa.gov/}
+\url{http://www.ndbc.noaa.gov/}, \url{http://dods.ndbc.noaa.gov/}
 }
 

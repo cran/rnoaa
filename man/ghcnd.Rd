@@ -4,7 +4,7 @@
 \alias{ghcnd}
 \title{Get all GHCND data from a single weather site}
 \usage{
-ghcnd(stationid, path = "~/.rnoaa/ghcnd", ...)
+ghcnd(stationid, ...)
 }
 \arguments{
 \item{stationid}{A character string giving the identification of the weather
@@ -13,21 +13,18 @@ current list of stations, the user can use the \code{\link{ghcnd_stations}}
 function. To identify stations within a certain radius of a location, the
 user can use the \code{\link{meteo_nearby_stations}} function.}
 
-\item{path}{A character vector giving the path to the directory to cache
-the files locally. By default, the function uses \code{~/.rnoaa/isd}.}
-
 \item{...}{Additional curl options to pass through to \code{\link[httr]{GET}}.}
 }
 \value{
-A list object with a single slot, \code{data}, which contains the
-   dataframe pulled from NOAA's FTP for the queried weather site. A README
-   file with more information about the format of this file is available
-   from NOAA (\url{http://www1.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt}).
-   This file is formatted so each line of the file gives the daily weather
-   observations for a single weather variable for all days of one month of
-   one year. In addition to measurements, columns are included for certain
-   flags, which add information on observation sources and quality and are
-   further explained in NOAA's README file for the data.
+A tibble (data.frame) which contains data pulled from NOAA's FTP
+server for the queried weather site. A README file with more information
+about the format of this file is available from NOAA
+(\url{http://www1.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt}).
+This file is formatted so each line of the file gives the daily weather
+observations for a single weather variable for all days of one month of
+one year. In addition to measurements, columns are included for certain
+flags, which add information on observation sources and quality and are
+further explained in NOAA's README file for the data.
 }
 \description{
 This function uses ftp to access the Global Historical Climatology Network
@@ -35,40 +32,42 @@ daily weather data from NOAA's FTP server for a single weather site. It
 requires the site identification number for that site and will pull the
 entire weather dataset for the site.
 }
-\note{
+\details{
 This function saves the full set of weather data for the queried
 site locally in the directory specified by the \code{path} argument.
+
+You can access the path for the cached file via \code{attr(x, "source")}
 }
 \examples{
 \dontrun{
+stations <- ghcnd_stations()
+
 # Get data
 ghcnd(stationid = "AGE00147704")
 
 stations <- ghcnd_stations()
-ghcnd(stations$data$id[40])
-ghcnd(stations$data$id[4000])
-ghcnd(stations$data$id[10000])
-ghcnd(stations$data$id[80000])
-ghcnd(stations$data$id[80300])
+ghcnd(stations$id[40])
+ghcnd(stations$id[4000])
+ghcnd(stations$id[10000])
+ghcnd(stations$id[80000])
+ghcnd(stations$id[80300])
 
 library("dplyr")
-ghcnd(stations$data$id[80300])$data \%>\% select(id, element) \%>\% slice(1:3)
+ghcnd(stations$id[80300]) \%>\% select(id, element) \%>\% slice(1:3)
 
 # manipulate data
 ## using built in fxns
-dat <- ghcnd(stationid="AGE00147704")
+dat <- ghcnd(stationid = "AGE00147704")
 (alldat <- ghcnd_splitvars(dat))
 library("ggplot2")
 ggplot(subset(alldat$tmax, tmax >= 0), aes(date, tmax)) + geom_point()
 
 ## using dplyr
 library("dplyr")
-dat <- ghcnd(stationid="AGE00147704")
-dat$data \%>\%
+dat <- ghcnd(stationid = "AGE00147704")
+dat \%>\%
  filter(element == "PRCP", year == 1909)
-
 }
-
 }
 \author{
 Scott Chamberlain \email{myrmecocystus@gmail.com},
@@ -79,8 +78,7 @@ To generate a weather dataset for a single weather site that has been
 cleaned to a tidier weather format, the user should use the
 \code{\link{ghcnd_search}} function, which calls \code{\link{ghcnd}} and then
 processes the output, or \code{\link{meteo_tidy_ghcnd}}, which wraps the
-\code{\link{ghcnd_search}} function to output a tidy dataframe rather than a
-list object. To pull GHCND data from multiple monitors, see
-\code{\link{meteo_pull_monitors}}.
+\code{\link{ghcnd_search}} function to output a tidy dataframe. To pull
+GHCND data from multiple monitors, see \code{\link{meteo_pull_monitors}}.
 }
 

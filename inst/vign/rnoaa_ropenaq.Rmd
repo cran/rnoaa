@@ -1,13 +1,12 @@
----
-title: "Complementing air quality data with weather data using rnoaa"
-author: "Maëlle Salmon"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{air_quality_and_weather_data}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{air_quality_and_weather_data}
+%\VignetteEncoding{UTF-8}
+-->
+
+# Complementing air quality data with weather data using rnoaa
+
+__Author__ Maëlle Salmon
 
 # Introduction: getting air quality data
 
@@ -18,20 +17,17 @@ First, we need to know how many measures are available for Delhi for March 2016.
 ```{r, message = FALSE, warning = FALSE, eval = FALSE, echo = TRUE}
 library("ropenaq")
 
-countMeasures <- aq_measurements(city = "Delhi",
-                                     parameter = "pm25",
-                                     date_from = "2016-03-01",
-                                 date_to = "2016-03-31",
-                                     limit = 1)$meta$found
+res <- aq_measurements(
+  city = "Delhi", parameter = "pm25",
+  date_from = "2016-03-01", date_to = "2016-03-31", limit = 1)
+countMeasures <- attr(res, "meta")$found
 measurementsDelhi <- NULL
 for (page in 1:ceiling(countMeasures/1000)){
-  measurementsDelhi <- rbind(measurementsDelhi,
-                             aq_measurements(city = "Delhi",
-                                     parameter = "pm25",
-                                     date_from = "2016-03-01",
-                                 date_to = "2016-03-31",
-                                     limit = 1000, 
-                                     page = page)$results)
+  measurementsDelhi <- rbind(
+    measurementsDelhi,
+    aq_measurements(city = "Delhi", parameter = "pm25",
+                    date_from = "2016-03-01", date_to = "2016-03-31",
+                    limit = 1000, page = page))
 }
 save(measurementsDelhi, file = "data/measurementsDelhi.RData")
 ```
@@ -51,7 +47,7 @@ We now transform these data into daily data.
 # only keep stations with geographical information
 measurementsDelhi <- filter(measurementsDelhi, !is.na(latitude))
 # now transform to daily data
-measurementsDelhi <- measurementsDelhi %>% 
+measurementsDelhi <- measurementsDelhi %>%
   mutate(day = as.Date(dateLocal)) %>%
   group_by(location, day) %>%
   summarize(value = mean(value),
@@ -72,9 +68,9 @@ Here we query stations with a less than 15km distance from the air quality stati
 
 ```{r, eval = FALSE, echo = TRUE}
 library("rnoaa")
-station_data <- ghcnd_stations()[[1]]
+station_data <- ghcnd_stations()
 lat_lon_df <- select(measurementsDelhi,
-                     location, 
+                     location,
                      latitude,
                      longitude) %>% unique() %>%
   ungroup() %>%
@@ -99,12 +95,14 @@ stationsDelhi %>% knitr::kable()
 
 Now let us plot the AQ and weather stations on a quick and dirty map with no legend, red for AQ stations, blue for weather stations.
 
-```{r, message = FALSE, warning = FALSE, fig.width = 10, fig.height = 10}
+> Not shown
+
+```{r, message = FALSE, warning = FALSE, fig.width = 10, fig.height = 10, eval=FALSE}
 library("ggmap")
 map <- get_map(location = "Delhi", zoom = 11)
-ggmap(map) + 
+ggmap(map) +
   geom_point(aes(x = longitude, y = latitude),
-             data = stationsDelhi, col = "blue", size = 4)+ 
+             data = stationsDelhi, col = "blue", size = 4)+
   geom_point(aes(x = longitude, y = latitude),
              data = measurementsDelhi, col = "red", size = 4)
 ```
@@ -139,11 +137,11 @@ measurementsDelhi %>% head() %>% knitr::kable()
 
 
  Now some locations are air quality locations and have only missing values in the weather columns, and some locations are weather locations and have only missing values in the air quality columns.
- 
+
 We can plot the data we got.
 
 ```{r, fig.width = 10, fig.height = 5, warning = FALSE}
-data_plot <- measurementsDelhi %>% 
+data_plot <- measurementsDelhi %>%
   rename(pm25 = value) %>%
   select(- longitude, - latitude, - tmax, - tmin) %>%
   tidyr::gather(parameter, value, pm25:prcp)

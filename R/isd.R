@@ -5,34 +5,52 @@
 #' @param usaf,wban (character) USAF and WBAN code. Required
 #' @param year (numeric) One of the years from 1901 to the current year.
 #' Required.
-#' @param path (character) A path to store the files, a directory. Default:
-#' \code{~/.rnoaa/isd}. Required.
 #' @param overwrite (logical) To overwrite the path to store files in or not,
 #' Default: \code{TRUE}
-#' @param cleanup (logical) If \code{TRUE}, remove compressed \code{.gz} file at end of
-#' function execution. Processing data takes up a lot of time, so we cache a cleaned version
-#' of the data. Cleaning up will save you on disk space. Default: \code{TRUE}
+#' @param cleanup (logical) If \code{TRUE}, remove compressed \code{.gz} file
+#' at end of function execution. Processing data takes up a lot of time, so we
+#' cache a cleaned version of the data. Cleaning up will save you on disk
+#' space. Default: \code{TRUE}
 #' @param ... Curl options passed on to \code{\link[httr]{GET}}
 #'
 #' @references ftp://ftp.ncdc.noaa.gov/pub/data/noaa/
-#' @seealso \code{\link{isd_stations}}
+#' @family isd
 #'
-#' @details This function first looks for whether the data for your specific query has
-#' already been downloaded previously in the directory given by the \code{path}
-#' parameter. If not found, the data is requested form NOAA's FTP server. The first time
-#' a dataset is pulled down we must a) download the data, b) process the data, and c) save
-#' a compressed .rds file to disk. The next time the same data is requested, we only have
-#' to read back in the .rds file, and is quite fast. The benfit of writing to .rds files
-#' is that data is compressed, taking up less space on your disk, and data is read back in
-#' quickly, without changing any data classes in your data, whereas we'd have to jump
-#' through hoops to do that with reading in csv. The processing can take quite a long time
-#' since the data is quite messy and takes a bunch of regex to split apart text strings.
-#' We hope to speed this process up in the future. See examples below for different behavior.
+#' @details \code{isd} saves the full set of weather data for the queried
+#' site locally in the directory specified by the \code{path} argument. You
+#' can access the path for the cached file via \code{attr(x, "source")}
+#'
+#' @return A tibble (data.frame).
+#'
+#' @details This function first looks for whether the data for your specific
+#' query has already been downloaded previously in the directory given by
+#' the \code{path} parameter. If not found, the data is requested form NOAA's
+#' FTP server. The first time a dataset is pulled down we must a) download the
+#' data, b) process the data, and c) save a compressed .rds file to disk. The
+#' next time the same data is requested, we only have to read back in the
+#' .rds file, and is quite fast. The benfit of writing to .rds files is that
+#' data is compressed, taking up less space on your disk, and data is read
+#' back in quickly, without changing any data classes in your data, whereas
+#' we'd have to jump through hoops to do that with reading in csv. The
+#' processing can take quite a long time since the data is quite messy and
+#' takes a bunch of regex to split apart text strings. We hope to speed
+#' this process up in the future. See examples below for different behavior.
+#'
+#' @section Errors:
+#' Note that when you get an error similar to \code{Error: download failed for
+#' ftp://ftp.ncdc.noaa.gov/pub/data/noaa/1955/011490-99999-1955.gz}, the
+#' file does not exist on NOAA's ftp servers. If your internet is down,
+#' you'll get a different error.
+#'
+#' @section File storage:
+#' We use \pkg{rappdirs} to store files, see
+#' \code{\link[rappdirs]{user_cache_dir}} for how we determine the directory on
+#' your machine to save files to, and run
+#' \code{rappdirs::user_cache_dir("rnoaa")} to get that directory.
 #'
 #' @examples \dontrun{
 #' # Get station table
-#' stations <- isd_stations()
-#' head(stations)
+#' (stations <- isd_stations())
 #'
 #' ## plot stations
 #' ### remove incomplete cases, those at 0,0
@@ -65,15 +83,14 @@
 #' res3 <- isd(usaf="702700", wban="00489", year=2015)
 #' res4 <- isd(usaf="109711", wban=99999, year=1970)
 #' ## combine data
-#' ### uses rbind.isd (all inputs of which must be of class isd)
-#' res_all <- rbind(res1, res2, res3, res4)
+#' library(dplyr)
+#' res_all <- bind_rows(res1, res2, res3, res4)
 #' # add date time
 #' library("lubridate")
 #' res_all$date_time <- ymd_hm(
 #'   sprintf("%s %s", as.character(res_all$date), res_all$time)
 #' )
 #' ## remove 999's
-#' library("dplyr")
 #' res_all <- res_all %>% filter(temperature < 900)
 #' ## plot
 #' library("ggplot2")
@@ -81,36 +98,28 @@
 #'   geom_line() +
 #'   facet_wrap(~usaf_station, scales = "free_x")
 #' }
-isd <- function(usaf, wban, year, path = "~/.rnoaa/isd", overwrite = TRUE, cleanup = TRUE, ...) {
-  rdspath <- isd_local(usaf, wban, year, path)
+isd <- function(usaf, wban, year, overwrite = TRUE, cleanup = TRUE, ...) {
+  calls <- names(sapply(match.call(), deparse))[-1]
+  calls_vec <- "path" %in% calls
+  if (any(calls_vec)) {
+    stop("The parameter path has been removed, see docs for ?isd",
+         call. = FALSE)
+  }
+
+  path <- file.path(rnoaa_cache_dir, "isd")
+  rdspath <- isd_local(usaf, wban, year, path, ".rds")
   if (!is_isd(x = rdspath)) {
     isd_GET(bp = path, usaf, wban, year, overwrite, ...)
   }
   message(sprintf("<path>%s", rdspath), "\n")
-  structure(list(data = read_isd(x = rdspath, sections, cleanup)), class = "isd")
-}
-
-#' @export
-#' @rdname isd
-rbind.isd <- function(...) {
-  input <- list(...)
-  if (!all(sapply(input, class) == "isd")) {
-    stop("All inputs must be of class isd", call. = FALSE)
-  }
-  input <- lapply(input, "[[", "data")
-  bind_rows(input)
-}
-
-#' @export
-print.isd <- function(x, ..., n = 10) {
-  cat("<ISD Data>", sep = "\n")
-  cat(sprintf("Size: %s X %s\n", NROW(x$data), NCOL(x$data)), sep = "\n")
-  trunc_mat_(x$data, n = n)
+  df <- read_isd(x = rdspath, sections, cleanup)
+  attr(df, "source") <- rdspath
+  df
 }
 
 isd_GET <- function(bp, usaf, wban, year, overwrite, ...) {
   dir.create(bp, showWarnings = FALSE, recursive = TRUE)
-  fp <- isd_local(usaf, wban, year, bp)
+  fp <- isd_local(usaf, wban, year, bp, ".gz")
   tryget <- tryCatch(suppressWarnings(GET(isd_remote(usaf, wban, year), write_disk(fp, overwrite), ...)),
            error = function(e) e)
   if (inherits(tryget, "error")) {
@@ -125,8 +134,8 @@ isd_remote <- function(usaf, wban, year) {
   file.path(isdbase(), year, sprintf("%s-%s-%s%s", usaf, wban, year, ".gz"))
 }
 
-isd_local <- function(usaf, wban, year, path) {
-  file.path(path, sprintf("%s-%s-%s%s", usaf, wban, year, ".gz"))
+isd_local <- function(usaf, wban, year, path, ext) {
+  file.path(path, sprintf("%s-%s-%s%s", usaf, wban, year, ext))
 }
 
 is_isd <- function(x) {
@@ -136,17 +145,18 @@ is_isd <- function(x) {
 isdbase <- function() 'ftp://ftp.ncdc.noaa.gov/pub/data/noaa'
 
 read_isd <- function(x, sections, cleanup) {
-  path_rds <- sub("gz", "rds", x)
+  #path_rds <- sub("gz", "rds", x)
+  path_rds <- x
   if (file.exists(path_rds)) {
     df <- readRDS(path_rds)
   } else {
-    lns <- readLines(x)
+    lns <- readLines(sub("rds", "gz", x), encoding = "latin1")
     linesproc <- lapply(lns, each_line, sections = sections)
     df <- bind_rows(linesproc)
     df <- trans_vars(df)
     cache_rds(path_rds, df)
     if (cleanup) {
-      unlink(x)
+      unlink(sub("rds", "gz", x))
     }
   }
   return(df)
@@ -166,14 +176,14 @@ cache_rds <- function(x, y) {
 
 trans_vars <- function(w) {
   # fix scaled variables
-  w$latitude <- trans_var(trycol(w$latitude), 1000)
-  w$longitude <- trans_var(trycol(w$longitude), 1000)
-  w$elevation <- trans_var(trycol(w$elevation), 10)
-  w$wind_speed <- trans_var(trycol(w$wind_speed), 10)
-  w$temperature <- trans_var(trycol(w$temperature), 10)
-  w$temperature_dewpoint <- trans_var(trycol(w$temperature_dewpoint), 10)
-  w$air_pressure <- trans_var(trycol(w$air_pressure), 10)
-  w$precipitation <- trans_var(trycol(w$precipitation), 10)
+  w$latitude <- trans_var(trycol(suppressWarnings(w$latitude)), 1000)
+  w$longitude <- trans_var(trycol(suppressWarnings(w$longitude)), 1000)
+  w$elevation <- trans_var(trycol(suppressWarnings(w$elevation)), 10)
+  w$wind_speed <- trans_var(trycol(suppressWarnings(w$wind_speed)), 10)
+  w$temperature <- trans_var(trycol(suppressWarnings(w$temperature)), 10)
+  w$temperature_dewpoint <- trans_var(trycol(suppressWarnings(w$temperature_dewpoint)), 10)
+  w$air_pressure <- trans_var(trycol(suppressWarnings(w$air_pressure)), 10)
+  w$precipitation <- trans_var(trycol(suppressWarnings(w$precipitation)), 10)
 
   # as date
   w$date <- as.Date(w$date, "%Y%m%d")

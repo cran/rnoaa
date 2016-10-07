@@ -2,13 +2,9 @@
 % Please edit documentation in R/isd.R
 \name{isd}
 \alias{isd}
-\alias{rbind.isd}
 \title{Get NOAA ISD/ISH data from NOAA FTP server.}
 \usage{
-isd(usaf, wban, year, path = "~/.rnoaa/isd", overwrite = TRUE,
-  cleanup = TRUE, ...)
-
-rbind.isd(...)
+isd(usaf, wban, year, overwrite = TRUE, cleanup = TRUE, ...)
 }
 \arguments{
 \item{usaf, wban}{(character) USAF and WBAN code. Required}
@@ -16,39 +12,60 @@ rbind.isd(...)
 \item{year}{(numeric) One of the years from 1901 to the current year.
 Required.}
 
-\item{path}{(character) A path to store the files, a directory. Default:
-\code{~/.rnoaa/isd}. Required.}
-
 \item{overwrite}{(logical) To overwrite the path to store files in or not,
 Default: \code{TRUE}}
 
-\item{cleanup}{(logical) If \code{TRUE}, remove compressed \code{.gz} file at end of
-function execution. Processing data takes up a lot of time, so we cache a cleaned version
-of the data. Cleaning up will save you on disk space. Default: \code{TRUE}}
+\item{cleanup}{(logical) If \code{TRUE}, remove compressed \code{.gz} file
+at end of function execution. Processing data takes up a lot of time, so we
+cache a cleaned version of the data. Cleaning up will save you on disk
+space. Default: \code{TRUE}}
 
 \item{...}{Curl options passed on to \code{\link[httr]{GET}}}
+}
+\value{
+A tibble (data.frame).
 }
 \description{
 Get NOAA ISD/ISH data from NOAA FTP server.
 }
 \details{
-This function first looks for whether the data for your specific query has
-already been downloaded previously in the directory given by the \code{path}
-parameter. If not found, the data is requested form NOAA's FTP server. The first time
-a dataset is pulled down we must a) download the data, b) process the data, and c) save
-a compressed .rds file to disk. The next time the same data is requested, we only have
-to read back in the .rds file, and is quite fast. The benfit of writing to .rds files
-is that data is compressed, taking up less space on your disk, and data is read back in
-quickly, without changing any data classes in your data, whereas we'd have to jump
-through hoops to do that with reading in csv. The processing can take quite a long time
-since the data is quite messy and takes a bunch of regex to split apart text strings.
-We hope to speed this process up in the future. See examples below for different behavior.
+\code{isd} saves the full set of weather data for the queried
+site locally in the directory specified by the \code{path} argument. You
+can access the path for the cached file via \code{attr(x, "source")}
+
+This function first looks for whether the data for your specific
+query has already been downloaded previously in the directory given by
+the \code{path} parameter. If not found, the data is requested form NOAA's
+FTP server. The first time a dataset is pulled down we must a) download the
+data, b) process the data, and c) save a compressed .rds file to disk. The
+next time the same data is requested, we only have to read back in the
+.rds file, and is quite fast. The benfit of writing to .rds files is that
+data is compressed, taking up less space on your disk, and data is read
+back in quickly, without changing any data classes in your data, whereas
+we'd have to jump through hoops to do that with reading in csv. The
+processing can take quite a long time since the data is quite messy and
+takes a bunch of regex to split apart text strings. We hope to speed
+this process up in the future. See examples below for different behavior.
+}
+\section{Errors}{
+
+Note that when you get an error similar to \code{Error: download failed for
+ftp://ftp.ncdc.noaa.gov/pub/data/noaa/1955/011490-99999-1955.gz}, the
+file does not exist on NOAA's ftp servers. If your internet is down,
+you'll get a different error.
+}
+
+\section{File storage}{
+
+We use \pkg{rappdirs} to store files, see
+\code{\link[rappdirs]{user_cache_dir}} for how we determine the directory on
+your machine to save files to, and run
+\code{rappdirs::user_cache_dir("rnoaa")} to get that directory.
 }
 \examples{
 \dontrun{
 # Get station table
-stations <- isd_stations()
-head(stations)
+(stations <- isd_stations())
 
 ## plot stations
 ### remove incomplete cases, those at 0,0
@@ -81,15 +98,14 @@ res2 <- isd(usaf="172007", wban="99999", year=2015)
 res3 <- isd(usaf="702700", wban="00489", year=2015)
 res4 <- isd(usaf="109711", wban=99999, year=1970)
 ## combine data
-### uses rbind.isd (all inputs of which must be of class isd)
-res_all <- rbind(res1, res2, res3, res4)
+library(dplyr)
+res_all <- bind_rows(res1, res2, res3, res4)
 # add date time
 library("lubridate")
 res_all$date_time <- ymd_hm(
   sprintf("\%s \%s", as.character(res_all$date), res_all$time)
 )
 ## remove 999's
-library("dplyr")
 res_all <- res_all \%>\% filter(temperature < 900)
 ## plot
 library("ggplot2")
@@ -102,6 +118,8 @@ ggplot(res_all, aes(date_time, temperature)) +
 ftp://ftp.ncdc.noaa.gov/pub/data/noaa/
 }
 \seealso{
-\code{\link{isd_stations}}
+Other isd: \code{\link{isd_read}},
+  \code{\link{isd_stations_search}},
+  \code{\link{isd_stations}}
 }
 

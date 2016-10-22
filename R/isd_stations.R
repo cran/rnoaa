@@ -24,6 +24,12 @@
 #'  \item end - End date of data coverage, of form YYYYMMDD, numeric
 #' }
 #'
+#' @section File storage:
+#' We use \pkg{rappdirs} to store files, see
+#' \code{\link[rappdirs]{user_cache_dir}} for how we determine the directory on
+#' your machine to save files to, and run
+#' \code{rappdirs::user_cache_dir("rnoaa")} to get that directory.
+#'
 #' @examples \dontrun{
 #' # Get station table
 #' (stations <- isd_stations())
@@ -39,7 +45,7 @@
 #'   addCircles()
 #' }
 isd_stations <- function(refresh = FALSE, ...) {
-  path <- file.path(rnoaa_cache_dir, "isd_stations.rds")
+  path <- file.path(rnoaa_cache_dir(), "isd_stations.rds")
   if (refresh || !file.exists(path)) {
     res <- suppressWarnings(GET(paste0(isdbase(), "/isd-history.csv"), ...))
     df <- read.csv(text = utcf8(res), header = TRUE, colClasses = 'character')

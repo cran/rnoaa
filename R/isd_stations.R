@@ -45,16 +45,19 @@
 #'   addCircles()
 #' }
 isd_stations <- function(refresh = FALSE, ...) {
-  path <- file.path(rnoaa_cache_dir(), "isd_stations.rds")
+  path <- normalizePath(file.path(rnoaa_cache_dir(), "isd_stations.rds"))
+  basedir <- normalizePath(dirname(path), winslash = "/")
   if (refresh || !file.exists(path)) {
-    res <- suppressWarnings(GET(paste0(isdbase(), "/isd-history.csv"), ...))
-    df <- read.csv(text = utcf8(res), header = TRUE, colClasses = 'character')
+    df <- read.csv(paste0(isdbase(), "/isd-history.csv"),
+                   header = TRUE, colClasses = 'character',
+                   encoding = "UTF-8")
     df$LAT <- as.numeric(df$LAT)
     df$LON <- as.numeric(df$LON)
     df$ELEV.M. <- as.numeric(df$ELEV.M.)
     df$BEGIN <- as.numeric(df$BEGIN)
     df$END <- as.numeric(df$END)
     dat <- stats::setNames(df, gsub("_$", "", gsub("\\.", "_", tolower(names(df)))))
+    if (!file.exists(basedir)) dir.create(basedir, recursive = TRUE)
     saveRDS(dat, file = path)
     as_data_frame(dat)
   } else {

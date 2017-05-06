@@ -7,7 +7,7 @@ Description: Client for many 'NOAA' data sources including the 'NCDC' climate
     for 'NOAA' sea ice data, the 'NOAA' severe weather inventory, 'NOAA' Historical
     Observing 'Metadata' Repository ('HOMR') data, 'NOAA' storm data via 'IBTrACS',
     tornado data via the 'NOAA' storm prediction center, and more.
-Version: 0.6.6
+Version: 0.7.0
 License: MIT + file LICENSE
 Encoding: UTF-8
 Authors@R: c(
@@ -25,14 +25,14 @@ URL: https://github.com/ropensci/rnoaa
 BugReports: https://github.com/ropensci/rnoaa/issues
 LazyData: true
 VignetteBuilder: knitr
-Imports: utils, httr (>= 1.0.0), lubridate, dplyr, tidyr, ggplot2,
-        scales, XML, xml2, jsonlite, rappdirs, gridExtra, tibble,
-        isdparser
-Suggests: roxygen2 (>= 5.0.1), testthat, knitr, taxize, ncdf4, leaflet,
-        rgdal, rmarkdown, purrr, covr, ggmap, ropenaq
-RoxygenNote: 5.0.1
+Imports: utils, httr (>= 1.0.0), crul (>= 0.2.0), lubridate, dplyr,
+        tidyr, ggplot2, scales, XML, xml2, jsonlite, rappdirs,
+        gridExtra, tibble, isdparser (>= 0.2.0), geonames, hoardr
+Suggests: roxygen2 (>= 6.0.1), testthat, knitr, taxize, ncdf4, leaflet,
+        rgdal, rmarkdown, purrr, ggmap, ropenaq
+RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2016-11-17 00:31:04 UTC; sacmac
+Packaged: 2017-05-05 23:49:32 UTC; sacmac
 Author: Scott Chamberlain [aut, cre],
   Brooke Anderson [ctb],
   Maëlle Salmon [ctb],
@@ -44,4 +44,4 @@ Author: Scott Chamberlain [aut, cre],
   Hart Edmund [ctb]
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
 Repository: CRAN
-Date/Publication: 2016-11-17 08:27:45
+Date/Publication: 2017-05-06 05:28:43 UTC

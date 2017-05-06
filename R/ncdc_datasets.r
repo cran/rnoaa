@@ -16,6 +16,7 @@
 #' @return A data.frame for all datasets, or a list of length two, each with
 #' a data.frame.
 #' @family ncdc
+#' @references \url{https://www.ncdc.noaa.gov/cdo-web/webservices/v2}
 #' @examples \dontrun{
 #' # Get a table of all datasets
 #' ncdc_datasets()
@@ -36,6 +37,7 @@
 #' # Multiple datatypeid's
 #' ncdc_datasets(datatypeid=c('ACMC','ACMH','ACSC'))
 #' ncdc_datasets(datasetid='ANNUAL', datatypeid=c('ACMC','ACMH','ACSC'))
+#' ncdc_datasets(datasetid='GSOY', datatypeid=c('ACMC','ACMH','ACSC'))
 #'
 #' # Multiple locationid's
 #' ncdc_datasets(locationid="FIPS:30091")

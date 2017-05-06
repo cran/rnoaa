@@ -17,6 +17,7 @@
 #' e.g., GHCND:USW00014895
 #' @return A list of metadata.
 #' @family ncdc
+#' @references \url{https://www.ncdc.noaa.gov/cdo-web/webservices/v2}
 #' @examples \dontrun{
 #' # Get metadata on all stations
 #' ncdc_stations()
@@ -34,8 +35,9 @@
 #' }$data)
 #'
 #' # Displays all stations within GHCN-Daily (100 Stations per page limit)
-#' ncdc_stations(datasetid='GHCND')
-#' ncdc_stations(datasetid=c('GHCND', 'ANNUAL'))
+#' ncdc_stations(datasetid = 'GHCND')
+#' ncdc_stations(datasetid = 'ANNUAL')
+#' ncdc_stations(datasetid = 'GSOY')
 #'
 #' # Station
 #' ncdc_stations(datasetid='NORMAL_DLY', stationid='GHCND:USW00014895')

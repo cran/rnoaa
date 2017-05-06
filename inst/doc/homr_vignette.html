@@ -247,7 +247,7 @@ names(res)
 #&gt; 
 #&gt; $head
 #&gt;                  preferredName latitude_dec longitude_dec precision
-#&gt; 1 PASO ROBLES MUNICIPAL AP, CA      35.6697     -120.6283    DDMMSS
+#&gt; 1 PASO ROBLES MUNICIPAL AP, CA      35.6697     -120.6283   DDddddd
 #&gt;             por.beginDate por.endDate
 #&gt; 1 1949-10-05T00:00:00.000     Present
 #&gt; 
@@ -283,7 +283,7 @@ names(res)
 #&gt; 
 #&gt; $head
 #&gt;                  preferredName latitude_dec longitude_dec precision
-#&gt; 1 PASO ROBLES MUNICIPAL AP, CA      35.6697     -120.6283    DDMMSS
+#&gt; 1 PASO ROBLES MUNICIPAL AP, CA      35.6697     -120.6283   DDddddd
 #&gt;             por.beginDate por.endDate
 #&gt; 1 1949-10-05T00:00:00.000     Present
 #&gt; 
@@ -378,32 +378,58 @@ library(&quot;plyr&quot;)
 ldply(res, function(x) x$location$latlon)
 </code></pre>
 
-<pre><code>#&gt;         .id latitude_dec longitude_dec          date.beginDate
-#&gt; 1  30095009          6.2        -2.333                 Unknown
-#&gt; 2  30095161        6.083         -0.25                 Unknown
-#&gt; 3  30095204        5.933        -0.983                 Unknown
-#&gt; 4  30095262        9.033        -2.483                 Unknown
-#&gt; 5  30095272         7.75          -2.1                 Unknown
-#&gt; 6  30095306       10.083        -2.508                 Unknown
-#&gt; 7  30095319        9.557        -0.863                 Unknown
-#&gt; 8  30095440        5.783         0.633                 Unknown
-#&gt; 9  30095471        4.867        -2.233                 Unknown
-#&gt; 10 30095567          6.1         0.117                 Unknown
-#&gt; 11 30095838        7.362        -2.329                 Unknown
-#&gt; 12 30095905        5.617           0.0                 Unknown
-#&gt; 13 30095956         10.9          -1.1                 Unknown
-#&gt; 14 30096063        7.817        -0.033                 Unknown
-#&gt; 15 30096177          6.6         0.467                 Unknown
-#&gt; 16 30096242        5.605        -0.167                 Unknown
-#&gt; 17 30096313        6.715        -1.591                 Unknown
-#&gt; 18 30096407        4.896        -1.775                 Unknown
-#&gt; 19 30096986         5.85       -0.1833                 Unknown
-#&gt; 20 30097966         5.55          -0.2                 Unknown
-#&gt; 21 30099309          9.4          -0.9                 Unknown
-#&gt; 22 30100184          5.0          -2.0                 Unknown
-#&gt; 23 30100285         6.47          0.33                 Unknown
-#&gt; 24 30100821          8.2          0.57                 Unknown
-#&gt; 25 30104395          9.5         -0.85 1973-01-01T00:00:00.000
+<pre><code>#&gt;         .id latitude_rptd longitude_rptd latitude_dec longitude_dec
+#&gt; 1  30095009           6.2         -2.333          6.2        -2.333
+#&gt; 2  30095161         6.083           -.25        6.083         -0.25
+#&gt; 3  30095204         5.933          -.983        5.933        -0.983
+#&gt; 4  30095262         9.033         -2.483        9.033        -2.483
+#&gt; 5  30095272          7.75           -2.1         7.75          -2.1
+#&gt; 6  30095306        10.083         -2.508       10.083        -2.508
+#&gt; 7  30095319         9.557          -.863        9.557        -0.863
+#&gt; 8  30095440         5.783           .633        5.783         0.633
+#&gt; 9  30095471         4.867         -2.233        4.867        -2.233
+#&gt; 10 30095567           6.1           .117          6.1         0.117
+#&gt; 11 30095838         7.362         -2.329        7.362        -2.329
+#&gt; 12 30095905         5.617              0        5.617           0.0
+#&gt; 13 30095956          10.9           -1.1         10.9          -1.1
+#&gt; 14 30096063         7.817          -.033        7.817        -0.033
+#&gt; 15 30096177           6.6           .467          6.6         0.467
+#&gt; 16 30096242         5.605          -.167        5.605        -0.167
+#&gt; 17 30096313         6.715         -1.591        6.715        -1.591
+#&gt; 18 30096407         4.896         -1.775        4.896        -1.775
+#&gt; 19 30096986          5.85         -.1833         5.85       -0.1833
+#&gt; 20 30097966          5.55            -.2         5.55          -0.2
+#&gt; 21 30099309           9.4            -.9          9.4          -0.9
+#&gt; 22 30100184             5             -2          5.0          -2.0
+#&gt; 23 30100285          6.47            .33         6.47          0.33
+#&gt; 24 30100821           8.2            .57          8.2          0.57
+#&gt; 25 30104395           9.5           -.85          9.5         -0.85
+#&gt;    latitude_dms longitude_dms          date.beginDate
+#&gt; 1    06,12,00,N   002,19,59,W                 Unknown
+#&gt; 2    06,04,59,N   000,15,00,W                 Unknown
+#&gt; 3    05,55,59,N   000,58,59,W                 Unknown
+#&gt; 4    09,01,59,N   002,28,59,W                 Unknown
+#&gt; 5    07,45,00,N   002,06,00,W                 Unknown
+#&gt; 6    10,04,59,N   002,30,29,W                 Unknown
+#&gt; 7    09,33,25,N   000,51,47,W                 Unknown
+#&gt; 8    05,46,59,N   000,37,59,E                 Unknown
+#&gt; 9    04,52,01,N   002,13,59,W                 Unknown
+#&gt; 10   06,06,00,N   000,07,01,E                 Unknown
+#&gt; 11   07,21,43,N   002,19,44,W                 Unknown
+#&gt; 12   05,37,01,N   000,00,00,E                 Unknown
+#&gt; 13   10,54,00,N   001,06,00,W                 Unknown
+#&gt; 14   07,49,01,N   000,01,59,W                 Unknown
+#&gt; 15   06,36,00,N   000,28,01,E                 Unknown
+#&gt; 16   05,36,18,N   000,10,01,W                 Unknown
+#&gt; 17   06,42,54,N   001,35,28,W                 Unknown
+#&gt; 18   04,53,46,N   001,46,30,W                 Unknown
+#&gt; 19   05,51,00,N   000,11,00,W                 Unknown
+#&gt; 20   05,33,00,N   000,12,00,W                 Unknown
+#&gt; 21   09,24,00,N   000,54,00,W                 Unknown
+#&gt; 22   05,00,00,N   002,00,00,W                 Unknown
+#&gt; 23   06,28,12,N   000,19,48,E                 Unknown
+#&gt; 24   08,12,00,N   000,34,12,E                 Unknown
+#&gt; 25   09,30,00,N   000,51,00,W 1973-01-01T00:00:00.000
 #&gt;               date.endDate
 #&gt; 1                  Present
 #&gt; 2                  Present
@@ -438,20 +464,20 @@ ldply(res, function(x) x$location$latlon)
 head( ldply(res, &quot;[[&quot;, &quot;head&quot;) )
 </code></pre>
 
-<pre><code>#&gt;        .id         preferredName latitude_dec longitude_dec
-#&gt; 1 30093502     ARDEN 2.8 WSW, NC      35.4589      -82.5652
-#&gt; 2 30077883 WEAVERVILLE 4.2 N, NC      35.7579      -82.5618
-#&gt; 3 20013817     SWANNANOA 2 E, NC         35.6     -82.36667
-#&gt; 4 30026101     ARDEN 1.6 ENE, NC      35.4791      -82.4924
-#&gt; 5 30103070 ASHEVILLE 1.1 NNE, NC       35.589      -82.5428
-#&gt; 6 30023671 SWANNANOA 2.7 NNW, NC      35.6365      -82.4141
+<pre><code>#&gt;        .id            preferredName latitude_dec longitude_dec
+#&gt; 1 30077883    WEAVERVILLE 4.2 N, NC      35.7579      -82.5618
+#&gt; 2 30029796       FAIRVIEW 1.2 S, NC      35.5058      -82.4051
+#&gt; 3 30083542 BLACK MOUNTAIN 0.8 N, NC      35.6263      -82.3297
+#&gt; 4 20013839            LEICESTER, NC        35.65         -82.7
+#&gt; 5 20013817        SWANNANOA 2 E, NC         35.6     -82.36667
+#&gt; 6 20014046      SWANNANOA 2 SSE, NC     35.57333       -82.385
 #&gt;             por.beginDate             por.endDate precision
 #&gt; 1                 Unknown                 Present      &lt;NA&gt;
 #&gt; 2                 Unknown                 Present      &lt;NA&gt;
-#&gt; 3 1931-03-01T00:00:00.000 1987-08-26T00:00:00.000      DDMM
-#&gt; 4                 Unknown                 Present      &lt;NA&gt;
-#&gt; 5                 Unknown                 Present      &lt;NA&gt;
-#&gt; 6                 Unknown                 Present      &lt;NA&gt;
+#&gt; 3                 Unknown                 Present      &lt;NA&gt;
+#&gt; 4 1934-11-05T00:00:00.000 1962-03-31T00:00:00.000      DDMM
+#&gt; 5 1931-03-01T00:00:00.000 1987-08-26T00:00:00.000      DDMM
+#&gt; 6 1984-01-01T00:00:00.000 2008-03-31T00:00:00.000    DDMMSS
 </code></pre>
 
 <h2>Get header information only</h2>
@@ -460,20 +486,20 @@ head( ldply(res, &quot;[[&quot;, &quot;head&quot;) )
 head( ldply(res, &quot;[[&quot;, &quot;head&quot;) )
 </code></pre>
 
-<pre><code>#&gt;        .id                   preferredName latitude_dec longitude_dec
-#&gt; 1 10001871 WILMINGTON NEW CASTLE CO AP, DE      39.6728      -75.6008
-#&gt; 2 10013243              NEW CASTLE AAB, DE     39.68333     -75.58333
-#&gt; 3 10100160            BRIDGEVILLE 1 NW, DE        38.75     -75.61667
-#&gt; 4 10100161               GREENWOOD 2NE, DE      38.8161      -75.5761
-#&gt; 5 10100162                       DOVER, DE      39.1467      -75.5055
-#&gt; 6 10100163                MILFORD 2 SE, DE      38.8983       -75.425
-#&gt;   precision           por.beginDate             por.endDate
-#&gt; 1    DDMMSS 1929-06-01T00:00:00.000                 Present
-#&gt; 2      DDMM 1942-08-01T00:00:00.000 1957-07-31T00:00:00.000
-#&gt; 3      DDMM 1890-01-01T00:00:00.000 1985-12-31T00:00:00.000
-#&gt; 4    DDMMSS 1986-01-01T00:00:00.000 2010-08-04T00:00:00.000
-#&gt; 5    DDMMSS 1870-07-01T00:00:00.000                 Present
-#&gt; 6    DDMMSS 1857-12-01T00:00:00.000 2004-06-25T00:00:00.000
+<pre><code>#&gt;        .id           preferredName latitude_dec longitude_dec precision
+#&gt; 1 20004159     GEORGETOWN 5 SW, DE     38.63333        -75.45      DDMM
+#&gt; 2 30067636        LEWES 0.8 SE, DE      38.7731      -75.1385      &lt;NA&gt;
+#&gt; 3 30027455       DELMAR 2.8 NE, DE      38.4863      -75.5332      &lt;NA&gt;
+#&gt; 4 30075067 PRIME HOOK DELAWARE, DE      38.8333      -75.3333      &lt;NA&gt;
+#&gt; 5 20004158  REHOBOTH BEACH LBS, DE     38.61667     -75.06667      DDMM
+#&gt; 6 30039554    GREENWOOD 2.9 SE, DE      38.7731      -75.5616      &lt;NA&gt;
+#&gt;             por.beginDate             por.endDate
+#&gt; 1 1946-09-14T00:00:00.000 1997-06-01T00:00:00.000
+#&gt; 2                 Unknown                 Present
+#&gt; 3                 Unknown                 Present
+#&gt; 4                 Unknown                 Present
+#&gt; 5                 Unknown                 Present
+#&gt; 6                 Unknown                 Present
 </code></pre>
 
 <h2>Data definitions</h2>

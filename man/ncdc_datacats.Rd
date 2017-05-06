@@ -69,6 +69,7 @@ You can pass your token in as an argument or store it one of two places:
 See \code{\link{Startup}} for information on how to create/find your
 .Rrofile and .Renviron files
 }
+
 \examples{
 \dontrun{
 ## Limit to 10 results
@@ -100,6 +101,8 @@ out <- ncdc_datacats(limit=10, config=progress())
 }
 \references{
 Vignette at \url{http://ropensci.org/tutorials/rnoaa_tutorial.html}
+
+\url{https://www.ncdc.noaa.gov/cdo-web/webservices/v2}
 }
 \seealso{
 Other ncdc: \code{\link{ncdc_combine}},
@@ -109,4 +112,3 @@ Other ncdc: \code{\link{ncdc_combine}},
   \code{\link{ncdc_plot}}, \code{\link{ncdc_stations}},
   \code{\link{ncdc}}
 }
-

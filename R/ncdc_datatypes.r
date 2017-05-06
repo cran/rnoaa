@@ -19,6 +19,7 @@
 #' @return A \code{data.frame} for all datasets, or a list of length two,
 #' each with a data.frame
 #' @family ncdc
+#' @references \url{https://www.ncdc.noaa.gov/cdo-web/webservices/v2}
 #' @examples \dontrun{
 #' # Fetch available data types
 #' ncdc_datatypes()
@@ -28,7 +29,10 @@
 #' ncdc_datatypes(datatypeid="ACSC")
 #'
 #' # datasetid, one or many
+#' ## ANNUAL should be replaced by GSOY, but both exist and give
+#' ## different answers
 #' ncdc_datatypes(datasetid="ANNUAL")
+#' ncdc_datatypes(datasetid="GSOY")
 #' ncdc_datatypes(datasetid=c("ANNUAL", "PRECIP_HLY"))
 #'
 #' # Fetch data types with the air temperature data category

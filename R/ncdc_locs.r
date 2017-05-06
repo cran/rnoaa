@@ -11,6 +11,7 @@
 #' @param locationid A valid location id or a vector or list of location ids.
 #' @return A list containing metadata and the data, or a single data.frame.
 #' @family ncdc
+#' @references \url{https://www.ncdc.noaa.gov/cdo-web/webservices/v2}
 #' @examples \dontrun{
 #' # All locations, first 25 results
 #' ncdc_locs()
@@ -21,7 +22,8 @@
 #' # Fetch available locations for the GHCND (Daily Summaries) dataset
 #' ncdc_locs(datasetid='GHCND')
 #' ncdc_locs(datasetid=c('GHCND', 'ANNUAL'))
-#' ncdc_locs(datasetid=c('GHCND', 'GHCNDMS'))
+#' ncdc_locs(datasetid=c('GSOY', 'ANNUAL'))
+#' ncdc_locs(datasetid=c('GHCND', 'GSOM'))
 #'
 #' # Fetch all U.S. States
 #' ncdc_locs(locationcategoryid='ST', limit=52)

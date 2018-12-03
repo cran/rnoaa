@@ -3,8 +3,10 @@ rnoaa
 
 
 
+[![cran checks](https://cranchecks.info/badges/worst/rnoaa)](https://cranchecks.info/pkgs/rnoaa)
 [![Build Status](https://api.travis-ci.org/ropensci/rnoaa.png)](https://travis-ci.org/ropensci/rnoaa)
 [![Build status](https://ci.appveyor.com/api/projects/status/8daqtllo2sg6me07/branch/master)](https://ci.appveyor.com/project/sckott/rnoaa/branch/master)
+[![cran checks](https://cranchecks.info/badges/worst/rnoaa)](https://cranchecks.info/pkgs/rnoaa)
 [![codecov.io](https://codecov.io/github/ropensci/rnoaa/coverage.svg?branch=master)](https://codecov.io/github/ropensci/rnoaa?branch=master)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/rnoaa?color=C9A115)](https://github.com/metacran/cranlogs.app)
 [![cran version](http://www.r-pkg.org/badges/version/rnoaa)](https://cran.r-project.org/package=rnoaa)
@@ -33,6 +35,9 @@ rnoaa
 * [NOAA CO-OPS - tides and currents data](http://tidesandcurrents.noaa.gov/)
 * [NOAA Climate Prediction Center (CPC)](http://www.cpc.ncep.noaa.gov/)
 * [Africa Rainfall Climatology version 2](ftp://ftp.cpc.ncep.noaa.gov/fews/fewsdata/africa/arc2/ARC2_readme.txt)
+* [Blended Sea Winds](https://www.ncdc.noaa.gov/data-access/marineocean-data/blended-global/blended-sea-winds)
+* [Local Climatological Data](https://www.ncdc.noaa.gov/cdo-web/datatools/lcd)
+* [Storm Events Database](https://www.ncdc.noaa.gov/stormevents/)
 
 ## Help
 
@@ -58,11 +63,11 @@ There are many NOAA NCDC datasets. All data sources work, except `NEXRAD2` and `
 
 |Dataset    |Description                 |Start Date |End Date   | Data Coverage|
 |:----------|:---------------------------|:----------|:----------|-------------:|
-|GHCND      |Daily Summaries             |1763-01-01 |2017-05-01 |          1.00|
-|GSOM       |Global Summary of the Month |1763-01-01 |2017-04-01 |          1.00|
-|GSOY       |Global Summary of the Year  |1763-01-01 |2016-01-01 |          1.00|
-|NEXRAD2    |Weather Radar (Level II)    |1991-06-05 |2017-05-01 |          0.95|
-|NEXRAD3    |Weather Radar (Level III)   |1994-05-20 |2017-04-07 |          0.95|
+|GHCND      |Daily Summaries             |1763-01-01 |2018-11-25 |          1.00|
+|GSOM       |Global Summary of the Month |1763-01-01 |2018-10-01 |          1.00|
+|GSOY       |Global Summary of the Year  |1763-01-01 |2018-01-01 |          1.00|
+|NEXRAD2    |Weather Radar (Level II)    |1991-06-05 |2018-11-26 |          0.95|
+|NEXRAD3    |Weather Radar (Level III)   |1994-05-20 |2018-11-23 |          0.95|
 |NORMAL_ANN |Normals Annual/Seasonal     |2010-01-01 |2010-01-01 |          1.00|
 |NORMAL_DLY |Normals Daily               |2010-01-01 |2010-12-31 |          1.00|
 |NORMAL_HLY |Normals Hourly              |2010-01-01 |2010-12-31 |          1.00|
@@ -146,7 +151,7 @@ library('rnoaa')
 ncdc_locs(locationcategoryid='CITY', sortfield='name', sortorder='desc')
 #> $meta
 #> $meta$totalCount
-#> [1] 1980
+#> [1] 1987
 #> 
 #> $meta$pageCount
 #> [1] 25
@@ -157,37 +162,37 @@ ncdc_locs(locationcategoryid='CITY', sortfield='name', sortorder='desc')
 #> 
 #> $data
 #>       mindate    maxdate                  name datacoverage            id
-#> 1  1892-08-01 2017-03-31            Zwolle, NL       1.0000 CITY:NL000012
-#> 2  1901-01-01 2017-04-29            Zurich, SZ       1.0000 CITY:SZ000007
-#> 3  1957-07-01 2017-04-29         Zonguldak, TU       1.0000 CITY:TU000057
-#> 4  1906-01-01 2017-04-29            Zinder, NG       0.9025 CITY:NG000004
-#> 5  1973-01-01 2017-04-29        Ziguinchor, SG       1.0000 CITY:SG000004
-#> 6  1938-01-01 2017-04-29         Zhytomyra, UP       0.9723 CITY:UP000025
-#> 7  1948-03-01 2017-04-29        Zhezkazgan, KZ       0.9302 CITY:KZ000017
-#> 8  1951-01-01 2017-04-29         Zhengzhou, CH       1.0000 CITY:CH000045
-#> 9  1941-01-01 2017-03-31          Zaragoza, SP       1.0000 CITY:SP000021
+#> 1  1892-08-01 2018-09-30            Zwolle, NL       1.0000 CITY:NL000012
+#> 2  1901-01-01 2018-11-13            Zurich, SZ       1.0000 CITY:SZ000007
+#> 3  1957-07-01 2018-11-13         Zonguldak, TU       1.0000 CITY:TU000057
+#> 4  1906-01-01 2018-11-13            Zinder, NG       0.9025 CITY:NG000004
+#> 5  1973-01-01 2018-11-13        Ziguinchor, SG       1.0000 CITY:SG000004
+#> 6  1938-01-01 2018-11-13         Zhytomyra, UP       0.9723 CITY:UP000025
+#> 7  1948-03-01 2018-11-13        Zhezkazgan, KZ       0.9302 CITY:KZ000017
+#> 8  1951-01-01 2018-11-13         Zhengzhou, CH       1.0000 CITY:CH000045
+#> 9  1941-01-01 2018-09-30          Zaragoza, SP       1.0000 CITY:SP000021
 #> 10 1936-01-01 2009-06-17      Zaporiyhzhya, UP       1.0000 CITY:UP000024
-#> 11 1957-01-01 2017-04-29          Zanzibar, TZ       0.8016 CITY:TZ000019
-#> 12 1973-01-01 2017-04-29            Zanjan, IR       0.9105 CITY:IR000020
-#> 13 1893-01-01 2017-05-01     Zanesville, OH US       1.0000 CITY:US390029
-#> 14 1912-01-01 2017-04-29             Zahle, LE       0.9819 CITY:LE000004
-#> 15 1951-01-01 2017-04-29           Zahedan, IR       0.9975 CITY:IR000019
-#> 16 1860-12-01 2017-04-29            Zagreb, HR       1.0000 CITY:HR000002
-#> 17 1975-08-29 2017-04-29         Zacatecas, MX       0.9306 CITY:MX000036
-#> 18 1947-01-01 2017-04-29 Yuzhno-Sakhalinsk, RS       1.0000 CITY:RS000081
-#> 19 1893-01-01 2017-05-01           Yuma, AZ US       1.0000 CITY:US040015
-#> 20 1942-02-01 2017-05-01   Yucca Valley, CA US       1.0000 CITY:US060048
-#> 21 1885-01-01 2017-05-01      Yuba City, CA US       1.0000 CITY:US060047
-#> 22 1998-02-01 2017-04-29            Yozgat, TU       1.0000 CITY:TU000056
-#> 23 1893-01-01 2017-05-01     Youngstown, OH US       1.0000 CITY:US390028
-#> 24 1894-01-01 2017-05-01           York, PA US       1.0000 CITY:US420024
-#> 25 1869-01-01 2017-05-01        Yonkers, NY US       1.0000 CITY:US360031
+#> 11 1957-01-01 2018-11-13          Zanzibar, TZ       0.8016 CITY:TZ000019
+#> 12 1973-01-01 2018-11-13            Zanjan, IR       0.9105 CITY:IR000020
+#> 13 1893-01-01 2018-11-26     Zanesville, OH US       1.0000 CITY:US390029
+#> 14 1912-01-01 2017-06-19             Zahle, LE       0.9819 CITY:LE000004
+#> 15 1951-01-01 2018-11-13           Zahedan, IR       0.9975 CITY:IR000019
+#> 16 1860-12-01 2018-11-13            Zagreb, HR       1.0000 CITY:HR000002
+#> 17 1975-08-29 2018-11-13         Zacatecas, MX       0.9306 CITY:MX000036
+#> 18 1947-01-01 2018-11-13 Yuzhno-Sakhalinsk, RS       1.0000 CITY:RS000081
+#> 19 1893-01-01 2018-11-26           Yuma, AZ US       1.0000 CITY:US040015
+#> 20 1942-02-01 2018-11-26   Yucca Valley, CA US       1.0000 CITY:US060048
+#> 21 1885-01-01 2018-11-26      Yuba City, CA US       1.0000 CITY:US060047
+#> 22 1998-02-01 2018-11-13            Yozgat, TU       0.9993 CITY:TU000056
+#> 23 1893-01-01 2018-11-26     Youngstown, OH US       1.0000 CITY:US390028
+#> 24 1894-01-01 2018-11-26           York, PA US       1.0000 CITY:US420024
+#> 25 1869-01-01 2018-11-26        Yonkers, NY US       1.0000 CITY:US360031
 #> 
 #> attr(,"class")
 #> [1] "ncdc_locs"
 ```
 
-### Get info on a station by specifcying a dataset, locationtype, location, and station
+### Get info on a station by specifying a dataset, locationtype, location, and station
 
 
 ```r
@@ -197,7 +202,7 @@ ncdc_stations(datasetid='GHCND', locationid='FIPS:12017', stationid='GHCND:USC00
 #> 
 #> $data
 #>   elevation    mindate    maxdate latitude                  name
-#> 1      12.2 1899-02-01 2017-04-30  28.8029 INVERNESS 3 SE, FL US
+#> 1      12.2 1899-02-01 2018-11-25  28.8029 INVERNESS 3 SE, FL US
 #>   datacoverage                id elevationUnit longitude
 #> 1            1 GHCND:USC00084289        METERS  -82.3126
 #> 
@@ -218,13 +223,15 @@ out <- ncdc(datasetid='NORMAL_DLY', stationid='GHCND:USW00014895', datatypeid='d
 
 ```r
 head( out$data )
-#>                  date        datatype           station value fl_c
-#> 1 2010-05-01T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   652    S
-#> 2 2010-05-02T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   655    S
-#> 3 2010-05-03T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   658    S
-#> 4 2010-05-04T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   661    S
-#> 5 2010-05-05T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   663    S
-#> 6 2010-05-06T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   666    S
+#> # A tibble: 6 x 5
+#>   date                datatype        station           value fl_c 
+#>   <chr>               <chr>           <chr>             <int> <chr>
+#> 1 2010-05-01T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   652 S    
+#> 2 2010-05-02T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   655 S    
+#> 3 2010-05-03T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   658 S    
+#> 4 2010-05-04T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   661 S    
+#> 5 2010-05-05T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   663 S    
+#> 6 2010-05-06T00:00:00 DLY-TMAX-NORMAL GHCND:USW00014895   666 S
 ```
 
 ### Plot data, super simple, but it's a start
@@ -268,11 +275,11 @@ ncdc_datasets()
 #> 
 #> $data
 #>                     uid    mindate    maxdate                        name
-#> 1  gov.noaa.ncdc:C00861 1763-01-01 2017-05-01             Daily Summaries
-#> 2  gov.noaa.ncdc:C00946 1763-01-01 2017-04-01 Global Summary of the Month
-#> 3  gov.noaa.ncdc:C00947 1763-01-01 2016-01-01  Global Summary of the Year
-#> 4  gov.noaa.ncdc:C00345 1991-06-05 2017-05-01    Weather Radar (Level II)
-#> 5  gov.noaa.ncdc:C00708 1994-05-20 2017-04-07   Weather Radar (Level III)
+#> 1  gov.noaa.ncdc:C00861 1763-01-01 2018-11-25             Daily Summaries
+#> 2  gov.noaa.ncdc:C00946 1763-01-01 2018-10-01 Global Summary of the Month
+#> 3  gov.noaa.ncdc:C00947 1763-01-01 2018-01-01  Global Summary of the Year
+#> 4  gov.noaa.ncdc:C00345 1991-06-05 2018-11-26    Weather Radar (Level II)
+#> 5  gov.noaa.ncdc:C00708 1994-05-20 2018-11-23   Weather Radar (Level III)
 #> 6  gov.noaa.ncdc:C00821 2010-01-01 2010-01-01     Normals Annual/Seasonal
 #> 7  gov.noaa.ncdc:C00823 2010-01-01 2010-12-31               Normals Daily
 #> 8  gov.noaa.ncdc:C00824 2010-01-01 2010-12-31              Normals Hourly
@@ -399,22 +406,22 @@ Get storm data for the year 2010
 
 ```r
 storm_data(year = 2010)
-#> # A tibble: 2,855 × 195
-#>       serial_num season   num basin sub_basin  name            iso_time
-#>            <chr>  <int> <int> <chr>     <chr> <chr>               <chr>
-#> 1  2009317S10073   2010     1    SI        MM  ANJA 2009-11-13 06:00:00
-#> 2  2009317S10073   2010     1    SI        MM  ANJA 2009-11-13 12:00:00
-#> 3  2009317S10073   2010     1    SI        MM  ANJA 2009-11-13 18:00:00
-#> 4  2009317S10073   2010     1    SI        MM  ANJA 2009-11-14 00:00:00
-#> 5  2009317S10073   2010     1    SI        MM  ANJA 2009-11-14 06:00:00
-#> 6  2009317S10073   2010     1    SI        MM  ANJA 2009-11-14 12:00:00
-#> 7  2009317S10073   2010     1    SI        MM  ANJA 2009-11-14 18:00:00
-#> 8  2009317S10073   2010     1    SI        MM  ANJA 2009-11-15 00:00:00
-#> 9  2009317S10073   2010     1    SI        MM  ANJA 2009-11-15 06:00:00
-#> 10 2009317S10073   2010     1    SI        MM  ANJA 2009-11-15 12:00:00
-#> # ... with 2,845 more rows, and 188 more variables: nature <chr>,
-#> #   latitude <dbl>, longitude <dbl>, wind.wmo. <dbl>, pres.wmo. <dbl>,
-#> #   center <chr>, wind.wmo..percentile <dbl>, pres.wmo..percentile <dbl>,
+#> # A tibble: 2,787 x 200
+#>    serial_num season   num basin sub_basin name  iso_time nature latitude
+#>    <chr>       <int> <int> <chr> <chr>     <chr> <chr>    <chr>     <dbl>
+#>  1 2009317S1…   2010     1 " SI" " MM"     ANJA  2009-11… " TS"      -9.5
+#>  2 2009317S1…   2010     1 " SI" " MM"     ANJA  2009-11… " TS"     -10.2
+#>  3 2009317S1…   2010     1 " SI" " MM"     ANJA  2009-11… " TS"     -11.1
+#>  4 2009317S1…   2010     1 " SI" " MM"     ANJA  2009-11… " TS"     -11.9
+#>  5 2009317S1…   2010     1 " SI" " MM"     ANJA  2009-11… " TS"     -12.5
+#>  6 2009317S1…   2010     1 " SI" " MM"     ANJA  2009-11… " TS"     -12.8
+#>  7 2009317S1…   2010     1 " SI" " MM"     ANJA  2009-11… " TS"     -12.9
+#>  8 2009317S1…   2010     1 " SI" " MM"     ANJA  2009-11… " TS"     -12.9
+#>  9 2009317S1…   2010     1 " SI" " MM"     ANJA  2009-11… " TS"     -13  
+#> 10 2009317S1…   2010     1 " SI" " MM"     ANJA  2009-11… " TS"     -13.1
+#> # … with 2,777 more rows, and 191 more variables: longitude <dbl>,
+#> #   wind.wmo. <dbl>, pres.wmo. <dbl>, center <chr>,
+#> #   wind.wmo..percentile <dbl>, pres.wmo..percentile <dbl>,
 #> #   track_type <chr>, latitude_for_mapping <dbl>,
 #> #   longitude_for_mapping <dbl>, current.basin <chr>,
 #> #   hurdat_atl_lat <dbl>, hurdat_atl_lon <dbl>, hurdat_atl_grade <dbl>,
@@ -477,7 +484,7 @@ coops_search(station_name = 9063053, begin_date = 20150927, end_date = 20150928,
 #> [1] "Fairport"
 #> 
 #> $metadata$lat
-#> [1] "41.7598"
+#> [1] "41.7597"
 #> 
 #> $metadata$lon
 #> [1] "-81.2811"
@@ -503,6 +510,6 @@ coops_search(station_name = 9063053, begin_date = 20150927, end_date = 20150928,
 * Please [report any issues or bugs](https://github.com/ropensci/rnoaa/issues).
 * License: MIT
 * Get citation information for `rnoaa` in R doing `citation(package = 'rnoaa')`
-* Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
+* Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 [![rofooter](https://ropensci.org/public_images/github_footer.png)](https://ropensci.org)

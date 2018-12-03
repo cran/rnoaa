@@ -55,22 +55,22 @@
 #' }
 #'
 #' @importFrom utils head download.file read.csv read.delim read.fwf read.table
-#' write.csv untar unzip
+#' write.csv unzip
 #' @importFrom lubridate ymd year today month
 #' @importFrom scales date_breaks date_format
 #' @importFrom ggplot2 autoplot ggplot aes facet_wrap theme theme_bw geom_line
 #' labs guides guide_legend fortify scale_x_date scale_x_datetime element_blank
-#' @importFrom httr GET add_headers content warn_for_status stop_for_status
-#' write_disk parse_url build_url http_status
+#' @importFrom crul HttpClient url_build url_parse
 #' @importFrom XML xpathSApply xpathApply xmlValue xmlParse xmlToList htmlParse
-#' @importFrom xml2 read_html xml_find_all xml_attr
+#' @importFrom xml2 read_html read_xml xml_find_all xml_attr as_list 
+#' xml_text xml_find_first
 #' @importFrom jsonlite fromJSON
 #' @importFrom tidyr gather
 #' @importFrom rappdirs user_cache_dir
 #' @importFrom gridExtra grid.arrange
 #' @importFrom dplyr %>% select mutate rename tbl_df filter bind_rows
-#' as_data_frame contains
-#' @importFrom tibble as_data_frame
+#' as_data_frame contains rowwise do bind_cols ungroup
+#' @importFrom tibble as_data_frame data_frame
 #' @importFrom scales comma
 #' @name rnoaa-package
 #' @aliases rnoaa

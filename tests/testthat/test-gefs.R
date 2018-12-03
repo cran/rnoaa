@@ -24,10 +24,9 @@ test_that("gefs time and ensemble selection returns correct indices.", {
   time_idx = 5:10
   d = gefs(var, lat, lon, ens_idx = ens_idx, time_idx = time_idx)
 
+  time_var <- names(d$data)[6]
   expect_equal(dim(d$data), c(length(ens_idx) * length(time_idx), 6))
   expect_equal(unique(d$data$ens), ens_idx - 1)
-  ## FIXME, fails, haven't looked into why yet
-  #expect_equal(unique(d$data$time), (time_idx-1) * 6)
 })
 
 test_that("gefs metadata", {
@@ -35,7 +34,7 @@ test_that("gefs metadata", {
   skip_on_travis()
   skip_on_appveyor()
 
-  today = format(as.Date(Sys.time()) - 1, "%Y%m%d")
+  today = format(as.Date(Sys.time()) - 2, "%Y%m%d")
   forecast_time = "0600"
   d = gefs(var, lat, lon, ens=1, date=today, forecast_time=forecast_time)
 

@@ -5,9 +5,10 @@
 \title{Search NOAA datasets}
 \usage{
 ncdc_datasets(datasetid = NULL, datatypeid = NULL, stationid = NULL,
-  locationid = NULL, startdate = NULL, enddate = NULL, sortfield = NULL,
-  sortorder = NULL, limit = 25, offset = NULL, token = NULL,
-  dataset = NULL, page = NULL, year = NULL, month = NULL, ...)
+  locationid = NULL, startdate = NULL, enddate = NULL,
+  sortfield = NULL, sortorder = NULL, limit = 25, offset = NULL,
+  token = NULL, dataset = NULL, page = NULL, year = NULL,
+  month = NULL, ...)
 }
 \arguments{
 \item{datasetid}{(optional) Accepts a single valid dataset id. Data returned
@@ -56,7 +57,8 @@ arguments.}
 \item{month}{THIS IS A DEPRECATED ARGUMENT. Use combination of startdate and enddate
 arguments.}
 
-\item{...}{Curl options passed on to \code{\link[httr]{GET}} (optional)}
+\item{...}{Curl options passed on to \code{\link[crul]{HttpClient}} 
+(optional)}
 }
 \value{
 A data.frame for all datasets, or a list of length two, each with
@@ -121,3 +123,4 @@ Other ncdc: \code{\link{ncdc_combine}},
   \code{\link{ncdc_plot}}, \code{\link{ncdc_stations}},
   \code{\link{ncdc}}
 }
+\concept{ncdc}

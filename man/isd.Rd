@@ -4,9 +4,9 @@
 \alias{isd}
 \title{Get and parse NOAA ISD/ISH data}
 \usage{
-isd(usaf, wban, year, overwrite = TRUE, cleanup = TRUE, additional = TRUE,
-  parallel = FALSE, cores = getOption("cl.cores", 2), progress = FALSE,
-  force = FALSE, ...)
+isd(usaf, wban, year, overwrite = TRUE, cleanup = TRUE,
+  additional = TRUE, parallel = FALSE, cores = getOption("cl.cores",
+  2), progress = FALSE, force = FALSE, ...)
 }
 \arguments{
 \item{usaf, wban}{(character) USAF and WBAN code. Required}
@@ -39,7 +39,7 @@ time, so if processing time is important, then keep as \code{FALSE}}
 We use a cached version (an .rds compressed file) if it exists, but
 this will override that behavior.}
 
-\item{...}{Curl options passed on to \code{\link[httr]{GET}}}
+\item{...}{Curl options passed on to \code{\link[crul]{HttpClient}}}
 }
 \value{
 A tibble (data.frame).
@@ -123,14 +123,11 @@ leaflet(data = df) \%>\%
 system.time( isd(usaf="782680", wban="99999", year=2011) )
 system.time( isd(usaf="782680", wban="99999", year=2011) )
 
-# Optionally pass in curl options
-res <- isd(usaf="011490", wban="99999", year=1986, config = verbose())
-
 # Plot data
 ## get data for multiple stations
 res1 <- isd(usaf="011690", wban="99999", year=1993)
-res2 <- isd(usaf="172007", wban="99999", year=2015)
-res3 <- isd(usaf="702700", wban="00489", year=2015)
+res2 <- isd(usaf="782680", wban="99999", year=2011)
+res3 <- isd(usaf="008415", wban="99999", year=2016)
 res4 <- isd(usaf="109711", wban=99999, year=1970)
 ## combine data
 library(dplyr)
@@ -163,3 +160,4 @@ Other isd: \code{\link{isd_read}},
   \code{\link{isd_stations_search}},
   \code{\link{isd_stations}}
 }
+\concept{isd}

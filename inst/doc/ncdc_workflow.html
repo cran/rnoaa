@@ -287,8 +287,8 @@ id &lt;- &quot;GHCND:US1FLCT0002&quot;
 #&gt; 
 #&gt; $data
 #&gt;                    uid    mindate    maxdate                        name
-#&gt; 1 gov.noaa.ncdc:C00861 1763-01-01 2017-05-01             Daily Summaries
-#&gt; 2 gov.noaa.ncdc:C00946 1763-01-01 2017-04-01 Global Summary of the Month
+#&gt; 1 gov.noaa.ncdc:C00861 1763-01-01 2018-11-25             Daily Summaries
+#&gt; 2 gov.noaa.ncdc:C00946 1763-01-01 2018-10-01 Global Summary of the Month
 #&gt;   datacoverage    id
 #&gt; 1            1 GHCND
 #&gt; 2            1  GSOM
@@ -306,8 +306,8 @@ id &lt;- &quot;GHCND:US1FLCT0002&quot;
 #&gt; 
 #&gt; $data
 #&gt;      mindate    maxdate          name datacoverage   id
-#&gt; 1 1781-01-01 2017-04-30 Precipitation            1 PRCP
-#&gt; 2 1840-05-01 2017-04-30      Snowfall            1 SNOW
+#&gt; 1 1781-01-01 2018-11-25 Precipitation            1 PRCP
+#&gt; 2 1840-05-01 2018-11-25      Snowfall            1 SNOW
 #&gt; 
 #&gt; attr(,&quot;class&quot;)
 #&gt; [1] &quot;ncdc_datatypes&quot;
@@ -340,52 +340,20 @@ id &lt;- &quot;GHCND:US1FLCT0002&quot;
 #&gt; 
 #&gt; 
 #&gt; $data
-#&gt;                   date datatype           station value fl_m fl_q fl_so
-#&gt; 1  2012-10-01T00:00:00     PRCP GHCND:US1FLCT0002    13               N
-#&gt; 2  2012-10-02T00:00:00     PRCP GHCND:US1FLCT0002     3               N
-#&gt; 3  2012-10-03T00:00:00     PRCP GHCND:US1FLCT0002    15               N
-#&gt; 4  2012-10-04T00:00:00     PRCP GHCND:US1FLCT0002   142               N
-#&gt; 5  2012-10-05T00:00:00     PRCP GHCND:US1FLCT0002   244               N
-#&gt; 6  2012-10-06T00:00:00     PRCP GHCND:US1FLCT0002   655               N
-#&gt; 7  2012-10-07T00:00:00     PRCP GHCND:US1FLCT0002    23               N
-#&gt; 8  2012-10-08T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt; 9  2012-10-09T00:00:00     PRCP GHCND:US1FLCT0002     3               N
-#&gt; 10 2012-10-10T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt; 11 2012-10-11T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt; 12 2012-10-12T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt; 13 2012-10-13T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt; 14 2012-10-14T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt; 15 2012-10-15T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt; 16 2012-10-16T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt; 17 2012-10-17T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt; 18 2012-10-18T00:00:00     PRCP GHCND:US1FLCT0002     0    T          N
-#&gt; 19 2012-10-19T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt; 20 2012-10-20T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt; 21 2012-10-21T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt; 22 2012-10-24T00:00:00     PRCP GHCND:US1FLCT0002     0               N
-#&gt;    fl_t
-#&gt; 1      
-#&gt; 2      
-#&gt; 3      
-#&gt; 4      
-#&gt; 5      
-#&gt; 6      
-#&gt; 7      
-#&gt; 8      
-#&gt; 9      
-#&gt; 10     
-#&gt; 11     
-#&gt; 12     
-#&gt; 13     
-#&gt; 14     
-#&gt; 15     
-#&gt; 16     
-#&gt; 17     
-#&gt; 18     
-#&gt; 19     
-#&gt; 20     
-#&gt; 21     
-#&gt; 22     
+#&gt; # A tibble: 22 x 8
+#&gt;    date              datatype station         value fl_m  fl_q  fl_so fl_t 
+#&gt;    &lt;chr&gt;             &lt;chr&gt;    &lt;chr&gt;           &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+#&gt;  1 2012-10-01T00:00… PRCP     GHCND:US1FLCT0…    13 &quot;&quot;    &quot;&quot;    N     &quot;&quot;   
+#&gt;  2 2012-10-02T00:00… PRCP     GHCND:US1FLCT0…     3 &quot;&quot;    &quot;&quot;    N     &quot;&quot;   
+#&gt;  3 2012-10-03T00:00… PRCP     GHCND:US1FLCT0…    15 &quot;&quot;    &quot;&quot;    N     &quot;&quot;   
+#&gt;  4 2012-10-04T00:00… PRCP     GHCND:US1FLCT0…   142 &quot;&quot;    &quot;&quot;    N     &quot;&quot;   
+#&gt;  5 2012-10-05T00:00… PRCP     GHCND:US1FLCT0…   244 &quot;&quot;    &quot;&quot;    N     &quot;&quot;   
+#&gt;  6 2012-10-06T00:00… PRCP     GHCND:US1FLCT0…   655 &quot;&quot;    &quot;&quot;    N     &quot;&quot;   
+#&gt;  7 2012-10-07T00:00… PRCP     GHCND:US1FLCT0…    23 &quot;&quot;    &quot;&quot;    N     &quot;&quot;   
+#&gt;  8 2012-10-08T00:00… PRCP     GHCND:US1FLCT0…     0 &quot;&quot;    &quot;&quot;    N     &quot;&quot;   
+#&gt;  9 2012-10-09T00:00… PRCP     GHCND:US1FLCT0…     3 &quot;&quot;    &quot;&quot;    N     &quot;&quot;   
+#&gt; 10 2012-10-10T00:00… PRCP     GHCND:US1FLCT0…     0 &quot;&quot;    &quot;&quot;    N     &quot;&quot;   
+#&gt; # … with 12 more rows
 #&gt; 
 #&gt; attr(,&quot;class&quot;)
 #&gt; [1] &quot;ncdc_data&quot;

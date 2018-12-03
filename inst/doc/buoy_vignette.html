@@ -233,13 +233,13 @@ get the buoy IDs and web pages for each buoy.</p>
 #&gt; 4 41006
 #&gt; 5 41008
 #&gt; 6 41009
-#&gt;                                                                       url
-#&gt; 1 http://dods.ndbc.noaa.gov/thredds/catalog/data/cwind/41001/catalog.html
-#&gt; 2 http://dods.ndbc.noaa.gov/thredds/catalog/data/cwind/41002/catalog.html
-#&gt; 3 http://dods.ndbc.noaa.gov/thredds/catalog/data/cwind/41004/catalog.html
-#&gt; 4 http://dods.ndbc.noaa.gov/thredds/catalog/data/cwind/41006/catalog.html
-#&gt; 5 http://dods.ndbc.noaa.gov/thredds/catalog/data/cwind/41008/catalog.html
-#&gt; 6 http://dods.ndbc.noaa.gov/thredds/catalog/data/cwind/41009/catalog.html
+#&gt;                                                                        url
+#&gt; 1 https://dods.ndbc.noaa.gov/thredds/catalog/data/cwind/41001/catalog.html
+#&gt; 2 https://dods.ndbc.noaa.gov/thredds/catalog/data/cwind/41002/catalog.html
+#&gt; 3 https://dods.ndbc.noaa.gov/thredds/catalog/data/cwind/41004/catalog.html
+#&gt; 4 https://dods.ndbc.noaa.gov/thredds/catalog/data/cwind/41006/catalog.html
+#&gt; 5 https://dods.ndbc.noaa.gov/thredds/catalog/data/cwind/41008/catalog.html
+#&gt; 6 https://dods.ndbc.noaa.gov/thredds/catalog/data/cwind/41009/catalog.html
 </code></pre>
 
 <p>Or browse them on the web</p>
@@ -301,46 +301,46 @@ get the buoy IDs and web pages for each buoy.</p>
 
 <p>Including year and datatype</p>
 
-<pre><code class="r">buoy(dataset = &#39;cwind&#39;, buoyid = 41001, year = 2008, datatype = &quot;cc&quot;)
+<pre><code class="r">buoy(dataset = &#39;cwind&#39;, buoyid = 45005, year = 2008, datatype = &quot;c&quot;)
 </code></pre>
 
-<pre><code>#&gt; Dimensions (rows/cols): [1585 X 5] 
+<pre><code>#&gt; Dimensions (rows/cols): [29688 X 5] 
 #&gt; 2 variables: [wind_dir, wind_spd] 
 #&gt; 
 #&gt;                    time    lat     lon wind_dir wind_spd
-#&gt; 1  2008-05-28T16:00:00Z 34.704 -72.734      230      8.6
-#&gt; 2  2008-05-28T16:10:00Z 34.704 -72.734      230      8.7
-#&gt; 3  2008-05-28T16:20:00Z 34.704 -72.734      229      8.5
-#&gt; 4  2008-05-28T16:30:00Z 34.704 -72.734      231      8.8
-#&gt; 5  2008-05-28T16:40:00Z 34.704 -72.734      236      8.5
-#&gt; 6  2008-05-28T16:50:00Z 34.704 -72.734      235      8.9
-#&gt; 7  2008-05-28T17:00:00Z 34.704 -72.734      233      8.2
-#&gt; 8  2008-05-28T17:10:00Z 34.704 -72.734      233      8.2
-#&gt; 9  2008-05-28T17:20:00Z 34.704 -72.734      231      8.3
-#&gt; 10 2008-05-28T17:30:00Z 34.704 -72.734      232      7.8
+#&gt; 1  2008-04-29T09:00:00Z 41.677 -82.398       10      9.0
+#&gt; 2  2008-04-29T09:10:00Z 41.677 -82.398        8      9.0
+#&gt; 3  2008-04-29T09:20:00Z 41.677 -82.398        5      9.3
+#&gt; 4  2008-04-29T09:30:00Z 41.677 -82.398       13      9.5
+#&gt; 5  2008-04-29T09:40:00Z 41.677 -82.398       14      9.4
+#&gt; 6  2008-04-29T09:50:00Z 41.677 -82.398       12      9.4
+#&gt; 7  2008-04-29T14:00:00Z 41.677 -82.398      341      6.5
+#&gt; 8  2008-04-29T14:10:00Z 41.677 -82.398      332      6.8
+#&gt; 9  2008-04-29T14:20:00Z 41.677 -82.398      335      6.4
+#&gt; 10 2008-04-29T14:30:00Z 41.677 -82.398      332      6.5
 #&gt; ..                  ...    ...     ...      ...      ...
 </code></pre>
 
 <p>Including just datatype</p>
 
-<pre><code class="r">buoy(dataset = &#39;cwind&#39;, buoyid = 41001, datatype = &quot;cc&quot;)
+<pre><code class="r">buoy(dataset = &#39;cwind&#39;, buoyid = 45005, datatype = &quot;c&quot;)
 </code></pre>
 
-<pre><code>#&gt; Dimensions (rows/cols): [1585 X 5] 
+<pre><code>#&gt; Dimensions (rows/cols): [26784 X 5] 
 #&gt; 2 variables: [wind_dir, wind_spd] 
 #&gt; 
-#&gt;                    time    lat     lon wind_dir wind_spd
-#&gt; 1  2008-05-28T16:00:00Z 34.704 -72.734      230      8.6
-#&gt; 2  2008-05-28T16:10:00Z 34.704 -72.734      230      8.7
-#&gt; 3  2008-05-28T16:20:00Z 34.704 -72.734      229      8.5
-#&gt; 4  2008-05-28T16:30:00Z 34.704 -72.734      231      8.8
-#&gt; 5  2008-05-28T16:40:00Z 34.704 -72.734      236      8.5
-#&gt; 6  2008-05-28T16:50:00Z 34.704 -72.734      235      8.9
-#&gt; 7  2008-05-28T17:00:00Z 34.704 -72.734      233      8.2
-#&gt; 8  2008-05-28T17:10:00Z 34.704 -72.734      233      8.2
-#&gt; 9  2008-05-28T17:20:00Z 34.704 -72.734      231      8.3
-#&gt; 10 2008-05-28T17:30:00Z 34.704 -72.734      232      7.8
-#&gt; ..                  ...    ...     ...      ...      ...
+#&gt;                    time   lat   lon wind_dir wind_spd
+#&gt; 1  1996-05-15T23:00:00Z 41.68 -82.4      337      2.2
+#&gt; 2  1996-05-15T23:10:00Z 41.68 -82.4      282      1.0
+#&gt; 3  1996-05-15T23:20:00Z 41.68 -82.4      282      2.2
+#&gt; 4  1996-05-15T23:30:00Z 41.68 -82.4      258      2.6
+#&gt; 5  1996-05-15T23:40:00Z 41.68 -82.4      254      3.0
+#&gt; 6  1996-05-15T23:50:00Z 41.68 -82.4      252      2.7
+#&gt; 7  1996-05-16T00:00:00Z 41.68 -82.4      240      2.1
+#&gt; 8  1996-05-16T00:10:00Z 41.68 -82.4      246      2.4
+#&gt; 9  1996-05-16T00:20:00Z 41.68 -82.4      251      2.7
+#&gt; 10 1996-05-16T00:30:00Z 41.68 -82.4      253      2.9
+#&gt; ..                  ...   ...   ...      ...      ...
 </code></pre>
 
 </body>

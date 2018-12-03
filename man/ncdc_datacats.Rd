@@ -4,9 +4,10 @@
 \alias{ncdc_datacats}
 \title{Get possible data categories for a particular datasetid, locationid, stationid, etc.}
 \usage{
-ncdc_datacats(datasetid = NULL, datacategoryid = NULL, stationid = NULL,
-  locationid = NULL, startdate = NULL, enddate = NULL, sortfield = NULL,
-  sortorder = NULL, limit = 25, offset = NULL, token = NULL, ...)
+ncdc_datacats(datasetid = NULL, datacategoryid = NULL,
+  stationid = NULL, locationid = NULL, startdate = NULL,
+  enddate = NULL, sortfield = NULL, sortorder = NULL, limit = 25,
+  offset = NULL, token = NULL, ...)
 }
 \arguments{
 \item{datasetid}{Accepts a valid dataset id or a vector or list of dataset id's. Data returned
@@ -39,9 +40,7 @@ datacoverage fields (optional)}
 Climate Data Online access token generator. (required) See
 \strong{Authentication} section below for more details.}
 
-\item{...}{Further named parameters, such as \code{query}, \code{path}, etc, passed on to
-\code{\link[httr]{modify_url}}. Unnamed parameters will be combined with
-\code{\link[httr]{config}}.}
+\item{...}{Curl options passed on to \code{\link[crul]{HttpClient}}}
 }
 \value{
 A \code{data.frame} for all datasets, or a list of length two, each
@@ -95,8 +94,7 @@ ncdc_datacats(stationid='COOP:310090')
 ncdc_datacats(stationid=c('COOP:310090','COOP:310184','COOP:310212'))
 
 ## Curl debugging
-ncdc_datacats(limit=10, config=verbose())
-out <- ncdc_datacats(limit=10, config=progress())
+ncdc_datacats(limit=10, verbose = TRUE)
 }
 }
 \references{
@@ -112,3 +110,4 @@ Other ncdc: \code{\link{ncdc_combine}},
   \code{\link{ncdc_plot}}, \code{\link{ncdc_stations}},
   \code{\link{ncdc}}
 }
+\concept{ncdc}

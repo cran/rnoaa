@@ -13,8 +13,8 @@ storm_shp(basin = NULL, storm = NULL, year = NULL, type = "points",
 
 storm_shp_read(x)
 
-storm_data(basin = NULL, storm = NULL, year = NULL, overwrite = TRUE,
-  ...)
+storm_data(basin = NULL, storm = NULL, year = NULL,
+  overwrite = TRUE, ...)
 
 storm_meta(what = "storm_columns")
 }
@@ -34,7 +34,8 @@ Default: \code{TRUE}}
 
 \item{x}{Output from \code{storm_shp}, a path to shp file to read in.}
 
-\item{...}{Curl options passed on to \code{\link[httr]{GET}} (optional)}
+\item{...}{Curl options passed on to \code{\link[crul]{HttpClient}} 
+(optional)}
 
 \item{what}{(character) One of storm_columns or storm_names.}
 }

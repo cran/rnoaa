@@ -5,10 +5,11 @@
 \title{Get metadata about NOAA NCDC stations.}
 \usage{
 ncdc_stations(stationid = NULL, datasetid = NULL, datatypeid = NULL,
-  locationid = NULL, startdate = NULL, enddate = NULL, sortfield = NULL,
-  sortorder = NULL, limit = 25, offset = NULL, datacategoryid = NULL,
-  extent = NULL, token = NULL, dataset = NULL, station = NULL,
-  location = NULL, locationtype = NULL, page = NULL, ...)
+  locationid = NULL, startdate = NULL, enddate = NULL,
+  sortfield = NULL, sortorder = NULL, limit = 25, offset = NULL,
+  datacategoryid = NULL, extent = NULL, token = NULL,
+  dataset = NULL, station = NULL, location = NULL,
+  locationtype = NULL, page = NULL, ...)
 }
 \arguments{
 \item{stationid}{A single valid station id, with datasetid namespace,
@@ -66,7 +67,8 @@ of the NOAA API.}
 \item{page}{THIS IS A DEPRECATED ARGUMENT. There is no equivalent argument in v2 
 of the NOAA API.}
 
-\item{...}{Curl options passed on to \code{\link[httr]{GET}} (optional)}
+\item{...}{Curl options passed on to \code{\link[crul]{HttpClient}} 
+(optional)}
 }
 \value{
 A list of metadata.
@@ -165,3 +167,4 @@ Other ncdc: \code{\link{ncdc_combine}},
   \code{\link{ncdc_locs_cats}}, \code{\link{ncdc_locs}},
   \code{\link{ncdc_plot}}, \code{\link{ncdc}}
 }
+\concept{ncdc}

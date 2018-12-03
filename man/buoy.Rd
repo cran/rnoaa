@@ -8,7 +8,7 @@
 \usage{
 buoy(dataset, buoyid, year = NULL, datatype = NULL, ...)
 
-buoys(dataset, ...)
+buoys(dataset)
 
 buoy_stations(refresh = FALSE, ...)
 }
@@ -22,7 +22,10 @@ Required}
 
 \item{datatype}{(character) Data type, one of 'c', 'cc', 'p', 'o'. Optional}
 
-\item{...}{Curl options passed on to \code{\link[httr]{GET}}. Optional}
+\item{...}{Curl options passed on to \code{\link[crul]{HttpClient}}. 
+Optional. A number of different HTTP requests are made internally, but 
+we only pass this on to the request to get the netcdf file in the internal 
+function \code{get_ncdf_file()}}
 
 \item{refresh}{(logical) Whether to use cached data (\code{FALSE}) or get
 new data (\code{FALSE}). Default: \code{FALSE}}
@@ -59,6 +62,9 @@ Options for the dataset parameter. One of:
 \dontrun{
 # Get buoy station information
 x <- buoy_stations()
+# refresh stations as needed, takes a while to run
+# you shouldn't need to update very often
+# x <- buoy_stations(refresh = TRUE)
 library("leaflet")
 leaflet(data = na.omit(x)) \%>\%
   leaflet::addTiles() \%>\%
@@ -75,15 +81,14 @@ buoy(dataset = 'cwind', buoyid = 46085)
 buoy(dataset = 'cwind', buoyid = 41001, year = 1999)
 
 # Including specific year and datatype
-buoy(dataset = 'cwind', buoyid = 41001, year = 2008, datatype = "cc")
-buoy(dataset = 'cwind', buoyid = 41001, year = 2008, datatype = "cc")
+buoy(dataset = 'cwind', buoyid = 45005, year = 2008, datatype = "c")
+buoy(dataset = 'cwind', buoyid = 41001, year = 1997, datatype = "c")
 
 # Other datasets
 buoy(dataset = 'ocean', buoyid = 41029)
 
 # curl debugging
-library('httr')
-buoy(dataset = 'cwind', buoyid = 46085, config=verbose())
+buoy(dataset = 'cwind', buoyid = 46085, verbose = TRUE)
 
 # some buoy ids are character, case doesn't matter, we'll account for it
 buoy(dataset = "stdmet", buoyid = "VCAF1")

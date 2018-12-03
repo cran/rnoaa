@@ -240,10 +240,10 @@ library(&#39;plyr&#39;)
 <pre><code class="r">swdi(dataset=&#39;nx3tvs&#39;, startdate=&#39;20060505&#39;, enddate=&#39;20060506&#39;)
 #&gt; $meta
 #&gt; $meta$totalCount
-#&gt; numeric(0)
+#&gt; [1] 25
 #&gt; 
 #&gt; $meta$totalTimeInSeconds
-#&gt; [1] 0.105
+#&gt; [1] 0.01
 #&gt; 
 #&gt; 
 #&gt; $data
@@ -338,10 +338,10 @@ library(&#39;plyr&#39;)
 list(out$meta, head(out$data), head(out$shape))
 #&gt; [[1]]
 #&gt; [[1]]$totalCount
-#&gt; numeric(0)
+#&gt; [1] 25
 #&gt; 
 #&gt; [[1]]$totalTimeInSeconds
-#&gt; [1] 3.465
+#&gt; [1] 0.014
 #&gt; 
 #&gt; 
 #&gt; [[2]]
@@ -375,7 +375,7 @@ list(out$meta, head(out$data), head(out$shape))
 <pre><code class="r">swdi(dataset=&#39;plsr&#39;, startdate=&#39;20060505&#39;, enddate=&#39;20060510&#39;, bbox=c(-91,30,-90,31))
 #&gt; $meta
 #&gt; $meta$totalCount
-#&gt; numeric(0)
+#&gt; [1] 5
 #&gt; 
 #&gt; $meta$totalTimeInSeconds
 #&gt; [1] 0
@@ -412,10 +412,10 @@ list(out$meta, head(out$data), head(out$shape))
 <pre><code class="r">swdi(dataset=&#39;nx3tvs&#39;, startdate=&#39;20060506&#39;, enddate=&#39;20060507&#39;, tile=c(-102.12,32.62))
 #&gt; $meta
 #&gt; $meta$totalCount
-#&gt; numeric(0)
+#&gt; [1] 5
 #&gt; 
 #&gt; $meta$totalTimeInSeconds
-#&gt; [1] 0.001
+#&gt; [1] 0
 #&gt; 
 #&gt; 
 #&gt; $data
@@ -459,7 +459,7 @@ list(out$meta, head(out$data), head(out$shape))
 <pre><code class="r">swdi(dataset=&#39;nx3tvs&#39;, startdate=&#39;20060505&#39;, enddate=&#39;20090516&#39;, stat=&#39;tilesum:-102.0,32.7&#39;)
 #&gt; $meta
 #&gt; $meta$totalCount
-#&gt; numeric(0)
+#&gt; [1] 5
 #&gt; 
 #&gt; $meta$totalTimeInSeconds
 #&gt; [1] 0.001
@@ -467,11 +467,11 @@ list(out$meta, head(out$data), head(out$shape))
 #&gt; 
 #&gt; $data
 #&gt;          day centerlat centerlon fcount
-#&gt; 1 2007-09-07      32.7      -102      1
-#&gt; 2 2008-05-27      32.7      -102      4
-#&gt; 3 2009-04-11      32.7      -102      1
-#&gt; 4 2007-03-29      32.7      -102      2
-#&gt; 5 2008-06-20      32.7      -102      2
+#&gt; 1 2007-03-29      32.7      -102      2
+#&gt; 2 2008-06-20      32.7      -102      2
+#&gt; 3 2007-09-07      32.7      -102      1
+#&gt; 4 2008-05-27      32.7      -102      4
+#&gt; 5 2009-04-11      32.7      -102      1
 #&gt; 
 #&gt; $shape
 #&gt;                                                                                   shape

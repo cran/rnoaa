@@ -9,7 +9,10 @@
 #' @param year (integer) Year of data collection. Optional
 #' @param refresh (logical) Whether to use cached data (\code{FALSE}) or get
 #' new data (\code{FALSE}). Default: \code{FALSE}
-#' @param ... Curl options passed on to \code{\link[httr]{GET}}. Optional
+#' @param ... Curl options passed on to \code{\link[crul]{HttpClient}}. 
+#' Optional. A number of different HTTP requests are made internally, but 
+#' we only pass this on to the request to get the netcdf file in the internal 
+#' function \code{get_ncdf_file()}
 #'
 #' @details Functions:
 #' \itemize{
@@ -38,6 +41,9 @@
 #' @examples \dontrun{
 #' # Get buoy station information
 #' x <- buoy_stations()
+#' # refresh stations as needed, takes a while to run
+#' # you shouldn't need to update very often
+#' # x <- buoy_stations(refresh = TRUE)
 #' library("leaflet")
 #' leaflet(data = na.omit(x)) %>%
 #'   leaflet::addTiles() %>%
@@ -54,15 +60,14 @@
 #' buoy(dataset = 'cwind', buoyid = 41001, year = 1999)
 #'
 #' # Including specific year and datatype
-#' buoy(dataset = 'cwind', buoyid = 41001, year = 2008, datatype = "cc")
-#' buoy(dataset = 'cwind', buoyid = 41001, year = 2008, datatype = "cc")
+#' buoy(dataset = 'cwind', buoyid = 45005, year = 2008, datatype = "c")
+#' buoy(dataset = 'cwind', buoyid = 41001, year = 1997, datatype = "c")
 #'
 #' # Other datasets
 #' buoy(dataset = 'ocean', buoyid = 41029)
 #'
 #' # curl debugging
-#' library('httr')
-#' buoy(dataset = 'cwind', buoyid = 46085, config=verbose())
+#' buoy(dataset = 'cwind', buoyid = 46085, verbose = TRUE)
 #'
 #' # some buoy ids are character, case doesn't matter, we'll account for it
 #' buoy(dataset = "stdmet", buoyid = "VCAF1")
@@ -71,15 +76,17 @@
 #' }
 buoy <- function(dataset, buoyid, year = NULL, datatype = NULL, ...) {
   check4pkg("ncdf4")
-  availbuoys <- buoys(dataset, ...)
+  availbuoys <- buoys(dataset)
   buoyid <- tolower(buoyid)
   page <- availbuoys[grep(buoyid, availbuoys$id, ignore.case = TRUE), "url"]
-  files <- buoy_files(path = page, buoyid, ...)
-  if (length(files) == 0) stop("No data files found, try a different search", call. = FALSE)
+  if (length(page) == 0) stop("No data files found, try a different search")
+  files <- buoy_files(path = page, buoyid)
+  if (length(files) == 0) stop("No data files found, try a different search")
   fileuse <- pick_year_type(files, year, datatype)
+  if (length(fileuse) == 0) stop("No data files found, try a different search")
   toget <- buoy_single_file_url(dataset, buoyid, fileuse)
   output <- tempdir()
-  ncfile <- get_ncdf_file(path = toget, buoyid, file = files[[1]], output)
+  ncfile <- get_ncdf_file(path = toget, buoyid, file = files[[1]], output, ...)
   buoy_collect_data(ncfile)
 }
 
@@ -107,21 +114,21 @@ pickme <- function(findme, against) {
 
 #' @export
 #' @rdname buoy
-buoys <- function(dataset, ...) {
-  url <- sprintf('http://dods.ndbc.noaa.gov/thredds/catalog/data/%s/catalog.html', dataset)
-  res <- GET(url, ...)
-  tt <- utcf8(res)
+buoys <- function(dataset) {
+  url <- sprintf('https://dods.ndbc.noaa.gov/thredds/catalog/data/%s/catalog.html', dataset)
+  res <- crul::HttpClient$new(url)$get()
+  tt <- res$parse("UTF-8")
   html <- htmlParse(tt)
   folders <- xpathSApply(html, "//a//tt", xmlValue)
   folders <- grep("/", folders, value = TRUE)
-  tmp <- paste0(sprintf('http://dods.ndbc.noaa.gov/thredds/catalog/data/%s/', dataset), folders, "catalog.html")
+  tmp <- paste0(sprintf('https://dods.ndbc.noaa.gov/thredds/catalog/data/%s/', dataset), folders, "catalog.html")
   data.frame(id = gsub("/", "", folders), url = tmp, stringsAsFactors = FALSE)
 }
 
 # Get NOAA buoy data from the National Buoy Data Center
-buoy_files <- function(path, buoyid, ...){
-  singlebuoy_files <- GET(path, ...)
-  tt_sbf <- utcf8(singlebuoy_files)
+buoy_files <- function(path, buoyid){
+  res <- crul::HttpClient$new(path)$get()
+  tt_sbf <- res$parse("UTF-8")
   html_sbf <- htmlParse(tt_sbf)
   files_sbf <- grep(".nc$", xpathSApply(html_sbf, "//a//tt", xmlValue), value = TRUE)
   gsub(tolower(buoyid), "", files_sbf)
@@ -129,15 +136,14 @@ buoy_files <- function(path, buoyid, ...){
 
 # Make url for a single NOAA buoy data file
 buoy_single_file_url <- function(dataset, buoyid, file){
-  sprintf('http://dods.ndbc.noaa.gov/thredds/fileServer/data/%s/%s/%s%s',
+  sprintf('https://dods.ndbc.noaa.gov/thredds/fileServer/data/%s/%s/%s%s',
           dataset, buoyid, buoyid, file)
 }
 
 # Download a single ncdf file
-get_ncdf_file <- function(path, buoyid, file, output){
-  res <- GET(path)
+get_ncdf_file <- function(path, buoyid, file, output, ...){
   outpath <- sprintf("%s/%s%s", output, buoyid, file)
-  writeBin(content(res, "raw"), outpath) ### FIXME, do new content parsing
+  res <- crul::HttpClient$new(path, opts = list(...))$get(disk = outpath)
   return(outpath)
 }
 
@@ -193,10 +199,13 @@ convert_time <- function(n = NULL, isoTime = NULL) {
 buoy_stations <- function(refresh = FALSE, ...) {
   if (refresh) {
     # get station urls
-    res <- GET('http://www.ndbc.noaa.gov/to_station.shtml', ...)
-    html <- read_html(utcf8(res))
+    cli <- crul::HttpClient$new('https://www.ndbc.noaa.gov/to_station.shtml', 
+      opts = list(...))
+    res <- cli$get()
+    html <- read_html(res$parse("UTF-8"))
+
     sta_urls <- file.path(
-      'http://www.ndbc.noaa.gov',
+      'https://www.ndbc.noaa.gov',
       xml_attr(
         xml_find_all(
           html,
@@ -204,15 +213,27 @@ buoy_stations <- function(refresh = FALSE, ...) {
         "href"
       )
     )
+
+    # async it
+    sta_urls_cli <- crul::Async$new(urls = sta_urls)
+    sta_out <- sta_urls_cli$get()
+    # FIXME: just remove failures for now. 
+    #   probably should do some error catching here ....
+    sta_out <- Filter(function(x) x$status_code < 300, sta_out)
+
+    # get station IDs
+    stations <- vapply(sta_out, function(z) {
+      strsplit(str_extract_(z$url, "station=.+"), "=")[[1]][[2]]
+    }, "")
+
     # get individual station metadata
-    bind_rows(lapply(sta_urls, function(w) {
-      out <- GET(w)
-      html <- read_html(utcf8(out))
+    tt <- Map(function(w, sttt) {
+      html <- read_html(w$parse("UTF-8"))
       dc <- sapply(xml_find_all(html, "//meta[@name]"), function(z) {
         as.list(stats::setNames(xml_attr(z, "content"), xml_attr(z, "name")))
       })
       as_data_frame(c(
-        station = str_extract_(w, "[0-9]+$"),
+        station = sttt,
         lat = {
           val <- str_extract_(dc$DC.description, "[0-9]+\\.[0-9]+[NS]")
           num <- as.numeric(str_extract_(val, "[0-9]+\\.[0-9]+"))
@@ -233,7 +254,8 @@ buoy_stations <- function(refresh = FALSE, ...) {
         },
         dc
       ))
-    }))
+    }, sta_out, stations)
+    dplyr::bind_rows(tt)
   } else {
     readRDS(system.file("extdata", "buoy_station_data.rds", package = "rnoaa"))
   }

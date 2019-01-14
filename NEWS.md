@@ -1,3 +1,30 @@
+rnoaa 0.8.4
+===========
+
+### US federal government shutdown
+
+This very long US federal government shutdown has allowed time for building in nicer failure behavior and more documentation for government shutdowns. There's a number of related changes:
+
+* better government shutdown failure behavior for the `swdi()` function (#298)
+* better government shutdown failure behavior for the `lcd()` function (#295)
+* better failure behavior for all `ncdc*()` functions (#293) (#297)
+* added a package level manual file section "Where data comes from and government shutdowns"
+
+### MINOR IMPROVEMENTS
+
+* `swdi()`: changed from downloading data with `download.file` to `crul` (#298)
+* fix `arc2()` tests to not have hard-coded dates (#294)
+
+
+rnoaa 0.8.2
+===========
+
+### BUG FIXES
+
+* improvements in failing well when there's a US government shutdown for many functions that work with web REST APIs (#293) (#295)
+* fix to `arc2` tests to not be sensitive to the real year that the test is run in, reported in CRAN checks and via email (#294)
+
+
 rnoaa 0.8.0
 ===========
 

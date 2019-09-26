@@ -2,19 +2,19 @@
 #'
 #' Call this function after pulling down observations for a set of stations
 #' to retrieve the "coverage" (i.e. how complete each field is). If either
-#' or both \code{obs_start_date} or \code{obs_end_date} are specified,
+#' or both `obs_start_date` or `obs_end_date` are specified,
 #' the coverage test will be limited to that date range.
 #'
-#' There is an \code{autoplot} method for the output of this function.
+#' There is an `autoplot` method for the output of this function.
 #'
-#' @param meteo_df a \emph{meteo} \code{data.frame}
-#' @param obs_start_date specify either or both (obs_start_date, obs_end_date) to constrain
-#'        coverate tests. These should be \code{Date} objects.
-#' @param obs_end_date specify either or both (obs_start_date, obs_end_date) to constrain
-#'        coverate tests. These should be \code{Date} objects.
-#' @param verbose if \code{TRUE} will display the coverage summary along
-#'        with returning the coverage data.frame
-#' @return a \code{data.frame} with the coverage for each station, minimally
+#' @param meteo_df a *meteo* \code{data.frame}
+#' @param obs_start_date specify either or both (obs_start_date, obs_end_date)
+#' to constrain coverate tests. These should be `Date` objects.
+#' @param obs_end_date specify either or both (obs_start_date, obs_end_date)
+#' to constrain coverate tests. These should be `Date` objects.
+#' @param verbose if `TRUE` will display the coverage summary along
+#' with returning the coverage data.frame
+#' @return a `data.frame` with the coverage for each station, minimally
 #' containing: \preformatted{
 #' $ id         (chr)
 #' $ start_date (time)
@@ -34,7 +34,6 @@
 #'
 #' library("ggplot2")
 #' autoplot(obs_covr)
-#'
 #' }
 meteo_coverage <- function(meteo_df,
                            obs_start_date=NULL,
@@ -51,7 +50,7 @@ meteo_coverage <- function(meteo_df,
     meteo_df <- dplyr::filter_(meteo_df, .dots = dots)
   }
 
-  dplyr::group_by_(meteo_df, ~id) %>%
+  dplyr::group_by(meteo_df, id) %>%
     dplyr::do({
       rng <- range(.$date)
       dat <- data.frame(start_date = rng[1],

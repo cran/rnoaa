@@ -2,46 +2,77 @@
 % Please edit documentation in R/lcd.R
 \name{lcd}
 \alias{lcd}
+\alias{lcd_cleanup}
 \title{Local Climitalogical Data from NOAA}
 \usage{
 lcd(station, year, ...)
+
+lcd_cleanup(x)
 }
 \arguments{
 \item{station}{(character) station code, e.g., "02413099999". we will
 allow integer/numeric passed here, but station ids can have leading
-zeros, so it's a good idea to keep stations as character class}
+zeros, so it's a good idea to keep stations as character class. required}
 
-\item{year}{(integer) year, e.g., 2017}
+\item{year}{(integer) year, e.g., 2017. required}
 
-\item{...}{curl options passed on to \code{\link[crul]{HttpClient}}}
+\item{...}{curl options passed on to \link[crul:verb-GET]{crul::verb-GET}}
+
+\item{x}{result of a call to \code{lcd()}. required}
 }
 \value{
 a data.frame, with many columns, and variable rows
 depending on how frequently data was collected in the given year
 
 a data.frame with many columns. the first 10 are metadata:
-
 \itemize{
- \item station
- \item date
- \item source
- \item latitude
- \item longitude
- \item elevation
- \item name
- \item report_type
- \item call_sign
- \item quality_control
+\item station
+\item date
+\item source
+\item latitude
+\item longitude
+\item elevation
+\item name
+\item report_type
+\item call_sign
+\item quality_control
 }
 
 And the rest should be all data columns. See Note about data joined
 together.
+
+Other groups of fields under the following:
+\itemize{
+\item wnd: wind
+\item tmp: air temperature
+\item aa: LIQUID-PRECIPITATION
+\item aj: snow depth
+\item ay: PAST-WEATHER-OBSERVATION
+\item oc: WIND-GUST-OBSERVATION
+\item dew: dew point
+\item slp: sea level pressure
+\item cig: sky condition
+\item ka: extreme air temperature
+\item ma: atmospheric pressure
+\item md: atmospheric pressure change
+\item ga: SKY-COVER-LAYER
+\item ge: SKY-CONDITION-OBSERVATION
+\item gf: SKY-CONDITION-OBSERVATION
+\item ia: GROUND-SURFACE-OBSERVATION
+\item mw: PRESENT-WEATHER-OBSERVATION
+\item rem: remarks
+}
 }
 \description{
 Local Climitalogical Data from NOAA
 }
+\details{
+\code{lcd_cleanup()} takes the output of \code{lcd()} and parses additional
+columns that have comma separated strings into separate columns with
+headings; so \code{lcd_cleanup()} adds many additional columns
+}
 \note{
-Beware that there are multiple columns with comma-delimited data 
+Beware that there are multiple columns with comma-delimited data
 joined together. In the next version of this package we'll try to have the
 data cleaning done for you.
 }
@@ -55,6 +86,11 @@ lcd(station = "02413099999", year = "2001")
 
 # pass curl options
 lcd(station = "02413099999", year = "2002", verbose = TRUE)
+
+# clean up columns
+w <- lcd(station = "01338099999", year = "2017")
+w
+lcd_cleanup(w)
 }
 }
 \references{

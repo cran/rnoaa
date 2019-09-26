@@ -7,37 +7,40 @@
 #' @param buoyid Buoy ID, can be numeric/integer/character. Required
 #' @param datatype (character) Data type, one of 'c', 'cc', 'p', 'o'. Optional
 #' @param year (integer) Year of data collection. Optional
-#' @param refresh (logical) Whether to use cached data (\code{FALSE}) or get
-#' new data (\code{FALSE}). Default: \code{FALSE}
-#' @param ... Curl options passed on to \code{\link[crul]{HttpClient}}. 
+#' @param refresh (logical) Whether to use cached data (`FALSE`) or get
+#' new data (`FALSE`). Default: `FALSE`
+#' @param ... Curl options passed on to [crul::verb-GET]
 #' Optional. A number of different HTTP requests are made internally, but 
 #' we only pass this on to the request to get the netcdf file in the internal 
-#' function \code{get_ncdf_file()}
+#' function `get_ncdf_file()`
+#' 
+#' @return If netcdf data has lat/lon variables, then we'll parse into a 
+#' tidy data.frame. If not, we'll give back the ncdf4 object for the user
+#' to parse (in which case the data.frame will be empty).
 #'
 #' @details Functions:
-#' \itemize{
-#'  \item buoy_stations - Get buoy stations. A cached version of the dataset
+#'
+#' - buoy_stations - Get buoy stations. A cached version of the dataset
 #'  is available in the package. Beware, takes a long time to run if you
-#'  do \code{refresh = TRUE}
-#'  \item buoys - Get available buoys given a dataset name
-#'  \item buoy - Get data given some combination of dataset name, buoy ID,
+#'  do `refresh = TRUE`
+#' - buoys - Get available buoys given a dataset name
+#' - buoy - Get data given some combination of dataset name, buoy ID,
 #'  year, and datatype
-#' }
 #'
 #' Options for the dataset parameter. One of:
-#' \itemize{
-#'  \item adcp - Acoustic Doppler Current Profiler data
-#'  \item adcp2 - MMS Acoustic Doppler Current Profiler data
-#'  \item cwind - Continuous Winds data
-#'  \item dart - Deep-ocean Assessment and Reporting of Tsunamis data
-#'  \item mmbcur - Marsh-McBirney Current Measurements data
-#'  \item ocean - Oceanographic data
-#'  \item pwind - Peak Winds data
-#'  \item stdmet - Standard Meteorological data
-#'  \item swden - Spectral Wave Density data with Spectral Wave Direction data
-#'  \item wlevel - Water Level data
-#' }
-#' @references \url{http://www.ndbc.noaa.gov/}, \url{http://dods.ndbc.noaa.gov/}
+#' 
+#' - adcp - Acoustic Doppler Current Profiler data
+#' - adcp2 - MMS Acoustic Doppler Current Profiler data
+#' - cwind - Continuous Winds data
+#' - dart - Deep-ocean Assessment and Reporting of Tsunamis data
+#' - mmbcur - Marsh-McBirney Current Measurements data
+#' - ocean - Oceanographic data
+#' - pwind - Peak Winds data
+#' - stdmet - Standard Meteorological data
+#' - swden - Spectral Wave Density data with Spectral Wave Direction data
+#' - wlevel - Water Level data
+#' 
+#' @references <http://www.ndbc.noaa.gov/>, <http://dods.ndbc.noaa.gov/>
 #' @examples \dontrun{
 #' # Get buoy station information
 #' x <- buoy_stations()
@@ -150,9 +153,20 @@ get_ncdf_file <- function(path, buoyid, file, output, ...){
 # Download a single ncdf file
 buoy_collect_data <- function(path) {
   nc <- ncdf4::nc_open(path)
+  dims <- names(nc$dim)
+
+  # check if likely on a lat/lon grid, or not; if not, throw message
+  if (
+    !any(c('lat', 'latitude') %in% dims) && 
+    !any(c('lon', 'longitude') %in% dims)
+  ) {
+    warning("data not on lat/lon grid - not reading in data; see help")
+    res <- structure(list(meta = nc, data = data.frame(NULL)),
+      class = "buoy")
+    return(res)
+  }
 
   out <- list()
-  dims <- names(nc$dim)
   for (i in seq_along(dims)) {
     out[[dims[i]]] <- ncdf4::ncvar_get(nc, nc$dim[[dims[i]]])
   }
@@ -185,8 +199,14 @@ print.buoy <- function(x, ..., n = 10) {
   vars <- names(x$meta)
   dims <- dim(x$data)
   cat(sprintf('Dimensions (rows/cols): [%s X %s]', dims[1], dims[2]), "\n")
-  cat(sprintf('%s variables: [%s]', length(vars), paste0(vars, collapse = ", ")), "\n\n")
-  trunc_mat_(x$data, n = n)
+  cat(sprintf('%s variables: [%s]', length(vars), paste0(vars, collapse = ", ")),
+    "\n\n")
+  if (NROW(x$data) > 0) {
+    trunc_mat_(x$data, n = n)
+  } else if (inherits(x$meta, "ncdf4")) {
+    cat("Data not on lat/lon grid; see x$meta for ncdf4 object",
+      sep = "\n")
+  }
 }
 
 convert_time <- function(n = NULL, isoTime = NULL) {
@@ -232,7 +252,7 @@ buoy_stations <- function(refresh = FALSE, ...) {
       dc <- sapply(xml_find_all(html, "//meta[@name]"), function(z) {
         as.list(stats::setNames(xml_attr(z, "content"), xml_attr(z, "name")))
       })
-      as_data_frame(c(
+      as_tibble(c(
         station = sttt,
         lat = {
           val <- str_extract_(dc$DC.description, "[0-9]+\\.[0-9]+[NS]")

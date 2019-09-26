@@ -7,7 +7,7 @@ Description: Client for many 'NOAA' data sources including the 'NCDC' climate
     for 'NOAA' sea ice data, the 'NOAA' severe weather inventory, 'NOAA' Historical
     Observing 'Metadata' Repository ('HOMR') data, 'NOAA' storm data via 'IBTrACS',
     tornado data via the 'NOAA' storm prediction center, and more.
-Version: 0.8.4
+Version: 0.9.0
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-US
@@ -22,15 +22,16 @@ Authors@R: c(
     person("Karthik", "Ram", role = "ctb"),
     person("Hart", "Edmund", role = "ctb")
   )
-URL: https://github.com/ropensci/rnoaa
+URL: https://docs.ropensci.org/rnoaa (website),
+        https://github.com/ropensci/rnoaa
 BugReports: https://github.com/ropensci/rnoaa/issues
 LazyData: true
 VignetteBuilder: knitr
-Imports: utils, crul (>= 0.7.0), lubridate, dplyr, tidyr, ggplot2,
-        scales, XML, xml2, jsonlite, rappdirs, gridExtra, tibble,
-        isdparser (>= 0.2.0), geonames, hoardr (>= 0.5.2)
+Imports: utils, crul (>= 0.7.0), lubridate, dplyr, tidyr, tidyselect,
+        ggplot2, scales, XML, xml2, jsonlite, rappdirs, gridExtra,
+        tibble, isdparser (>= 0.2.0), geonames, hoardr (>= 0.5.2)
 Suggests: roxygen2 (>= 6.1.1), testthat, knitr, taxize, ncdf4, raster,
-        leaflet, rgdal, rmarkdown, purrr, ggmap, ropenaq, vcr (>=
+        leaflet, rgdal, sf, rmarkdown, purrr, ggmap, ropenaq, vcr (>=
         0.2.2)
 RoxygenNote: 6.1.1
 X-schema.org-applicationCategory: Climate
@@ -38,7 +39,7 @@ X-schema.org-keywords: earth, science, climate, precipitation,
         temperature, storm, buoy, NCDC, NOAA, tornadoe, sea ice, ISD
 X-schema.org-isPartOf: https://ropensci.org
 NeedsCompilation: no
-Packaged: 2019-01-14 22:39:02 UTC; sckott
+Packaged: 2019-09-26 19:59:11 UTC; sckott
 Author: Scott Chamberlain [aut, cre],
   Brooke Anderson [ctb],
   Maëlle Salmon [ctb],
@@ -50,4 +51,4 @@ Author: Scott Chamberlain [aut, cre],
   Hart Edmund [ctb]
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
 Repository: CRAN
-Date/Publication: 2019-01-14 23:10:03 UTC
+Date/Publication: 2019-09-26 20:20:02 UTC

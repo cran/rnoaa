@@ -25,13 +25,13 @@ ids}
 \item{locationid}{Accepts a valid location id or a vector or list of
 location ids (optional)}
 
-\item{startdate}{(required) Accepts valid ISO formated date (yyyy-mm-dd)
+\item{startdate}{(character/date) Accepts valid ISO formated date (yyyy-mm-dd)
 or date time (YYYY-MM-DDThh:mm:ss). Data returned will have data after the
-specified date. The date range must be less than 1 year.}
+specified date. The date range must be less than 1 year. required.}
 
-\item{enddate}{(required) Accepts valid ISO formated date (yyyy-mm-dd) or
+\item{enddate}{(character/date) Accepts valid ISO formated date (yyyy-mm-dd) or
 date time (YYYY-MM-DDThh:mm:ss). Data returned will have data before the
-specified date. The date range must be less than 1 year.}
+specified date. The date range must be less than 1 year. required.}
 
 \item{sortfield}{The field to sort results by. Supports id, name, mindate,
 maxdate, and datacoverage fields (optional)}
@@ -79,18 +79,22 @@ time's improve, but perhaps they will for you.}
 
 \item{results}{THIS IS A DEPRECATED ARGUMENT. See limit.}
 
-\item{add_units}{(logical) whether to add units information or not. 
+\item{add_units}{(logical) whether to add units information or not.
 default: \code{FALSE}. If \code{TRUE}, after getting data from NOAA
-we add a new column \code{units}. See "Adding units" in Details 
+we add a new column \code{units}. See "Adding units" in Details
 for more}
 
-\item{...}{Curl options passed on to \code{\link[crul]{HttpClient}} 
+\item{...}{Curl options passed on to \code{\link[crul]{HttpClient}}
 (optional)}
 }
 \value{
 An S3 list of length two, a slot of metadata (meta), and a slot
 for data (data). The meta slot is a list of metadata elements, and the
-data slot is a data.frame, possibly of length zero if no data is found.
+data slot is a data.frame, possibly of length zero if no data is found. Note
+that values in the data slot don't indicate their units by default, so you
+will want to either use the \code{add_units} parameter (experimental, see Adding
+units) or consult the documentation for each dataset to ensure you're using
+the correct units.
 }
 \description{
 Search for and get NOAA NCDC data
@@ -105,8 +109,8 @@ are required.
 
 Note that the default limit (no. records returned) is 25. Look at the
 metadata in \code{$meta} to see how many records were found. If more were
-found than 25, you could set the parameter \code{limit} to
-something higher than 25.
+found than 25, you could set the parameter \code{limit} to something
+higher than 25.
 }
 \section{Authentication}{
 
@@ -114,10 +118,10 @@ Get an API key (aka, token) at \url{http://www.ncdc.noaa.gov/cdo-web/token}.
 You can pass your token in as an argument or store it one of two places:
 
 \itemize{
-  \item your .Rprofile file with an entry like
-  \code{options(noaakey = "your-noaa-token")}
-  \item your .Renviron file with an entry like
-  \code{NOAA_KEY=your-noaa-token}
+\item your .Rprofile file with an entry like
+\code{options(noaakey = "your-noaa-token")}
+\item your .Renviron file with an entry like
+\code{NOAA_KEY=your-noaa-token}
 }
 
 See \code{\link{Startup}} for information on how to create/find your
@@ -132,19 +136,18 @@ following are flag columns, and what they stand for. \code{fl_} is the
 beginning of each flag column name, then one or more characters to describe
 the flag, keeping it short to maintain a compact data frame. Some of
 these fields are the same across datasetids. See the vignette
-\code{vignette("rnoaa_attributes", "rnoaa")} for
-description of possible values for each flag.
-
+\code{vignette("rnoaa_attributes", "rnoaa")} for description of possible
+values for each flag.
 \itemize{
- \item fl_c completeness
- \item fl_d day
- \item fl_m measurement
- \item fl_q quality
- \item fl_s source
- \item fl_t time
- \item fl_cmiss consecutive missing
- \item fl_miss missing
- \item fl_u units
+\item fl_c completeness
+\item fl_d day
+\item fl_m measurement
+\item fl_q quality
+\item fl_s source
+\item fl_t time
+\item fl_cmiss consecutive missing
+\item fl_miss missing
+\item fl_u units
 }
 }
 
@@ -154,8 +157,8 @@ Note that flags are different for GSOM and GSOY datasets. They have their
 own set of flags per data class. See
 \code{system.file("extdata/gsom.json", package = "rnoaa")} for GSOM
 and \code{system.file("extdata/gsom.json", package = "rnoaa")} for GSOY.
-Those are JSON files. The \code{system.file} call gives you then path,
-then read in with \code{jsonlite::fromJSON} which will give a data.frame
+Those are JSON files. The \code{\link[=system.file]{system.file()}} call gives you then path,
+then read in with \code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}} which will give a data.frame
 of the metadata. For more detailed info but plain text, open
 \code{system.file("extdata/gsom_readme.txt", package = "rnoaa")}
 and \code{system.file("extdata/gsoy_readme.txt", package = "rnoaa")}
@@ -164,16 +167,16 @@ in a text editor.
 
 \section{Adding units}{
 
-The \code{add_units} parameter is experimental - USE WITH CAUTION! 
+The \code{add_units} parameter is experimental - USE WITH CAUTION!
 If \code{add_units=TRUE} we pull data from curated lists of data
 used by matching by datasetid and data type.
 
 We've attempted to gather as much information as possible on the many, many
 data types across the many different NOAA data sets. However, we may have
-got some things wrong, so make sure to double check data you get if you 
+got some things wrong, so make sure to double check data you get if you
 do add units.
 
-Get in touch if you find some units that are wrong or missing, and 
+Get in touch if you find some units that are wrong or missing, and
 if you are able to help correct information.
 }
 
@@ -182,6 +185,9 @@ if you are able to help correct information.
 # GHCN-Daily (or GHCND) data, for a specific station
 ncdc(datasetid='GHCND', stationid='GHCND:USW00014895',
    startdate = '2013-10-01', enddate = '2013-12-01')
+### also accepts dates as class Date
+ncdc(datasetid='GHCND', stationid='GHCND:USW00014895',
+   startdate = as.Date('2013-10-01'), enddate = as.Date('2013-12-01'))
 
 # GHCND data, for a location by FIPS code
 ncdc(datasetid='GHCND', locationid = 'FIPS:02', startdate = '2010-05-01',

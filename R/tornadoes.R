@@ -1,24 +1,29 @@
 #' Get NOAA tornado data.
 #'
+#' This function gets spatial paths of tornadoes from NOAA's National Weather
+#' Service Storm Prediction Center Severe Weather GIS web page.
+#'
 #' @export
 #' @param overwrite (logical) To overwrite the path to store files in or not,
-#' Default: \code{TRUE}
-#' @param ... Curl options passed on to \code{\link[crul]{HttpClient}}  
-#' (optional)
+#' Default: `TRUE`
+#' @param ... Curl options passed on to [crul::verb-GET] (optional)
 #'
 #' @return A Spatial object is returned of class SpatialLinesDataFrame.
-#' @references \url{http://www.spc.noaa.gov/gis/svrgis/}
+#' @references https://www.spc.noaa.gov/gis/svrgis/
 #'
 #' @section File storage:
 #' We use \pkg{rappdirs} to store files, see
-#' \code{\link[rappdirs]{user_cache_dir}} for how
+#' [rappdirs::user_cache_dir()] for how
 #' we determine the directory on your machine to save files to, and run
-#' \code{rappdirs::user_cache_dir("rnoaa/tornadoes")} to get that directory.
+#' `rappdirs::user_cache_dir("rnoaa/tornadoes")` to get that directory.
 #'
 #' @examples \dontrun{
 #' shp <- tornadoes()
 #' library('sp')
-#' plot(shp) # may take 10 sec or so to render
+#' if (interactive()) {
+#'   # may take 10 sec or so to render 
+#'   plot(shp)
+#' }
 #' }
 tornadoes <- function(overwrite = TRUE, ...) {
   calls <- names(sapply(match.call(), deparse))[-1]
@@ -30,10 +35,10 @@ tornadoes <- function(overwrite = TRUE, ...) {
   check4pkg('rgdal')
   path <- file.path(rnoaa_cache_dir(), "tornadoes")
   if (!is_tornadoes(path)) {
-    url <- 'https://www.spc.noaa.gov/gis/svrgis/zipped/tornado.zip'
+    url <- 'https://www.spc.noaa.gov/gis/svrgis/zipped/1950-2017-torn-aspath.zip'
     tornadoes_GET(path, url, overwrite, ...)
   }
-  readshp(file.path(path, "torn"))
+  readshp(file.path(path, tornadoes_basename))
 }
 
 tornadoes_GET <- function(bp, url, overwrite, ...){
@@ -56,8 +61,10 @@ is_tornadoes <- function(x){
   }
 }
 
-readshp <- function(x) rgdal::readOGR(dsn = path.expand(x), layer = "torn",
+tornadoes_basename <- "1950-2017-torn-aspath"
+
+readshp <- function(x) rgdal::readOGR(dsn = path.expand(x),
+                                      layer = tornadoes_basename,
                                       stringsAsFactors = FALSE)
 
-tornadoes_files <-
-  c("torn.dbf","torn.prj","torn.cpg","torn.shp","torn.shx")
+tornadoes_files <- paste0(tornadoes_basename, c(".dbf", ".prj", ".shp", ".shx"))

@@ -12,7 +12,7 @@
 #' is still returned, but is NULL. In practice, I haven't seen response
 #' time's improve, but perhaps they will for you.
 #' @param add_units (logical) whether to add units information or not. 
-#' default: \code{FALSE}. If \code{TRUE}, after getting data from NOAA
+#' default: `FALSE`. If \code{TRUE}, after getting data from NOAA
 #' we add a new column \code{units}. See "Adding units" in Details 
 #' for more
 #'
@@ -25,47 +25,45 @@
 #' are required.
 #'
 #' Note that the default limit (no. records returned) is 25. Look at the
-#' metadata in \code{$meta} to see how many records were found. If more were
-#' found than 25, you could set the parameter \code{limit} to
-#' something higher than 25.
+#' metadata in `$meta` to see how many records were found. If more were
+#' found than 25, you could set the parameter `limit` to something
+#' higher than 25.
 #'
 #' @section Flags:
 #' The attributes, or "flags", for each row of the output for data may have
 #' a flag with it. Each \code{datasetid} has it's own set of flags. The
-#' following are flag columns, and what they stand for. \code{fl_} is the
+#' following are flag columns, and what they stand for. `fl_` is the
 #' beginning of each flag column name, then one or more characters to describe
 #' the flag, keeping it short to maintain a compact data frame. Some of
 #' these fields are the same across datasetids. See the vignette
-#' \code{vignette("rnoaa_attributes", "rnoaa")} for
-#' description of possible values for each flag.
+#' `vignette("rnoaa_attributes", "rnoaa")` for description of possible
+#' values for each flag.
 #'
-#' \itemize{
-#'  \item fl_c completeness
-#'  \item fl_d day
-#'  \item fl_m measurement
-#'  \item fl_q quality
-#'  \item fl_s source
-#'  \item fl_t time
-#'  \item fl_cmiss consecutive missing
-#'  \item fl_miss missing
-#'  \item fl_u units
-#' }
+#' - fl_c completeness
+#' - fl_d day
+#' - fl_m measurement
+#' - fl_q quality
+#' - fl_s source
+#' - fl_t time
+#' - fl_cmiss consecutive missing
+#' - fl_miss missing
+#' - fl_u units
 #'
 #' @section GSOM/GSOY Flags:
 #' Note that flags are different for GSOM and GSOY datasets. They have their
 #' own set of flags per data class. See
-#' \code{system.file("extdata/gsom.json", package = "rnoaa")} for GSOM
-#' and \code{system.file("extdata/gsom.json", package = "rnoaa")} for GSOY.
-#' Those are JSON files. The \code{system.file} call gives you then path,
-#' then read in with \code{jsonlite::fromJSON} which will give a data.frame
+#' `system.file("extdata/gsom.json", package = "rnoaa")` for GSOM
+#' and `system.file("extdata/gsom.json", package = "rnoaa")` for GSOY.
+#' Those are JSON files. The [system.file()] call gives you then path,
+#' then read in with [jsonlite::fromJSON()] which will give a data.frame
 #' of the metadata. For more detailed info but plain text, open
-#' \code{system.file("extdata/gsom_readme.txt", package = "rnoaa")}
-#' and \code{system.file("extdata/gsoy_readme.txt", package = "rnoaa")}
+#' `system.file("extdata/gsom_readme.txt", package = "rnoaa")`
+#' and `system.file("extdata/gsoy_readme.txt", package = "rnoaa")`
 #' in a text editor.
 #' 
 #' @section Adding units:
-#' The \code{add_units} parameter is experimental - USE WITH CAUTION! 
-#' If \code{add_units=TRUE} we pull data from curated lists of data
+#' The `add_units` parameter is experimental - USE WITH CAUTION! 
+#' If `add_units=TRUE` we pull data from curated lists of data
 #' used by matching by datasetid and data type.
 #' 
 #' We've attempted to gather as much information as possible on the many, many
@@ -79,7 +77,11 @@
 #'
 #' @return An S3 list of length two, a slot of metadata (meta), and a slot
 #' for data (data). The meta slot is a list of metadata elements, and the
-#' data slot is a data.frame, possibly of length zero if no data is found.
+#' data slot is a data.frame, possibly of length zero if no data is found. Note
+#' that values in the data slot don't indicate their units by default, so you
+#' will want to either use the `add_units` parameter (experimental, see Adding
+#' units) or consult the documentation for each dataset to ensure you're using
+#' the correct units.
 #'
 #' @family ncdc
 #'
@@ -87,6 +89,9 @@
 #' # GHCN-Daily (or GHCND) data, for a specific station
 #' ncdc(datasetid='GHCND', stationid='GHCND:USW00014895',
 #'    startdate = '2013-10-01', enddate = '2013-12-01')
+#' ### also accepts dates as class Date
+#' ncdc(datasetid='GHCND', stationid='GHCND:USW00014895',
+#'    startdate = as.Date('2013-10-01'), enddate = as.Date('2013-12-01'))
 #'
 #' # GHCND data, for a location by FIPS code
 #' ncdc(datasetid='GHCND', locationid = 'FIPS:02', startdate = '2010-05-01',
@@ -192,10 +197,10 @@ ncdc <- function(datasetid=NULL, datatypeid=NULL, stationid=NULL, locationid=NUL
   }
 
   token <- check_key(token)
-  args <- noaa_compact(list(datasetid  = datasetid, startdate = startdate,
-                         enddate = enddate, sortfield = sortfield,
-                         sortorder = sortorder, limit = limit,
-                         offset = offset, includemetadata = includemetadata))
+  args <- noaa_compact(list(datasetid  = datasetid,
+    startdate = as.character(startdate), enddate = as.character(enddate),
+    sortfield = sortfield, sortorder = sortorder, limit = limit,
+    offset = offset, includemetadata = includemetadata))
   if (!is.null(stationid)) {
     stationid <- lapply(stationid, function(x) list(stationid = x))
   }
@@ -218,7 +223,7 @@ ncdc <- function(datasetid=NULL, datatypeid=NULL, stationid=NULL, locationid=NUL
     dat <- dplyr::bind_rows(lapply(tt$results, function(x)
       data.frame(x, stringsAsFactors = FALSE)))
     meta <- tt$metadata$resultset
-    dat <- if (add_units) ncdc_add_units(dat, datasetid) else tibble::as_data_frame(dat)
+    dat <- if (add_units) ncdc_add_units(dat, datasetid) else tibble::as_tibble(dat)
     atts <- list(totalCount = meta$count, pageCount = meta$limit,
                  offset = meta$offset)
     all <- list(meta = atts, data = dat)

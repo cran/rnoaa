@@ -16,9 +16,10 @@ gefs(var, lat, lon, ...)
 gefs_CONNECT(date = format(Sys.time(), "\%Y\%m\%d"),
   forecast_time = c("0000", "0600", "1200", "1800"))
 
-gefs_GET(var, lat, lon, date = format(Sys.time(), "\%Y\%m\%d"),
-  forecast_time = c("0000", "0600", "1200", "1800"), ens_idx = 1:21,
-  time_idx = 1:65, dims = NULL, raw = FALSE, ...)
+gefs_GET(var, lat = NULL, lon = NULL, ens = NULL, time = NULL,
+  date = format(Sys.time(), "\%Y\%m\%d"), forecast_time = c("0000",
+  "0600", "1200", "1800"), ens_idx = NULL, time_idx = NULL,
+  dims = NULL, raw = FALSE, ...)
 
 gefs_latitudes(con = NULL, ...)
 
@@ -28,7 +29,7 @@ gefs_variables(con = NULL, ...)
 
 gefs_dimensions(con = NULL, ...)
 
-gefs_dimension_values(dim, con = NULL, ...)
+gefs_dimension_values(dim, var = NULL, con = NULL, ...)
 }
 \arguments{
 \item{var}{the variable to get. Must be one of the variables listed in
@@ -47,11 +48,11 @@ nearest GEFS available longitude.}
 \item{forecast_time}{a string indicating which time of day UTC the
 forecast is from. Options are "0000", "0600", "1200", "1800".}
 
-\item{ens_idx}{sequential list of ensembles to fetch. Default is all 21.
+\item{ens, ens_idx}{sequential list of ensembles to fetch. Default is all 21.
 Note that the ensembles are labelled 0-20, so ens_idx=1:3 will return
 ensembles 0, 1, and 2.}
 
-\item{time_idx}{sequential list of time increments to return. List is the
+\item{time, time_idx}{sequential list of time increments to return. List is the
 index of times, which are in 6 hour increments. (e.g. c(1,2) fetches the
 6 and 12 hour forecast.)}
 
@@ -97,24 +98,24 @@ lon <- -118.2188
 
 #Get forecast for a certain variable.
 forecast <- gefs("Total_precipitation_surface_6_Hour_Accumulation_ens",
-  lat, lon)
+  lat, lon, ens = 0, time = 12)
 
 #Fetch a different date (available up to 10 days prior to today)
 forecast_yesterday_prec <- gefs(
    "Total_precipitation_surface_6_Hour_Accumulation_ens",
-   lat, lon, date=format(as.Date(Sys.time()) - 1, "\%Y\%m\%d"))
+   lat, lon, ens = 1, time = 6, date=format(as.Date(Sys.time()) - 1, "\%Y\%m\%d"))
 
 #specific ensemble and times, for the 1800 forecast.
 # here ensembles 1-3 (ensembles are numbered starting with 0)
-# and time for 2 days from today at 1800
+# and two time periods: c(1800, 2400)
 date <- format(as.Date(Sys.time()) - 1, "\%Y\%m\%d")
 var <- "Temperature_height_above_ground_ens"
-gefs(var, lat, lon, date = date, forecast_time = "1800", ens_idx=2:4,
-  time_idx=1:8)
+gefs(var, lat, lon, date = date, forecast_time = "1800", ens=1:3,
+  time=6*(3:4))
 
 #One ensemble, all latitudes and longitudes (this is a big file) for the
 # next 3 days.
-# gefs(var, ens=1, time=1:12)
+# gefs(var, ens=1, time=6*(1:12))
 }
 
 }

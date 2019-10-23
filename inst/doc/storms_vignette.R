@@ -1,9 +1,8 @@
-## ---- echo  =  FALSE, warning = FALSE, message = FALSE-------------------
-NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
+## ---- echo = FALSE, warning = FALSE, message = FALSE---------------------
 knitr::opts_chunk$set(
   collapse  =  TRUE,
   comment  =  "#>",
-  purl  =  NOT_CRAN,
-  eval  =  NOT_CRAN
+  purl  =  FALSE,
+  eval  =  FALSE
 )
 

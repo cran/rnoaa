@@ -7,7 +7,7 @@ Description: Client for many 'NOAA' data sources including the 'NCDC' climate
     for 'NOAA' sea ice data, the 'NOAA' severe weather inventory, 'NOAA' Historical
     Observing 'Metadata' Repository ('HOMR') data, 'NOAA' storm data via 'IBTrACS',
     tornado data via the 'NOAA' storm prediction center, and more.
-Version: 0.9.4
+Version: 0.9.5
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-US
@@ -39,7 +39,7 @@ X-schema.org-keywords: earth, science, climate, precipitation,
         temperature, storm, buoy, NCDC, NOAA, tornadoe, sea ice, ISD
 X-schema.org-isPartOf: https://ropensci.org
 NeedsCompilation: no
-Packaged: 2019-11-07 20:14:46 UTC; sckott
+Packaged: 2019-11-20 16:38:58 UTC; sckott
 Author: Scott Chamberlain [aut, cre],
   Brooke Anderson [ctb],
   Maëlle Salmon [ctb],
@@ -51,4 +51,4 @@ Author: Scott Chamberlain [aut, cre],
   Hart Edmund [ctb]
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
 Repository: CRAN
-Date/Publication: 2019-11-07 21:00:03 UTC
+Date/Publication: 2019-11-20 21:30:08 UTC

@@ -32,6 +32,9 @@ Precipitation data from NOAA Climate Prediction Center (CPC)
 Rainfall data for the world (1979-present, resolution 50 km), and
 the US (1948-present, resolution 25 km).
 }
+\note{
+See \link{cpc_cache} for managing cached files
+}
 \section{Data processing in this function}{
 
 Internally we multiply all precipitation measurements by 0.1 as
@@ -46,7 +49,7 @@ you can easily do it yourself by e.g., \code{subset(x, precip >= 0)}
 
 \examples{
 \dontrun{
-cpc_prcp(date = "2017-01-15")
+x = cpc_prcp(date = "2017-01-15")
 cpc_prcp(date = "2015-06-05")
 cpc_prcp(date = "2017-01-15")
 cpc_prcp(date = "2005-07-09")

@@ -72,11 +72,15 @@ long2utm <- function(lon, lat) {
 #' @keywords internal
 check_response <- function(x){
   if (!x$status_code == 200) {
-    stnames <- names(jsonlite::fromJSON(x$parse("UTF-8"), FALSE))
+    res <- tryCatch(jsonlite::fromJSON(x$parse("UTF-8"), FALSE),
+      error = function(e) e)
+    if (inherits(res, "error")) x$raise_for_status()
+    stnames <- names(res)
     if (!is.null(stnames)) {
       if ('developerMessage' %in% stnames || 'message' %in% stnames) {
         warning(sprintf("Error: (%s) - %s", x$status_code,
-            noaa_compact(list(jsonlite::fromJSON(x$parse("UTF-8"), FALSE)$developerMessage, jsonlite::fromJSON(x$parse("UTF-8"), FALSE)$message))),
+            noaa_compact(list(jsonlite::fromJSON(x$parse("UTF-8"), FALSE)$developerMessage,
+              jsonlite::fromJSON(x$parse("UTF-8"), FALSE)$message))),
             call. = FALSE)
       } else {
         warning(sprintf("Error: (%s)", x$status_code), call. = FALSE)
@@ -101,7 +105,10 @@ check_response <- function(x){
         warning("Sorry, no data found", call. = FALSE)
       }
     } else {
-      if ( class(try(out$results, silent = TRUE)) == "try-error" || is.null(try(out$results, silent = TRUE)) ) {
+      if (
+        class(try(out$results, silent = TRUE)) == "try-error" ||
+        is.null(try(out$results, silent = TRUE)) 
+      ) {
         warning("Sorry, no data found", call. = FALSE)
       }
     }
@@ -152,11 +159,28 @@ check_response_swdi <- function(x, format){
 
 noaa_compact <- function(l) Filter(Negate(is.null), l)
 
-read_csv <- function(x){
-  tmp <- read.csv(x, header = FALSE, sep = ",", stringsAsFactors=FALSE, skip = 3)
-  nmz <- names(read.csv(x, header = TRUE, sep = ",", stringsAsFactors=FALSE, skip = 1, nrows=1))
+storms_read_csv <- function(x){
+  tmp <- read.csv(x, header = FALSE, sep = ",",
+    stringsAsFactors=FALSE, skip = 3)
+  nmz <- names(read.csv(x, header = TRUE, sep = ",",
+    stringsAsFactors=FALSE, skip = 1, nrows=1))
   names(tmp) <- tolower(nmz)
   tmp
+}
+
+safe_read_csv <- function(x, header = TRUE, stringsAsFactors = FALSE, sep = ",") {
+  assert(x, "character")
+  tmp <- tryCatch(
+    read.csv(x, header = header, sep = sep,
+      stringsAsFactors = stringsAsFactors),
+    error = function(e) e,
+    warning = function(w) w
+  )
+  if (inherits(tmp, "warning"))
+    stop(tmp$message)
+  if (inherits(tmp, "error"))
+    stop("file ", x, " malformed; delete file and try again")
+  return(tmp)
 }
 
 check_key <- function(x){

@@ -5,6 +5,7 @@
 #' @param ... curl options passed on to [crul::verb-GET]
 #' @references docs:
 #' <ftp://ftp.cpc.ncep.noaa.gov/fews/fewsdata/africa/arc2/ARC2_readme.txt>
+#' @note See [arc2_cache] for managing cached files
 #' @return a tibble/data.frame with columns:
 #'
 #' - lon - longitude
@@ -12,7 +13,7 @@
 #' - precip - precipitation
 #'
 #' @examples \dontrun{
-#' arc2(date = "1983-01-01")
+#' x = arc2(date = "1983-01-01")
 #' arc2(date = "2017-02-14")
 #' }
 arc2 <- function(date, ...) {
@@ -33,7 +34,11 @@ arc2_get <- function(year, month, day, cache = TRUE, overwrite = FALSE, ...) {
   key <- file.path(arc2_base_ftp(arc2_base(), date))
   file <- file.path(arc2_cache$cache_path_get(), basename(key))
   if (!file.exists(file)) {
-    suppressMessages(arc2_GET_write(sub("/$", "", key), file, overwrite, ...))
+    res <- suppressMessages(
+      arc2_GET_write(sub("/$", "", key), file, overwrite, ...))
+    file <- res$content
+  } else {
+    cache_mssg(file)
   }
   return(file)
 }

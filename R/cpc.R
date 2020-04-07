@@ -7,6 +7,7 @@
 #' values (values in the `precip` column in the output data.frame). 
 #' default: `FALSE`
 #' @param ... curl options passed on to [crul::verb-GET]
+#' @note See [cpc_cache] for managing cached files
 #' @return a data.frame, with columns:
 #'
 #' - lon - longitude (0 to 360)
@@ -34,7 +35,7 @@
 #' you can easily do it yourself by e.g., `subset(x, precip >= 0)`
 #'
 #' @examples \dontrun{
-#' cpc_prcp(date = "2017-01-15")
+#' x = cpc_prcp(date = "2017-01-15")
 #' cpc_prcp(date = "2015-06-05")
 #' cpc_prcp(date = "2017-01-15")
 #' cpc_prcp(date = "2005-07-09")
@@ -71,7 +72,10 @@ cpc_get <- function(year, month, day, us, cache = TRUE, overwrite = FALSE, ...) 
   key <- cpc_key(year, month, day, us)
   file <- file.path(cpc_cache$cache_path_get(), basename(key))
   if (!file.exists(file)) {
-    suppressMessages(cpc_GET_write(sub("/$", "", key), file, overwrite, ...))
+    res <- suppressMessages(cpc_GET_write(sub("/$", "", key), file, overwrite, ...))
+    file <- res$content
+  } else {
+    cache_mssg(file)
   }
   return(file)
 }

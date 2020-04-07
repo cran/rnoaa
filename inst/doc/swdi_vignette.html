@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Scott Chamberlain" />
 
-<meta name="date" content="2019-11-20" />
+<meta name="date" content="2020-04-06" />
 
 <title>SWDI vignette</title>
 
@@ -21,26 +20,27 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -49,9 +49,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -118,9 +118,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -289,7 +286,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -304,46 +302,49 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">SWDI vignette</h1>
 <h4 class="author">Scott Chamberlain</h4>
-<h4 class="date">2019-11-20</h4>
+<h4 class="date">2020-04-06</h4>
 
 
 
-<p>```</p>
-<p><code>SWDI</code> is the Severe Weather Data Inventory. SWDI is an (quoting)</p>
-<blockquote>
-<p>integrated database of severe weather records for the United States. The records in SWDI come from a variety of sources in the NCDC archive. SWDI provides the ability to search through all of these data to find records covering a particular time period and geographic region, and to download the results of your search in a variety of formats. The formats currently supported are Shapefile (for GIS), KMZ (for Google Earth), CSV (comma-separated), and XML.</p>
-</blockquote>
-<p>Data available in SWDI are:</p>
-<ul>
-<li>Storm Cells from NEXRAD (Level-III Storm Structure Product)</li>
-<li>Hail Signatures from NEXRAD (Level-III Hail Product)</li>
-<li>Mesocyclone Signatures from NEXRAD (Level-III Meso Product)</li>
-<li>Digital Mesocyclone Detection Algorithm from NEXRAD (Level-III MDA Product)</li>
-<li>Tornado Signatures from NEXRAD (Level-III TVS Product)</li>
-<li>Preliminary Local Storm Reports from the NOAA National Weather Service</li>
-<li>Lightning Strikes from Vaisala NLDN</li>
-</ul>
-<p>Find out more about SWDI at <a href="http://www.ncdc.noaa.gov/swdi/#Intro">http://www.ncdc.noaa.gov/swdi/#Intro</a>.</p>
-<div id="load-rnoaa" class="section level2">
-<h2>Load rnoaa</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">'rnoaa'</span>)</a></code></pre></div>
-</div>
+<pre><code>
+`SWDI` is the Severe Weather Data Inventory. SWDI is an (quoting)
+
+&gt; integrated database of severe weather records for the United States. The records in SWDI come from a variety of sources in the NCDC archive. SWDI provides the ability to search through all of these data to find records covering a particular time period and geographic region, and to download the results of your search in a variety of formats. The formats currently supported are Shapefile (for GIS), KMZ (for Google Earth), CSV (comma-separated), and XML.
+
+Data available in SWDI are:
+
+* Storm Cells from NEXRAD (Level-III Storm Structure Product)
+* Hail Signatures from NEXRAD (Level-III Hail Product)
+* Mesocyclone Signatures from NEXRAD (Level-III Meso Product)
+* Digital Mesocyclone Detection Algorithm from NEXRAD (Level-III MDA Product)
+* Tornado Signatures from NEXRAD (Level-III TVS Product)
+* Preliminary Local Storm Reports from the NOAA National Weather Service
+* Lightning Strikes from Vaisala NLDN
+
+Find out more about SWDI at [http://www.ncdc.noaa.gov/swdi/#Intro](http://www.ncdc.noaa.gov/swdi/#Intro).
+
+
+## Load rnoaa
+
+
+```r
+library(&#39;rnoaa&#39;)</code></pre>
 <div id="search-for-nx3tvs-data-from-5-may-2006-to-6-may-2006" class="section level2">
 <h2>Search for nx3tvs data from 5 May 2006 to 6 May 2006</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">'nx3tvs'</span>, <span class="dt">startdate=</span><span class="st">'20060505'</span>, <span class="dt">enddate=</span><span class="st">'20060506'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">&#39;nx3tvs&#39;</span>, <span class="dt">startdate=</span><span class="st">&#39;20060505&#39;</span>, <span class="dt">enddate=</span><span class="st">&#39;20060506&#39;</span>)</span></code></pre></div>
 </div>
 <div id="use-an-id" class="section level2">
 <h2>Use an id</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">out &lt;-<span class="st"> </span><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">'warn'</span>, <span class="dt">startdate=</span><span class="st">'20060506'</span>, <span class="dt">enddate=</span><span class="st">'20060507'</span>, <span class="dt">id=</span><span class="dv">533623</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">list</span>(out<span class="op">$</span>meta, <span class="kw">head</span>(out<span class="op">$</span>data), <span class="kw">head</span>(out<span class="op">$</span>shape))</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>out &lt;-<span class="st"> </span><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">&#39;warn&#39;</span>, <span class="dt">startdate=</span><span class="st">&#39;20060506&#39;</span>, <span class="dt">enddate=</span><span class="st">&#39;20060507&#39;</span>, <span class="dt">id=</span><span class="dv">533623</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">list</span>(out<span class="op">$</span>meta, <span class="kw">head</span>(out<span class="op">$</span>data), <span class="kw">head</span>(out<span class="op">$</span>shape))</span></code></pre></div>
 </div>
 <div id="get-all-plsr-within-the-bounding-box--9130-9031" class="section level2">
 <h2>Get all ‘plsr’ within the bounding box (-91,30,-90,31)</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">'plsr'</span>, <span class="dt">startdate=</span><span class="st">'20060505'</span>, <span class="dt">enddate=</span><span class="st">'20060510'</span>, <span class="dt">bbox=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">91</span>,<span class="dv">30</span>,<span class="op">-</span><span class="dv">90</span>,<span class="dv">31</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">&#39;plsr&#39;</span>, <span class="dt">startdate=</span><span class="st">&#39;20060505&#39;</span>, <span class="dt">enddate=</span><span class="st">&#39;20060510&#39;</span>, <span class="dt">bbox=</span><span class="kw">c</span>(<span class="op">-</span><span class="dv">91</span>,<span class="dv">30</span>,<span class="op">-</span><span class="dv">90</span>,<span class="dv">31</span>))</span></code></pre></div>
 </div>
 <div id="get-all-nx3tvs-within-the-tile--102.132.6--102.1532.55-102.2532.65" class="section level2">
 <h2>Get all ‘nx3tvs’ within the tile -102.1/32.6 (-102.15,32.55,-102.25,32.65)</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">'nx3tvs'</span>, <span class="dt">startdate=</span><span class="st">'20060506'</span>, <span class="dt">enddate=</span><span class="st">'20060507'</span>, <span class="dt">tile=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">102.12</span>,<span class="fl">32.62</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">&#39;nx3tvs&#39;</span>, <span class="dt">startdate=</span><span class="st">&#39;20060506&#39;</span>, <span class="dt">enddate=</span><span class="st">&#39;20060507&#39;</span>, <span class="dt">tile=</span><span class="kw">c</span>(<span class="op">-</span><span class="fl">102.12</span>,<span class="fl">32.62</span>))</span></code></pre></div>
 </div>
 <div id="counts" class="section level2">
 <h2>Counts</h2>
@@ -354,21 +355,21 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li>Get number of ‘nx3tvs’ within 15 miles of latitude = 32.7 and longitude = -102.0</li>
 </ul>
 <p>Get daily count nx3tvs features on .1 degree grid centered at <code>latitude = 32.7</code> and <code>longitude = -102.0</code></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">'nx3tvs'</span>, <span class="dt">startdate=</span><span class="st">'20060505'</span>, <span class="dt">enddate=</span><span class="st">'20090516'</span>, <span class="dt">stat=</span><span class="st">'tilesum:-102.0,32.7'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">&#39;nx3tvs&#39;</span>, <span class="dt">startdate=</span><span class="st">&#39;20060505&#39;</span>, <span class="dt">enddate=</span><span class="st">&#39;20090516&#39;</span>, <span class="dt">stat=</span><span class="st">&#39;tilesum:-102.0,32.7&#39;</span>)</span></code></pre></div>
 </div>
 <div id="get-data-in-different-formats" class="section level2">
 <h2>Get data in different formats</h2>
 <div id="csv-format" class="section level3">
 <h3>CSV format</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">head</span>(<span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">'nx3tvs'</span>, <span class="dt">startdate=</span><span class="st">'20060505'</span>, <span class="dt">enddate=</span><span class="st">'20060506'</span>, <span class="dt">format=</span><span class="st">'csv'</span>)<span class="op">$</span>data)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">head</span>(<span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">&#39;nx3tvs&#39;</span>, <span class="dt">startdate=</span><span class="st">&#39;20060505&#39;</span>, <span class="dt">enddate=</span><span class="st">&#39;20060506&#39;</span>, <span class="dt">format=</span><span class="st">&#39;csv&#39;</span>)<span class="op">$</span>data)</span></code></pre></div>
 </div>
 <div id="shp-format" class="section level3">
 <h3>SHP format</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">'nx3tvs'</span>, <span class="dt">startdate=</span><span class="st">'20060505'</span>, <span class="dt">enddate=</span><span class="st">'20060506'</span>, <span class="dt">format=</span><span class="st">'shp'</span>, <span class="dt">filepath=</span><span class="st">'myfile'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">&#39;nx3tvs&#39;</span>, <span class="dt">startdate=</span><span class="st">&#39;20060505&#39;</span>, <span class="dt">enddate=</span><span class="st">&#39;20060506&#39;</span>, <span class="dt">format=</span><span class="st">&#39;shp&#39;</span>, <span class="dt">filepath=</span><span class="st">&#39;myfile&#39;</span>)</span></code></pre></div>
 </div>
 <div id="kmz-format" class="section level3">
 <h3>KMZ format</h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">'nx3tvs'</span>, <span class="dt">startdate=</span><span class="st">'20060505'</span>, <span class="dt">enddate=</span><span class="st">'20060506'</span>, <span class="dt">format=</span><span class="st">'kmz'</span>, <span class="dt">radius=</span><span class="dv">15</span>, <span class="dt">filepath=</span><span class="st">'myfile.kmz'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">swdi</span>(<span class="dt">dataset=</span><span class="st">&#39;nx3tvs&#39;</span>, <span class="dt">startdate=</span><span class="st">&#39;20060505&#39;</span>, <span class="dt">enddate=</span><span class="st">&#39;20060506&#39;</span>, <span class="dt">format=</span><span class="st">&#39;kmz&#39;</span>, <span class="dt">radius=</span><span class="dv">15</span>, <span class="dt">filepath=</span><span class="st">&#39;myfile.kmz&#39;</span>)</span></code></pre></div>
 </div>
 </div>
 

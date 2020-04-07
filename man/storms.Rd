@@ -8,13 +8,17 @@
 \alias{storm_meta}
 \title{Get NOAA wind storm tabular data, metadata, or shp files from IBTrACS}
 \usage{
-storm_shp(basin = NULL, storm = NULL, year = NULL, type = "points",
-  overwrite = TRUE)
+storm_shp(
+  basin = NULL,
+  storm = NULL,
+  year = NULL,
+  type = "points",
+  overwrite = TRUE
+)
 
 storm_shp_read(x)
 
-storm_data(basin = NULL, storm = NULL, year = NULL,
-  overwrite = TRUE, ...)
+storm_data(basin = NULL, storm = NULL, year = NULL, overwrite = TRUE, ...)
 
 storm_meta(what = "storm_columns")
 }
@@ -60,7 +64,7 @@ in reality is negative)
 the storm (range 0-359)
 }
 
-For example: \code{1970143N19091} is a storm in the North Atlantic which
+For example: \verb{1970143N19091} is a storm in the North Atlantic which
 started on May 23, 1970 near 19N 91E
 
 See \url{http://www.ncdc.noaa.gov/ibtracs/index.php?name=numbering} for more
@@ -68,14 +72,9 @@ See \url{http://www.ncdc.noaa.gov/ibtracs/index.php?name=numbering} for more
 The datasets included in the package \code{\link[=storm_names]{storm_names()}}, and
 \code{\link[=storm_columns]{storm_columns()}} may help in using these storm functions.
 }
-\section{File storage}{
-
-We use \pkg{rappdirs} to store files, see
-\code{\link[rappdirs:user_cache_dir]{rappdirs::user_cache_dir()}} for how
-we determine the directory on your machine to save files to, and run
-\code{rappdirs::user_cache_dir("rnoaa/storms")} to get that directory.
+\note{
+See \link{storms_cache} for managing cached files
 }
-
 \examples{
 \dontrun{
 # Metadata

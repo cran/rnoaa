@@ -46,12 +46,15 @@ column name
 \description{
 Local Climitalogical Data from NOAA
 }
+\note{
+See \link{lcd_cache} for managing cached files
+}
 \examples{
 \dontrun{
-lcd(station = "01338099999", year = 2017, verbose = TRUE)
-lcd(station = "01338099999", year = 2015, verbose = TRUE)
-lcd(station = "02413099999", year = 2009, verbose = TRUE)
-lcd(station = "02413099999", year = 2001, verbose = TRUE)
+x = lcd(station = "01338099999", year = 2017)
+lcd(station = "01338099999", year = 2015)
+lcd(station = "02413099999", year = 2009)
+lcd(station = "02413099999", year = 2001)
 
 # pass curl options
 lcd(station = "02413099999", year = 2002, verbose = TRUE)

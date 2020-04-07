@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Scott Chamberlain" />
 
-<meta name="date" content="2019-11-20" />
+<meta name="date" content="2020-04-06" />
 
 <title>NOAA storms</title>
 
@@ -21,26 +20,27 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -49,9 +49,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -118,9 +118,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -289,7 +286,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -304,7 +302,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">NOAA storms</h1>
 <h4 class="author">Scott Chamberlain</h4>
-<h4 class="date">2019-11-20</h4>
+<h4 class="date">2020-04-06</h4>
 
 
 
@@ -312,34 +310,34 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Find out more about NOAA storms data at <a href="http://www.ncdc.noaa.gov/ibtracs/index.php?name=numbering" class="uri">http://www.ncdc.noaa.gov/ibtracs/index.php?name=numbering</a></p>
 <div id="load-rnoaa" class="section level2">
 <h2>Load rnoaa</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">'rnoaa'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(<span class="st">&#39;rnoaa&#39;</span>)</span></code></pre></div>
 </div>
 <div id="metadata" class="section level2">
 <h2>Metadata</h2>
 <p>There are two datasets stored in the package. By default <code>storm_meta()</code> gives metadata describing columns of the datasets returned.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">head</span>( <span class="kw">storm_meta</span>() )</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">head</span>( <span class="kw">storm_meta</span>() )</span></code></pre></div>
 <p>Or you can get back a dataset of storm names, including storm ids and their names.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">head</span>( <span class="kw">storm_meta</span>(<span class="st">&quot;storm_names&quot;</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">head</span>( <span class="kw">storm_meta</span>(<span class="st">&quot;storm_names&quot;</span>) )</span></code></pre></div>
 </div>
 <div id="tabular-data" class="section level2">
 <h2>Tabular data</h2>
 <p>You can get tabular data for basins, storms, or years, (or all data). <code>storm_data()</code> and the next function <code>storm_shp()</code> figure out what files to get, and gets them from an ftp server, and saves them to your machine. Do let us know if you have any problems with paths on your machine, and we’ll fix ’em. The result from <code>storm_data()</code> is a <code>dplyr</code>-like data.frame with a easy summary that makes large datasets easy to view.</p>
 <p>First, by basin (one of EP, NA, NI, SA, SI, SP, or WP)</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">storm_data</span>(<span class="dt">basin=</span><span class="st">'WP'</span>)</a></code></pre></div>
-<p>Or by storm id, see <code>storm_meta('storm_names')</code> for storm ids and their names.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">storm_data</span>(<span class="dt">storm=</span><span class="st">'1970143N19091'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">storm_data</span>(<span class="dt">basin=</span><span class="st">&#39;WP&#39;</span>)</span></code></pre></div>
+<p>Or by storm id, see <code>storm_meta(&#39;storm_names&#39;)</code> for storm ids and their names.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">storm_data</span>(<span class="dt">storm=</span><span class="st">&#39;1970143N19091&#39;</span>)</span></code></pre></div>
 <p>Or by year, from 1842 to 2014.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">storm_data</span>(<span class="dt">year=</span><span class="dv">1941</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">storm_data</span>(<span class="dt">year=</span><span class="dv">1941</span>)</span></code></pre></div>
 </div>
 <div id="shp-files" class="section level2">
 <h2>shp files</h2>
 <p>The result from <code>storm_shp()</code> is the path, and some metadata, for the shp files downloaded. You can read in the shp files separately with <code>storm_shp_read()</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">(res &lt;-<span class="st"> </span><span class="kw">storm_shp</span>(<span class="dt">year=</span><span class="dv">2013</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>(res &lt;-<span class="st"> </span><span class="kw">storm_shp</span>(<span class="dt">year=</span><span class="dv">2013</span>))</span></code></pre></div>
 <p>You can easily read in the data (or do it on your own), then do stuff with the data, like make a simple plot.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">resshp &lt;-<span class="st"> </span><span class="kw">storm_shp_read</span>(res)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;maps&quot;</span>)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">map</span>()</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw">points</span>(resshp)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>resshp &lt;-<span class="st"> </span><span class="kw">storm_shp_read</span>(res)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="kw">library</span>(<span class="st">&quot;maps&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="kw">map</span>()</span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="kw">points</span>(resshp)</span></code></pre></div>
 </div>
 
 

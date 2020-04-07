@@ -4,17 +4,25 @@
 \alias{meteo_nearby_stations}
 \title{Find weather monitors near locations}
 \usage{
-meteo_nearby_stations(lat_lon_df, lat_colname = "latitude",
-  lon_colname = "longitude", station_data = ghcnd_stations(),
-  var = "all", year_min = NULL, year_max = NULL, radius = NULL,
-  limit = NULL)
+meteo_nearby_stations(
+  lat_lon_df,
+  lat_colname = "latitude",
+  lon_colname = "longitude",
+  station_data = ghcnd_stations(),
+  var = "all",
+  year_min = NULL,
+  year_max = NULL,
+  radius = NULL,
+  limit = NULL
+)
 }
 \arguments{
 \item{lat_lon_df}{A dataframe that contains the latitude, longitude, and
 a unique identifier for each location (\code{id}). For an example of the
 proper format for this dataframe, see the examples below. Latitude and
 longitude must both be in units of decimal degrees. Southern latitudes
-and Western longitudes should be given as negative values.}
+and Western longitudes should be given as negative values. A tibble
+is accepted, but is coerced to a data.frame internally before any usage.}
 
 \item{lat_colname}{A character string giving the name of the latitude column
 in the \code{lat_lon_df} dataframe.}

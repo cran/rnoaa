@@ -22,9 +22,12 @@ a tibble/data.frame with columns:
 \description{
 Arc2 - Africa Rainfall Climatology version 2
 }
+\note{
+See \link{arc2_cache} for managing cached files
+}
 \examples{
 \dontrun{
-arc2(date = "1983-01-01")
+x = arc2(date = "1983-01-01")
 arc2(date = "2017-02-14")
 }
 }

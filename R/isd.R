@@ -65,20 +65,7 @@
 #' file does not exist on NOAA's ftp servers. If your internet is down,
 #' you'll get a different error.
 #'
-#' @section File storage:
-#' We use \pkg{rappdirs} to store files, see
-#' [rappdirs::user_cache_dir()] for how we determine the directory on
-#' your machine to save files to, and run
-#' `rappdirs::user_cache_dir("rnoaa/isd")` to get that directory.
-#' 
-#' Note that cached files will continue to be used until they are deleted.
-#' It's possible to run into problems when changes happen in your R 
-#' setup. For example, at least one user reported changing versions
-#' of this package and running into problems because a cached data
-#' file from a previous version of rnoaa did not work with the newer
-#' version of rnoaa. You may want to occassionally delete all cached
-#' files.
-#'
+#' @note See [isd_cache] for managing cached files
 #' @examples \dontrun{
 #' # Get station table
 #' (stations <- isd_stations())
@@ -144,39 +131,30 @@ isd <- function(usaf, wban, year, overwrite = TRUE, cleanup = TRUE,
                 cores = getOption("cl.cores", 2), progress = FALSE,
                 force = FALSE, ...) {
 
-  calls <- names(sapply(match.call(), deparse))[-1]
-  calls_vec <- "path" %in% calls
-  if (any(calls_vec)) {
-    stop("The parameter path has been removed, see docs for ?isd",
-         call. = FALSE)
-  }
-
-  path <- file.path(rnoaa_cache_dir(), "isd")
-  rdspath <- isd_local(usaf, wban, year, path, ".rds")
-  if (!is_isd(x = rdspath) || force) {
-    isd_GET(bp = path, usaf, wban, year, overwrite, ...)
-  }
-  df <- read_isd(x = rdspath, cleanup, force, additional,
-                 parallel, cores, progress)
-  attr(df, "source") <- rdspath
+  rds_path <- isd_GET(usaf, wban, year, overwrite, force, ...)
+  df <- read_isd(x = rds_path, cleanup, force, additional,
+    parallel, cores, progress)
+  attr(df, "source") <- rds_path
   df
 }
 
-isd_GET <- function(bp, usaf, wban, year, overwrite, ...) {
-  dir.create(bp, showWarnings = FALSE, recursive = TRUE)
-  fp <- isd_local(usaf, wban, year, bp, ".gz")
-  cli <- crul::HttpClient$new(isd_remote(usaf, wban, year), opts = list(...))
-  tryget <- tryCatch(
-    suppressWarnings(cli$get(disk = fp)),
-    error = function(e) e
-  )
-  if (inherits(tryget, "error") || !tryget$success()) {
-    unlink(fp)
-    stop("download failed for\n   ", isd_remote(usaf, wban, year),
-         call. = FALSE)
-  } else {
-    tryget
+isd_GET <- function(usaf, wban, year, overwrite, force, ...) {
+  isd_cache$mkdir()
+  rds <- isd_local(usaf, wban, year, isd_cache$cache_path_get(), ".rds")
+  if (!is_isd(rds) || force) {
+    fp <- isd_local(usaf, wban, year, isd_cache$cache_path_get(), ".gz")
+    cli <- crul::HttpClient$new(isd_remote(usaf, wban, year), opts = list(...))
+    tryget <- tryCatch(
+      suppressWarnings(cli$get(disk = fp)),
+      error = function(e) e
+    )
+    if (inherits(tryget, "error") || !tryget$success()) {
+      unlink(fp)
+      stop("download failed for\n   ", isd_remote(usaf, wban, year),
+           call. = FALSE)
+    }
   }
+  return(rds)
 }
 
 isd_remote <- function(usaf, wban, year) {
@@ -196,7 +174,7 @@ isdbase <- function() 'https://www1.ncdc.noaa.gov/pub/data/noaa'
 read_isd <- function(x, cleanup, force, additional, parallel, cores, progress) {
   path_rds <- x
   if (file.exists(path_rds) && !force) {
-    message("found in cache")
+    cache_mssg(path_rds)
     df <- readRDS(path_rds)
   } else {
     df <- isdparser::isd_parse(

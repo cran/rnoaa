@@ -8,7 +8,7 @@
 #' @param ... curl options passed on to [crul::verb-GET]
 #' @return a data.frame, with many columns, and variable rows
 #' depending on how frequently data was collected in the given year
-#'
+#' @note See [lcd_cache] for managing cached files
 #' @references
 #' Docs: 
 #' <https://www.ncei.noaa.gov/data/local-climatological-data/doc/LCD_documentation.pdf>
@@ -38,10 +38,10 @@
 #' column name
 #'
 #' @examples \dontrun{
-#' lcd(station = "01338099999", year = 2017, verbose = TRUE)
-#' lcd(station = "01338099999", year = 2015, verbose = TRUE)
-#' lcd(station = "02413099999", year = 2009, verbose = TRUE)
-#' lcd(station = "02413099999", year = 2001, verbose = TRUE)
+#' x = lcd(station = "01338099999", year = 2017)
+#' lcd(station = "01338099999", year = 2015)
+#' lcd(station = "02413099999", year = 2009)
+#' lcd(station = "02413099999", year = 2001)
 #'
 #' # pass curl options
 #' lcd(station = "02413099999", year = 2002, verbose = TRUE)
@@ -52,7 +52,7 @@ lcd <- function(station, year, ...) {
   assert_range(year, 1901:format(Sys.Date(), "%Y"))
 
   path <- lcd_get(station = station, year = year, ...)
-  tmp <- read.csv(path, header = TRUE, sep = ",", stringsAsFactors = FALSE)
+  tmp <- safe_read_csv(path)
   names(tmp) <- tolower(names(tmp))
   df <- tibble::as_tibble(tmp)
   structure(df, class = c(class(df), "lcd"))
@@ -65,6 +65,8 @@ lcd_get <- function(station, year, overwrite = FALSE, ...) {
     sprintf("%s_%s.csv", year, station))
   if (!file.exists(file)) {
     suppressMessages(lcd_GET_write(key, file, overwrite, ...))
+  } else {
+    cache_mssg(file)
   }
   return(file)
 }

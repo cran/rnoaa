@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Scott Chamberlain" />
 
-<meta name="date" content="2019-11-20" />
+<meta name="date" content="2020-04-06" />
 
 <title>NCDC workflow</title>
 
@@ -21,26 +20,27 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -49,9 +49,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -118,9 +118,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -289,7 +286,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -304,14 +302,14 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">NCDC workflow</h1>
 <h4 class="author">Scott Chamberlain</h4>
-<h4 class="date">2019-11-20</h4>
+<h4 class="date">2020-04-06</h4>
 
 
 
 <p>This vignette is intended to demonstrate a workflow for using the NOAA NCDC data using the <code>ncdc*()</code> functions. It can be confusing to understand how to get at data you want - that’s the motivation for this vignette. Other vignettes show more thorough and different examples for specific data sources.</p>
 <div id="load-rnoaa" class="section level2">
 <h2>Load rnoaa</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">'rnoaa'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(<span class="st">&#39;rnoaa&#39;</span>)</span></code></pre></div>
 </div>
 <div id="the-workflow" class="section level2">
 <h2>The workflow</h2>
@@ -322,19 +320,19 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </ul>
 <div id="look-for-weather-stations-get-station-ids" class="section level3">
 <h3>Look for weather stations &amp; get station id(s)</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">ids &lt;-<span class="st"> </span><span class="kw">ncdc_stations</span>(<span class="dt">locationid=</span><span class="st">'FIPS:12017'</span>)<span class="op">$</span>data<span class="op">$</span>id[<span class="dv">1</span><span class="op">:</span><span class="dv">13</span>]</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">id &lt;-<span class="st"> &quot;GHCND:US1FLCT0002&quot;</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>ids &lt;-<span class="st"> </span><span class="kw">ncdc_stations</span>(<span class="dt">locationid=</span><span class="st">&#39;FIPS:12017&#39;</span>)<span class="op">$</span>data<span class="op">$</span>id[<span class="dv">1</span><span class="op">:</span><span class="dv">13</span>]</span>
+<span id="cb2-2"><a href="#cb2-2"></a>id &lt;-<span class="st"> &quot;GHCND:US1FLCT0002&quot;</span></span></code></pre></div>
 <p>Just information for one station</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">ncdc_stations</span>(<span class="dt">stationid =</span> id)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">ncdc_stations</span>(<span class="dt">stationid =</span> id)</span></code></pre></div>
 </div>
 <div id="find-out-what-type-of-data-is-available-for-those-stations" class="section level3">
 <h3>Find out what type of data is available for those stations</h3>
 <p>There are various ways to look for data types available. First, <strong>data categories</strong>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">ncdc_datacats</span>(<span class="dt">stationid =</span> id)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">ncdc_datacats</span>(<span class="dt">stationid =</span> id)</span></code></pre></div>
 <p>Another way is looking for <strong>data sets</strong>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">ncdc_datasets</span>(<span class="dt">stationid =</span> id)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">ncdc_datasets</span>(<span class="dt">stationid =</span> id)</span></code></pre></div>
 <p>Yet another way is looking for <strong>data types</strong>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">ncdc_datatypes</span>(<span class="dt">datasetid =</span> <span class="st">&quot;GHCND&quot;</span>, <span class="dt">stationid =</span> id)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">ncdc_datatypes</span>(<span class="dt">datasetid =</span> <span class="st">&quot;GHCND&quot;</span>, <span class="dt">stationid =</span> id)</span></code></pre></div>
 </div>
 <div id="search-for-climate-data-for-stations-optionally-specify-type-of-data-to-get" class="section level3">
 <h3>Search for climate data for stations (optionally specify type of data to get)</h3>
@@ -346,7 +344,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>enddate</code></li>
 </ul>
 <p>Here, we are specifying the <code>datasetid</code>, <code>stationid</code>, <code>datatypeid</code>, <code>startdate</code>, and <code>enddate</code></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">ncdc</span>(<span class="dt">datasetid =</span> <span class="st">&quot;GHCND&quot;</span>, <span class="dt">stationid =</span> id, <span class="dt">datatypeid =</span> <span class="st">&quot;PRCP&quot;</span>, <span class="dt">startdate =</span> <span class="st">&quot;2012-10-01&quot;</span>, <span class="dt">enddate =</span> <span class="st">&quot;2013-01-01&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">ncdc</span>(<span class="dt">datasetid =</span> <span class="st">&quot;GHCND&quot;</span>, <span class="dt">stationid =</span> id, <span class="dt">datatypeid =</span> <span class="st">&quot;PRCP&quot;</span>, <span class="dt">startdate =</span> <span class="st">&quot;2012-10-01&quot;</span>, <span class="dt">enddate =</span> <span class="st">&quot;2013-01-01&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 

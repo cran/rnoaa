@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Scott Chamberlain" />
 
-<meta name="date" content="2019-11-20" />
+<meta name="date" content="2020-04-06" />
 
 <title>HOMR metadata</title>
 
@@ -21,26 +20,27 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -49,9 +49,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -118,9 +118,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -289,7 +286,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -304,7 +302,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">HOMR metadata</h1>
 <h4 class="author">Scott Chamberlain</h4>
-<h4 class="date">2019-11-20</h4>
+<h4 class="date">2020-04-06</h4>
 
 
 
@@ -312,52 +310,52 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Find out more about HOMR at <a href="http://www.ncdc.noaa.gov/homr/">http://www.ncdc.noaa.gov/homr/</a> and the HOMR API at <a href="http://www.ncdc.noaa.gov/homr/api">http://www.ncdc.noaa.gov/homr/api</a>.</p>
 <div id="load-rnoaa" class="section level2">
 <h2>Load rnoaa</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">'rnoaa'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(<span class="st">&#39;rnoaa&#39;</span>)</span></code></pre></div>
 </div>
 <div id="search-by-station-identifier" class="section level2">
 <h2>Search by station identifier</h2>
 <p>You can do this in various ways. Using the <code>qid</code> parameter (stands or qualified ID, as far as I know), you can search by suffix (e.g., <code>046742</code>), or both separated by a colon (e.g., <code>COOP:046742</code>).</p>
 <p>By station suffix</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">qid =</span> <span class="st">':046742'</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">names</span>(res)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">names</span>(res[[<span class="st">'20002078'</span>]])</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">res<span class="op">$</span><span class="st">`</span><span class="dt">20002078</span><span class="st">`</span>[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">qid =</span> <span class="st">&#39;:046742&#39;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">names</span>(res)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">names</span>(res[[<span class="st">&#39;20002078&#39;</span>]])</span>
+<span id="cb2-4"><a href="#cb2-4"></a>res<span class="op">$</span><span class="st">`</span><span class="dt">20002078</span><span class="st">`</span>[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</span></code></pre></div>
 <p>By both</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">qid =</span> <span class="st">'COOP:046742'</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">names</span>(res)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">names</span>(res[[<span class="st">'20002078'</span>]])</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">res<span class="op">$</span><span class="st">`</span><span class="dt">20002078</span><span class="st">`</span>[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">qid =</span> <span class="st">&#39;COOP:046742&#39;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">names</span>(res)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">names</span>(res[[<span class="st">&#39;20002078&#39;</span>]])</span>
+<span id="cb3-4"><a href="#cb3-4"></a>res<span class="op">$</span><span class="st">`</span><span class="dt">20002078</span><span class="st">`</span>[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</span></code></pre></div>
 </div>
 <div id="search-by-station-parameter" class="section level2">
 <h2>Search by station parameter</h2>
 <p>You can also search by station identifier, which is different from the <code>qid</code> above.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">station=</span><span class="dv">20002078</span>)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">names</span>(res)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">names</span>(res[[<span class="st">'20002078'</span>]])</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">res<span class="op">$</span><span class="st">`</span><span class="dt">20002078</span><span class="st">`</span>[<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">station=</span><span class="dv">20002078</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">names</span>(res)</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="kw">names</span>(res[[<span class="st">&#39;20002078&#39;</span>]])</span>
+<span id="cb4-4"><a href="#cb4-4"></a>res<span class="op">$</span><span class="st">`</span><span class="dt">20002078</span><span class="st">`</span>[<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>]</span></code></pre></div>
 </div>
 <div id="search-by-state-and-county" class="section level2">
 <h2>Search by state and county</h2>
 <p>By state</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">state=</span><span class="st">'DE'</span>, <span class="dt">begindate=</span><span class="st">'2005-01-01'</span>, <span class="dt">enddate=</span><span class="st">'2005-02-01'</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">names</span>(res)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">state=</span><span class="st">&#39;DE&#39;</span>, <span class="dt">begindate=</span><span class="st">&#39;2005-01-01&#39;</span>, <span class="dt">enddate=</span><span class="st">&#39;2005-02-01&#39;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">names</span>(res)</span></code></pre></div>
 <p>By country</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">country=</span><span class="st">'GHANA'</span>, <span class="dt">begindate=</span><span class="st">'2005-01-01'</span>, <span class="dt">enddate=</span><span class="st">'2005-02-01'</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;dplyr&quot;</span>)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw">bind_rows</span>(<span class="kw">lapply</span>(res, <span class="cf">function</span>(x) x<span class="op">$</span>location<span class="op">$</span>latlon))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">country=</span><span class="st">&#39;GHANA&#39;</span>, <span class="dt">begindate=</span><span class="st">&#39;2005-01-01&#39;</span>, <span class="dt">enddate=</span><span class="st">&#39;2005-02-01&#39;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="kw">library</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">bind_rows</span>(<span class="kw">lapply</span>(res, <span class="cf">function</span>(x) x<span class="op">$</span>location<span class="op">$</span>latlon))</span></code></pre></div>
 <p>By state and county</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">state=</span><span class="st">'NC'</span>, <span class="dt">county=</span><span class="st">'BUNCOMBE'</span>, <span class="dt">headersOnly =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw">head</span>(<span class="kw">bind_rows</span>(<span class="kw">lapply</span>(res, <span class="st">&quot;[[&quot;</span>, <span class="st">&quot;head&quot;</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">state=</span><span class="st">&#39;NC&#39;</span>, <span class="dt">county=</span><span class="st">&#39;BUNCOMBE&#39;</span>, <span class="dt">headersOnly =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">head</span>(<span class="kw">bind_rows</span>(<span class="kw">lapply</span>(res, <span class="st">&quot;[[&quot;</span>, <span class="st">&quot;head&quot;</span>)))</span></code></pre></div>
 </div>
 <div id="get-header-information-only" class="section level2">
 <h2>Get header information only</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">headersOnly=</span><span class="ot">TRUE</span>, <span class="dt">state=</span><span class="st">'DE'</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">head</span>(<span class="kw">bind_rows</span>(<span class="kw">lapply</span>(res, <span class="st">&quot;[[&quot;</span>, <span class="st">&quot;head&quot;</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>res &lt;-<span class="st"> </span><span class="kw">homr</span>(<span class="dt">headersOnly=</span><span class="ot">TRUE</span>, <span class="dt">state=</span><span class="st">&#39;DE&#39;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="kw">head</span>(<span class="kw">bind_rows</span>(<span class="kw">lapply</span>(res, <span class="st">&quot;[[&quot;</span>, <span class="st">&quot;head&quot;</span>)))</span></code></pre></div>
 </div>
 <div id="data-definitions" class="section level2">
 <h2>Data definitions</h2>
 <p>The data returned is the same format for all, so a separate function is provided to get metadata. The function <code>homr_definitions()</code> does query the HOMR API, so does get updated metadata - i.e., it’s not a static dataset stored locally.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">head</span>( <span class="kw">homr_definitions</span>() )</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">head</span>( <span class="kw">homr_definitions</span>() )</span></code></pre></div>
 </div>
 
 

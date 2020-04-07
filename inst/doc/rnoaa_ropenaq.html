@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Maëlle Salmon" />
 
-<meta name="date" content="2019-11-20" />
+<meta name="date" content="2020-04-06" />
 
 <title>ropenaq and rnoaa</title>
 
@@ -21,26 +20,27 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -49,9 +49,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -118,9 +118,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -289,7 +286,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -305,7 +303,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h1 class="title toc-ignore">ropenaq and rnoaa</h1>
 <h3 class="subtitle">Complementing air quality data with weather data using rnoaa</h3>
 <h4 class="author">Maëlle Salmon</h4>
-<h4 class="date">2019-11-20</h4>
+<h4 class="date">2020-04-06</h4>
 
 
 
@@ -313,99 +311,99 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h1>Introduction: getting air quality data</h1>
 <p>This vignette aims at explaining how you can complement a data.frame with weather data using rnoaa. In this vignette we shall use air quality data from the OpenAQ platform queried with the ropenaq package, for India. Using <a href="https://github.com/ropensci/ropenaq">ropenaq</a> one can get e.g. PM2.5 values over time in Indianapolis over the last days. For getting all data for march we’ll loop over several pages.</p>
 <p>First, we need to know how many measures are available for Indianapolis for March 2016.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;ropenaq&quot;</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">measurementsIndianapolis &lt;-<span class="st"> </span><span class="kw">aq_measurements</span>(<span class="dt">city =</span> <span class="st">&quot;Indianapolis&quot;</span>, <span class="dt">parameter =</span> <span class="st">&quot;pm25&quot;</span>,</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">                                     <span class="dt">date_from =</span> <span class="kw">as.character</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">                                     <span class="dt">date_to =</span> <span class="kw">as.character</span>(<span class="kw">Sys.Date</span>()),</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">                                     <span class="dt">limit =</span> <span class="dv">10000</span> )</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw">save</span>(measurementsIndianapolis, <span class="dt">file =</span> <span class="st">&quot;data/measurementsIndianapolis.RData&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(<span class="st">&quot;ropenaq&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>measurementsIndianapolis &lt;-<span class="st"> </span><span class="kw">aq_measurements</span>(<span class="dt">city =</span> <span class="st">&quot;Indianapolis&quot;</span>, <span class="dt">parameter =</span> <span class="st">&quot;pm25&quot;</span>,</span>
+<span id="cb1-4"><a href="#cb1-4"></a>                                     <span class="dt">date_from =</span> <span class="kw">as.character</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="dv">30</span>),</span>
+<span id="cb1-5"><a href="#cb1-5"></a>                                     <span class="dt">date_to =</span> <span class="kw">as.character</span>(<span class="kw">Sys.Date</span>()),</span>
+<span id="cb1-6"><a href="#cb1-6"></a>                                     <span class="dt">limit =</span> <span class="dv">10000</span> )</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">save</span>(measurementsIndianapolis, <span class="dt">file =</span> <span class="st">&quot;data/measurementsIndianapolis.RData&quot;</span>)</span></code></pre></div>
 <p>We filter negative values.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">load</span>(<span class="st">&quot;data/measurementsIndianapolis.RData&quot;</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;dplyr&quot;</span>)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">measurementsIndianapolis <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>()</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">measurementsIndianapolis &lt;-<span class="st"> </span><span class="kw">filter</span>(measurementsIndianapolis, value <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">load</span>(<span class="st">&quot;data/measurementsIndianapolis.RData&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">library</span>(<span class="st">&quot;dplyr&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4"></a>measurementsIndianapolis <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>()</span>
+<span id="cb2-5"><a href="#cb2-5"></a>measurementsIndianapolis &lt;-<span class="st"> </span><span class="kw">filter</span>(measurementsIndianapolis, value <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</span></code></pre></div>
 <p>We now transform these data into daily data.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># only keep stations with geographical information</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">measurementsIndianapolis &lt;-<span class="st"> </span><span class="kw">filter</span>(measurementsIndianapolis, <span class="op">!</span><span class="kw">is.na</span>(latitude))</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># now transform to daily data</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">measurementsIndianapolis &lt;-<span class="st"> </span>measurementsIndianapolis <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span><span class="co">#mutate(day = as.Date(dateLocal)) %&gt;%</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(location, day) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">value =</span> <span class="kw">mean</span>(value),</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">            <span class="dt">longitude =</span> longitude[<span class="dv">1</span>],</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">            <span class="dt">latitude =</span> latitude[<span class="dv">1</span>]) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="st">  </span><span class="kw">ungroup</span>()</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">measurementsIndianapolis <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># only keep stations with geographical information</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>measurementsIndianapolis &lt;-<span class="st"> </span><span class="kw">filter</span>(measurementsIndianapolis, <span class="op">!</span><span class="kw">is.na</span>(latitude))</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># now transform to daily data</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>measurementsIndianapolis &lt;-<span class="st"> </span>measurementsIndianapolis <span class="op">%&gt;%</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="st">  </span><span class="co">#mutate(day = as.Date(dateLocal)) %&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="st">  </span><span class="kw">group_by</span>(location, day) <span class="op">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">value =</span> <span class="kw">mean</span>(value),</span>
+<span id="cb3-8"><a href="#cb3-8"></a>            <span class="dt">longitude =</span> longitude[<span class="dv">1</span>],</span>
+<span id="cb3-9"><a href="#cb3-9"></a>            <span class="dt">latitude =</span> latitude[<span class="dv">1</span>]) <span class="op">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="st">  </span><span class="kw">ungroup</span>()</span>
+<span id="cb3-11"><a href="#cb3-11"></a>measurementsIndianapolis <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>()</span></code></pre></div>
 <p>Air quality and weather are correlated, so one could be interested in getting a time series of say temperature for the same location. The OpenAQ platform itself does not provide weather data but nearly all stations have geographical coordinates. Our goal here will be to use rnoaa to complement this table with precipitation and temperature.</p>
 </div>
 <div id="find-weather-stations" class="section level1">
 <h1>Find weather stations</h1>
 <p>For finding the right station(s) we shall use the <code>meteo_nearby_stations</code> function. It returns a list with the weather stations nearby each latitude/longitude given as arguments, respecting the other arguments such as maximal radius, first year with data, etc. For finding stations one might have to play a bit with the parameters until there is at least one station for each location.</p>
 <p>Here we query stations with a less than 15km distance from the air quality stations, with precipitation and temperature data, and with data starting from 2016. Note that the query takes a while.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;rnoaa&quot;</span>)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">station_data &lt;-<span class="st"> </span><span class="kw">ghcnd_stations</span>()</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">lat_lon_df &lt;-<span class="st"> </span><span class="kw">select</span>(measurementsIndianapolis,</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">                     location,</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">                     latitude,</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">                     longitude) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">unique</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">id =</span> location) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">id =</span> <span class="kw">factor</span>(id))</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">stationsIndianapolis &lt;-<span class="st"> </span><span class="kw">meteo_nearby_stations</span>(<span class="dt">lat_lon_df =</span> <span class="kw">as.data.frame</span>(lat_lon_df),</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">                                       <span class="dt">station_data =</span> station_data,</a>
-<a class="sourceLine" id="cb4-13" data-line-number="13">                                       <span class="dt">radius =</span> <span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb4-14" data-line-number="14">                                       <span class="dt">year_min =</span> <span class="kw">as.character</span>(<span class="kw">format</span>(<span class="kw">Sys.Date</span>(), <span class="st">&quot;%Y&quot;</span>)),</a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">                                       <span class="dt">var =</span> <span class="kw">c</span>(<span class="st">&quot;TAVG&quot;</span>, <span class="st">&quot;PRCP&quot;</span>))</a>
-<a class="sourceLine" id="cb4-16" data-line-number="16">stationsIndianapolis &lt;-<span class="st"> </span><span class="kw">unique</span>(<span class="kw">bind_rows</span>(stationsIndianapolis) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span><span class="st"> </span>distance))</a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="kw">save</span>(stationsIndianapolis, <span class="dt">file =</span> <span class="st">&quot;data/stationsIndianapolis.RData&quot;</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">load</span>(<span class="st">&quot;data/stationsIndianapolis.RData&quot;</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">stationsIndianapolis <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">library</span>(<span class="st">&quot;rnoaa&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>station_data &lt;-<span class="st"> </span><span class="kw">ghcnd_stations</span>()</span>
+<span id="cb4-3"><a href="#cb4-3"></a>lat_lon_df &lt;-<span class="st"> </span><span class="kw">select</span>(measurementsIndianapolis,</span>
+<span id="cb4-4"><a href="#cb4-4"></a>                     location,</span>
+<span id="cb4-5"><a href="#cb4-5"></a>                     latitude,</span>
+<span id="cb4-6"><a href="#cb4-6"></a>                     longitude) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">unique</span>() <span class="op">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">id =</span> location) <span class="op">%&gt;%</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">id =</span> <span class="kw">factor</span>(id))</span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a>stationsIndianapolis &lt;-<span class="st"> </span><span class="kw">meteo_nearby_stations</span>(<span class="dt">lat_lon_df =</span> <span class="kw">as.data.frame</span>(lat_lon_df),</span>
+<span id="cb4-12"><a href="#cb4-12"></a>                                       <span class="dt">station_data =</span> station_data,</span>
+<span id="cb4-13"><a href="#cb4-13"></a>                                       <span class="dt">radius =</span> <span class="dv">5</span>,</span>
+<span id="cb4-14"><a href="#cb4-14"></a>                                       <span class="dt">year_min =</span> <span class="kw">as.character</span>(<span class="kw">format</span>(<span class="kw">Sys.Date</span>(), <span class="st">&quot;%Y&quot;</span>)),</span>
+<span id="cb4-15"><a href="#cb4-15"></a>                                       <span class="dt">var =</span> <span class="kw">c</span>(<span class="st">&quot;TAVG&quot;</span>, <span class="st">&quot;PRCP&quot;</span>))</span>
+<span id="cb4-16"><a href="#cb4-16"></a>stationsIndianapolis &lt;-<span class="st"> </span><span class="kw">unique</span>(<span class="kw">bind_rows</span>(stationsIndianapolis) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span><span class="st"> </span>distance))</span>
+<span id="cb4-17"><a href="#cb4-17"></a></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="kw">save</span>(stationsIndianapolis, <span class="dt">file =</span> <span class="st">&quot;data/stationsIndianapolis.RData&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">load</span>(<span class="st">&quot;data/stationsIndianapolis.RData&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>stationsIndianapolis <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>()</span></code></pre></div>
 <p>Now let us plot the AQ and weather stations on a quick and dirty map with no legend, red for AQ stations, blue for weather stations.</p>
 <blockquote>
 <p>Not shown</p>
 </blockquote>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;ggmap&quot;</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">map &lt;-<span class="st"> </span><span class="kw">get_map</span>(<span class="dt">location =</span> <span class="st">&quot;Indianapolis&quot;</span>, <span class="dt">zoom =</span> <span class="dv">11</span>)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw">ggmap</span>(map) <span class="op">+</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> longitude, <span class="dt">y =</span> latitude),</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">             <span class="dt">data =</span> stationsIndianapolis, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> longitude, <span class="dt">y =</span> latitude),</a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">             <span class="dt">data =</span> measurementsIndianapolis, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">library</span>(<span class="st">&quot;ggmap&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>map &lt;-<span class="st"> </span><span class="kw">get_map</span>(<span class="dt">location =</span> <span class="st">&quot;Indianapolis&quot;</span>, <span class="dt">zoom =</span> <span class="dv">11</span>)</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">ggmap</span>(map) <span class="op">+</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> longitude, <span class="dt">y =</span> latitude),</span>
+<span id="cb6-5"><a href="#cb6-5"></a>             <span class="dt">data =</span> stationsIndianapolis, <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>)<span class="op">+</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> longitude, <span class="dt">y =</span> latitude),</span>
+<span id="cb6-7"><a href="#cb6-7"></a>             <span class="dt">data =</span> measurementsIndianapolis, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">size =</span> <span class="dv">4</span>)</span></code></pre></div>
 </div>
 <div id="query-weather-data-for-these-stations" class="section level1">
 <h1>Query weather data for these stations</h1>
 <p>For pulling weather data from these weather monitors, we shall use the <code>meteo_pull_monitors</code> function.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;rnoaa&quot;</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">monitors &lt;-<span class="st"> </span>stationsIndianapolis<span class="op">$</span>id</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">all_monitors_clean &lt;-<span class="st"> </span><span class="kw">meteo_pull_monitors</span>(monitors,</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">    <span class="dt">date_min =</span> <span class="kw">as.character</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="dv">30</span>),</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">    <span class="dt">date_max =</span> <span class="kw">as.character</span>(<span class="kw">Sys.Date</span>())) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">rename</span>(<span class="dt">day =</span> date, <span class="dt">location =</span> id)</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">all_monitors_clean <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">library</span>(<span class="st">&quot;rnoaa&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>monitors &lt;-<span class="st"> </span>stationsIndianapolis<span class="op">$</span>id</span>
+<span id="cb7-3"><a href="#cb7-3"></a>all_monitors_clean &lt;-<span class="st"> </span><span class="kw">meteo_pull_monitors</span>(monitors,</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    <span class="dt">date_min =</span> <span class="kw">as.character</span>(<span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="dv">30</span>),</span>
+<span id="cb7-5"><a href="#cb7-5"></a>    <span class="dt">date_max =</span> <span class="kw">as.character</span>(<span class="kw">Sys.Date</span>())) <span class="op">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">rename</span>(<span class="dt">day =</span> date, <span class="dt">location =</span> id)</span>
+<span id="cb7-7"><a href="#cb7-7"></a>all_monitors_clean <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>()</span></code></pre></div>
 <p>Here we notice some values are not available. Therefore, we might need to go back to weather stations searching with, for instance, a larger radius. In this case let’s say we’re ok with the result of the search.</p>
 </div>
 <div id="join-the-two-tables-thus-complementing-the-original-table" class="section level1">
 <h1>Join the two tables, thus complementing the original table</h1>
 <p>Therefore, in this case we will bind the rows of the air quality table with the weather table.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">measurementsIndianapolis &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(measurementsIndianapolis, all_monitors_clean)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">measurementsIndianapolis <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>measurementsIndianapolis &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(measurementsIndianapolis, all_monitors_clean)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>measurementsIndianapolis <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>() <span class="op">%&gt;%</span><span class="st"> </span>knitr<span class="op">::</span><span class="kw">kable</span>()</span></code></pre></div>
 <p>Now some locations are air quality locations and have only missing values in the weather columns, and some locations are weather locations and have only missing values in the air quality columns.</p>
 <p>We can plot the data we got.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">data_plot &lt;-<span class="st"> </span>measurementsIndianapolis <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw">rename</span>(<span class="dt">pm25 =</span> value) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="st"> </span>longitude, <span class="op">-</span><span class="st"> </span>latitude)</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">data_plot &lt;-<span class="st"> </span>tidyr<span class="op">::</span><span class="kw">gather_</span>(data_plot, <span class="st">&quot;parameter&quot;</span>, <span class="st">&quot;value&quot;</span>,</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">  <span class="kw">names</span>(data_plot)[<span class="dv">3</span><span class="op">:</span><span class="kw">ncol</span>(data_plot)])</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="kw">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="kw">ggplot</span>(data_plot) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> day, <span class="dt">y =</span> value, <span class="dt">col =</span> location)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="st">  </span><span class="kw">facet_grid</span>(parameter <span class="op">~</span><span class="st"> </span>., <span class="dt">scales =</span> <span class="st">&quot;free_y&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>data_plot &lt;-<span class="st"> </span>measurementsIndianapolis <span class="op">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">pm25 =</span> value) <span class="op">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span><span class="st"> </span>longitude, <span class="op">-</span><span class="st"> </span>latitude)</span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a>data_plot &lt;-<span class="st"> </span>tidyr<span class="op">::</span><span class="kw">gather_</span>(data_plot, <span class="st">&quot;parameter&quot;</span>, <span class="st">&quot;value&quot;</span>,</span>
+<span id="cb9-6"><a href="#cb9-6"></a>  <span class="kw">names</span>(data_plot)[<span class="dv">3</span><span class="op">:</span><span class="kw">ncol</span>(data_plot)])</span>
+<span id="cb9-7"><a href="#cb9-7"></a></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="kw">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="kw">ggplot</span>(data_plot) <span class="op">+</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x =</span> day, <span class="dt">y =</span> value, <span class="dt">col =</span> location)) <span class="op">+</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="st">  </span><span class="kw">facet_grid</span>(parameter <span class="op">~</span><span class="st"> </span>., <span class="dt">scales =</span> <span class="st">&quot;free_y&quot;</span>)</span></code></pre></div>
 </div>
 
 

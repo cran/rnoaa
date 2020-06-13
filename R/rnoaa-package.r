@@ -14,7 +14,6 @@
 #' function prefixes are:
 #'
 #' - `buoy_*` - NOAA Buoy data from the National Buoy Data Center
-#' - `gefs_*` - GEFS forecast ensemble data
 #' - `ghcnd_*`/`meteo_*` - GHCND daily data from NOAA
 #' - `isd_*` - ISD/ISH data from NOAA
 #' - `homr_*` - Historical Observing Metadata Repository (HOMR)
@@ -50,7 +49,6 @@
 #' HTTP services (whether service is/was up or down during early 2019 shutdown)
 #' 
 #' - `buoy_*` - Up
-#' - `gefs_*` - Up
 #' - `homr_*` - Up
 #' - `ncdc_*` - Down
 #' - `swdi` - Down
@@ -81,7 +79,6 @@
 #'
 #' Some functions use netcdf files, including:
 #' 
-#' - `gefs`
 #' - `ersst`
 #' - `buoy`
 #' - `bsw`
@@ -116,7 +113,7 @@
 #' @importFrom tidyr gather separate
 #' @importFrom rappdirs user_cache_dir
 #' @importFrom gridExtra grid.arrange
-#' @importFrom dplyr %>% select mutate rename tbl_df filter bind_rows
+#' @importFrom dplyr %>% select mutate rename filter bind_rows
 #' as_tibble contains rowwise do bind_cols ungroup
 #' @importFrom tibble as_tibble data_frame
 #' @importFrom scales comma
@@ -147,7 +144,7 @@ NULL
 #' NOAA storm column descriptions for data from IBTrACS
 #'
 #' This dataset includes description of the columns of each dataset acquired
-#' using [rnoaa::storm_data()]
+#' using `storm_data()`
 #'
 #' @docType data
 #' @keywords datasets
@@ -159,7 +156,7 @@ NULL
 #'
 #' This dataset includes a crosswalk from storm serial numbers to their names.
 #' Storm serial numbers are used to search for storms in the
-#' [rnoaa::storm_data()] function.
+#' `storm_data()` function
 #'
 #' @docType data
 #' @keywords datasets

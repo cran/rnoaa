@@ -7,7 +7,7 @@ Description: Client for many 'NOAA' data sources including the 'NCDC' climate
     for 'NOAA' sea ice data, the 'NOAA' severe weather inventory, 'NOAA' Historical
     Observing 'Metadata' Repository ('HOMR') data, 'NOAA' storm data via 'IBTrACS',
     tornado data via the 'NOAA' storm prediction center, and more.
-Version: 0.9.6
+Version: 1.0.0
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-US
@@ -32,7 +32,8 @@ LazyData: true
 VignetteBuilder: knitr
 Imports: utils, crul (>= 0.7.0), lubridate, dplyr, tidyr, tidyselect,
         ggplot2, scales, XML, xml2, jsonlite, rappdirs, gridExtra,
-        tibble, isdparser (>= 0.2.0), geonames, hoardr (>= 0.5.2)
+        tibble, isdparser (>= 0.2.0), geonames, hoardr (>= 0.5.2),
+        data.table
 Suggests: roxygen2 (>= 7.1.0), testthat, knitr, taxize, ncdf4, raster,
         leaflet, rgdal, sf, rmarkdown, purrr, ggmap, ropenaq, vcr (>=
         0.5.4), webmockr
@@ -42,7 +43,7 @@ X-schema.org-keywords: earth, science, climate, precipitation,
         temperature, storm, buoy, NCDC, NOAA, tornadoe, sea ice, ISD
 X-schema.org-isPartOf: https://ropensci.org
 NeedsCompilation: no
-Packaged: 2020-04-06 18:31:02 UTC; sckott
+Packaged: 2020-06-12 21:36:43 UTC; sckott
 Author: Scott Chamberlain [aut, cre] (<https://orcid.org/0000-0003-1444-9135>),
   Brooke Anderson [ctb],
   Maëlle Salmon [ctb],
@@ -55,4 +56,4 @@ Author: Scott Chamberlain [aut, cre] (<https://orcid.org/0000-0003-1444-9135>),
   rOpenSci [fnd] (https://ropensci.org)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
 Repository: CRAN
-Date/Publication: 2020-04-07 10:00:06 UTC
+Date/Publication: 2020-06-13 04:50:03 UTC

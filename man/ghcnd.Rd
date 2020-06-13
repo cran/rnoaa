@@ -12,15 +12,15 @@ ghcnd_read(path, ...)
 \arguments{
 \item{stationid}{(character) A character string giving the identification of
 the weather station for which the user would like to pull data. To get a full
-and current list of stations, the user can use the \code{\link{ghcnd_stations}}
+and current list of stations, the user can use the \code{\link[=ghcnd_stations]{ghcnd_stations()}}
 function. To identify stations within a certain radius of a location, the
-user can use the \code{\link{meteo_nearby_stations}} function.}
+user can use the \code{\link[=meteo_nearby_stations]{meteo_nearby_stations()}} function.}
 
 \item{refresh}{(logical) If \code{TRUE} force re-download of data.
 Default: \code{FALSE}}
 
-\item{...}{In the case of \code{ghcnd} additional curl options to pass
-through to \code{\link[crul]{HttpClient}}. In the case of \code{ghcnd_read}
+\item{...}{In the case of \code{ghcnd()} additional curl options to pass
+through to \link[crul:HttpClient]{crul::HttpClient}. In the case of \code{ghcnd_read}
 further options passed on to \code{read.csv}}
 
 \item{path}{(character) a path to a file with a \code{.dly} extension - already
@@ -58,6 +58,22 @@ which you can suppress with \code{suppressMessages()}
 \note{
 See \link{ghcnd_cache} for managing cached files
 }
+\section{Base URL}{
+
+The base url for data requests can be changed. The allowed urls are:
+https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/all (default),
+ftp://ftp.ncei.noaa.gov/pub/data/ghcn/daily/all,
+ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all
+
+You can set the base url using the \code{RNOAA_GHCND_BASE_URL} environment
+variable; see example below.
+
+The reason for this is that sometimes one base url source is temporarily
+down, but another base url may work. It doesn't make sense to allow
+an arbitrary base URL; open an issue if there is another valid
+base URL for GHNCD data that we should add to the allowed set of base urls.
+}
+
 \examples{
 \dontrun{
 # Get data
@@ -85,15 +101,23 @@ ghcnd(stationid = "AGE00147704", refresh = TRUE)
 # Read in a .dly file you've already downloaded
 path <- system.file("examples/AGE00147704.dly", package = "rnoaa")
 ghcnd_read(path)
+
+# change the base url for data requests
+Sys.setenv(RNOAA_GHCND_BASE_URL =
+  "ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all")
+ghcnd(stations$id[45], verbose = TRUE)
+## must be in the allowed set of urls
+# Sys.setenv(RNOAA_GHCND_BASE_URL = "https://google.com")
+# ghcnd(stations$id[58], verbose = TRUE)
 }
 }
 \seealso{
 To generate a weather dataset for a single weather site that has
 been cleaned to a tidier weather format, the user should use the
-\code{\link{ghcnd_search}} function, which calls \code{\link{ghcnd}} and then
-processes the output, or \code{\link{meteo_tidy_ghcnd}}, which wraps the
-\code{\link{ghcnd_search}} function to output a tidy dataframe. To pull
-GHCND data from multiple monitors, see \code{\link{meteo_pull_monitors}}.
+\code{\link[=ghcnd_search]{ghcnd_search()}} function, which calls \code{ghcnd()} and then
+processes the output, or \code{\link[=meteo_tidy_ghcnd]{meteo_tidy_ghcnd()}}, which wraps the
+\code{\link[=ghcnd_search]{ghcnd_search()}} function to output a tidy dataframe. To pull
+GHCND data from multiple monitors, see \code{\link[=meteo_pull_monitors]{meteo_pull_monitors()}}
 }
 \author{
 Scott Chamberlain \email{myrmecocystus@gmail.com},

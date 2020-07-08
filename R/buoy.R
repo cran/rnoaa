@@ -1,5 +1,3 @@
-the_env <- new.env()
-
 #' Get NOAA buoy data from the National Buoy Data Center
 #'
 #' @export
@@ -42,7 +40,7 @@ the_env <- new.env()
 #' - swden - Spectral Wave Density data with Spectral Wave Direction data
 #' - wlevel - Water Level data
 #' 
-#' @references <http://www.ndbc.noaa.gov/>, <http://dods.ndbc.noaa.gov/>
+#' @references http://www.ndbc.noaa.gov/, http://dods.ndbc.noaa.gov/
 #' @examples \dontrun{
 #' if (crul::ok("https://dods.ndbc.noaa.gov/thredds", timeout_ms = 1000)) {
 #' 
@@ -155,7 +153,6 @@ buoy_single_file_url <- function(dataset, buoyid, file){
 get_ncdf_file <- function(path, buoyid, file, output, ...){
   outpath <- sprintf("%s/%s%s", output, buoyid, file)
   res <- crul::HttpClient$new(path, opts = list(...))$get(disk = outpath)
-  the_env$res <- res
   return(res$content)
 }
 

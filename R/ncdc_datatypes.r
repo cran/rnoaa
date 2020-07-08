@@ -7,7 +7,6 @@
 #' @export
 #' @template rnoaa
 #' @template rnoaa2
-#' @template datatypes
 #' @template token
 #' @param datasetid (optional) Accepts a valid dataset id or a vector or list
 #' of them. Data returned will be from the dataset specified.
@@ -50,14 +49,8 @@
 
 ncdc_datatypes <- function(datasetid=NULL, datatypeid=NULL, datacategoryid=NULL,
   stationid=NULL, locationid=NULL, startdate=NULL, enddate=NULL, sortfield=NULL,
-  sortorder=NULL, limit=25, offset=NULL, token=NULL,
-  dataset=NULL, page=NULL, filter=NULL, ...)
+  sortorder=NULL, limit=25, offset=NULL, token=NULL, ...)
 {
-  calls <- names(sapply(match.call(), deparse))[-1]
-  calls_vec <- c("dataset", "page", "filter") %in% calls
-  if (any(calls_vec))
-    stop("The parameters dataset, page, and filter \n  have been removed, and were only relavant in the old NOAA API v1. \n\nPlease see documentation for ?ncdc_datatypes", call. = FALSE)
-
   token <- check_key(token)
 
   if (!is.null(datatypeid)) {

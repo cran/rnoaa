@@ -17,9 +17,6 @@ ncdc_datatypes(
   limit = 25,
   offset = NULL,
   token = NULL,
-  dataset = NULL,
-  page = NULL,
-  filter = NULL,
   ...
 )
 }
@@ -62,14 +59,6 @@ Maximum is 1000 (optional)}
 \item{token}{This must be a valid token token supplied to you by NCDC's
 Climate Data Online access token generator. (required) See
 \strong{Authentication} section below for more details.}
-
-\item{dataset}{THIS IS A DEPRECATED ARGUMENT. See datasetid.}
-
-\item{page}{THIS IS A DEPRECATED ARGUMENT. There is no equivalent argument in v2
-of the NOAA API.}
-
-\item{filter}{THIS IS A DEPRECATED ARGUMENT. There is no equivalent argument in v2
-of the NOAA API.}
 
 \item{...}{Curl options passed on to \code{\link[crul]{HttpClient}}
 (optional)}

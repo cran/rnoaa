@@ -16,9 +16,6 @@ zeros, so it's a good idea to keep stations as character class. required}
 \item{...}{curl options passed on to \link[crul:verb-GET]{crul::verb-GET}}
 }
 \value{
-a data.frame, with many columns, and variable rows
-depending on how frequently data was collected in the given year
-
 a data.frame with many columns. the first 10 are metadata:
 \itemize{
 \item station
@@ -62,7 +59,7 @@ lcd(station = "02413099999", year = 2002, verbose = TRUE)
 }
 \references{
 Docs:
-\url{https://www.ncei.noaa.gov/data/local-climatological-data/doc/LCD_documentation.pdf}
+https://www.ncei.noaa.gov/data/local-climatological-data/doc/LCD_documentation.pdf
 Data comes from:
-\url{https://www.ncei.noaa.gov/data/local-climatological-data/access}
+https://www.ncei.noaa.gov/data/local-climatological-data/access
 }

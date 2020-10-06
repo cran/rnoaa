@@ -6,14 +6,12 @@
 #' zeros, so it's a good idea to keep stations as character class. required
 #' @param year (integer) year, e.g., 2017. required
 #' @param ... curl options passed on to [crul::verb-GET]
-#' @return a data.frame, with many columns, and variable rows
-#' depending on how frequently data was collected in the given year
 #' @note See [lcd_cache] for managing cached files
 #' @references
 #' Docs: 
-#' <https://www.ncei.noaa.gov/data/local-climatological-data/doc/LCD_documentation.pdf>
+#' https://www.ncei.noaa.gov/data/local-climatological-data/doc/LCD_documentation.pdf
 #' Data comes from:
-#' <https://www.ncei.noaa.gov/data/local-climatological-data/access>
+#' https://www.ncei.noaa.gov/data/local-climatological-data/access
 #' 
 #' @return a data.frame with many columns. the first 10 are metadata:
 #' 
@@ -54,8 +52,7 @@ lcd <- function(station, year, ...) {
   path <- lcd_get(station = station, year = year, ...)
   tmp <- safe_read_csv(path)
   names(tmp) <- tolower(names(tmp))
-  df <- tibble::as_tibble(tmp)
-  structure(df, class = c(class(df), "lcd"))
+  tibble::as_tibble(tmp)
 }
 
 lcd_get <- function(station, year, overwrite = FALSE, ...) {

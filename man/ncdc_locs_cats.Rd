@@ -57,13 +57,13 @@ or a label representing a bounding area such as a city.
 }
 \section{Authentication}{
 
-Get an API key (aka, token) at \url{http://www.ncdc.noaa.gov/cdo-web/token}.
+Get an API key (aka, token) at https://www.ncdc.noaa.gov/cdo-web/token
 You can pass your token in as an argument or store it one of two places:
 
 \itemize{
-\item your .Rprofile file with an entry like
+\item your .Rprofile file with the entry
 \code{options(noaakey = "your-noaa-token")}
-\item your .Renviron file with an entry like
+\item your .Renviron file with the entry
 \code{NOAA_KEY=your-noaa-token}
 }
 
@@ -92,7 +92,7 @@ ncdc_locs_cats(startdate='1970-01-01')
 }
 }
 \references{
-\url{https://www.ncdc.noaa.gov/cdo-web/webservices/v2}
+https://www.ncdc.noaa.gov/cdo-web/webservices/v2
 }
 \seealso{
 Other ncdc: 

@@ -7,7 +7,7 @@ rnoaa
 [![cran checks](https://cranchecks.info/badges/worst/rnoaa)](https://cranchecks.info/pkgs/rnoaa)
 [![R-check](https://github.com/ropensci/rnoaa/workflows/R-check/badge.svg)](https://github.com/ropensci/rnoaa/actions)
 [![codecov.io](https://codecov.io/github/ropensci/rnoaa/coverage.svg?branch=master)](https://codecov.io/github/ropensci/rnoaa?branch=master)
-[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/rnoaa?color=C9A115)](https://github.com/metacran/cranlogs.app)
+[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/rnoaa?color=C9A115)](https://github.com/r-hub/cranlogs.app)
 [![cran version](https://www.r-pkg.org/badges/version/rnoaa)](https://cran.r-project.org/package=rnoaa)
 
 
@@ -18,7 +18,7 @@ rnoaa
 * NOAA NCDC climate data:
     * We are using the NOAA API version 2
     * Docs for the NCDC API are at https://www.ncdc.noaa.gov/cdo-web/webservices/v2
-    * GHCN Daily data is available at https://www.ncdc.noaa.gov/ghcn-daily-description via FTP and HTTP
+    * GHCN Daily data is available at http://www.ncdc.noaa.gov/ghcn-daily-description via FTP and HTTP
 * Severe weather data docs are at https://www.ncdc.noaa.gov/swdiws/
 * Sea ice data (ftp://sidads.colorado.edu/DATASETS/NOAA/G02135/shapefiles)
 * NOAA buoy data (https://www.ndbc.noaa.gov/)
@@ -26,7 +26,6 @@ rnoaa
   * Now in package rerddap (https://github.com/ropensci/rerddap)
 * Tornadoes! Data from the NOAA Storm Prediction Center (https://www.spc.noaa.gov/gis/svrgis/)
 * HOMR - Historical Observing Metadata Repository (http://www.ncdc.noaa.gov/homr/api)
-* Storm data - from the International Best Track Archive for Climate Stewardship (IBTrACS) (http://www.ncdc.noaa.gov/ibtracs/index.php?name=wmo-data)
 * GHCND FTP data (ftp://ftp.ncdc.noaa.gov/pub/data/noaa) - NOAA NCDC API has some/all (not sure really) of this data, but FTP allows to get more data more quickly
 * Extended Reconstructed Sea Surface Temperature (ERSST) data (https://www.ncdc.noaa.gov/data-access/marineocean-data/extended-reconstructed-sea-surface-temperature-ersst-v4)
 * Argo buoys (http://www.argo.ucsd.edu/) - a global array of more than 3,000 free-drifting profiling floats that measures thetemperature and salinity of the upper 2000 m of the ocean
@@ -39,7 +38,7 @@ rnoaa
 
 ## Help/Getting Started
 
-Documentation is at <https://docs.ropensci.org/rnoaa/>, and there are many vignettes in the package itself, available in your R session, or [on CRAN](https://cran.r-project.org/package=rnoaa). The tutorials:
+Documentation is at https://docs.ropensci.org/rnoaa/, and there are many vignettes in the package itself, available in your R session, or on CRAN (https://cran.r-project.org/package=rnoaa). The tutorials:
 
 * **Getting started - start here**
 * NOAA Buoy vignette
@@ -49,8 +48,7 @@ Documentation is at <https://docs.ropensci.org/rnoaa/>, and there are many vigne
 * Sea ice vignette
 * Severe Weather Data Inventory (SWDI) vignette
 * Historical Observing Metadata Repository (HOMR) vignette
-* Storms (IBTrACS) vignette
-* Complementing air quality data ([ropenaq](https://github.com/ropensci/ropenaq)) with weather data using rnoaa
+* Complementing air quality data (ropenaq (https://github.com/ropensci/ropenaq)) with weather data using rnoaa
 
 ## netcdf data
 
@@ -70,11 +68,11 @@ There are many NOAA NCDC datasets. All data sources work, except `NEXRAD2` and `
 
 |Dataset    |Description                 |Start Date |End Date   | Data Coverage|
 |:----------|:---------------------------|:----------|:----------|-------------:|
-|GHCND      |Daily Summaries             |1763-01-01 |2020-07-05 |          1.00|
-|GSOM       |Global Summary of the Month |1763-01-01 |2020-07-01 |          1.00|
+|GHCND      |Daily Summaries             |1763-01-01 |2020-10-03 |          1.00|
+|GSOM       |Global Summary of the Month |1763-01-01 |2020-09-01 |          1.00|
 |GSOY       |Global Summary of the Year  |1763-01-01 |2020-01-01 |          1.00|
-|NEXRAD2    |Weather Radar (Level II)    |1991-06-05 |2020-07-05 |          0.95|
-|NEXRAD3    |Weather Radar (Level III)   |1994-05-20 |2020-07-04 |          0.95|
+|NEXRAD2    |Weather Radar (Level II)    |1991-06-05 |2020-10-02 |          0.95|
+|NEXRAD3    |Weather Radar (Level III)   |1994-05-20 |2020-10-03 |          0.95|
 |NORMAL_ANN |Normals Annual/Seasonal     |2010-01-01 |2010-01-01 |          1.00|
 |NORMAL_DLY |Normals Daily               |2010-01-01 |2010-12-31 |          1.00|
 |NORMAL_HLY |Normals Hourly              |2010-01-01 |2010-12-31 |          1.00|
@@ -84,30 +82,28 @@ There are many NOAA NCDC datasets. All data sources work, except `NEXRAD2` and `
 
 
 ```
-#> table updated on 2020-07-07
+#> table updated on 2020-10-05
 ```
 
 **NOAA NCDC Attributes**
 
-Each NOAA dataset has a different set of attributes that you can potentially get back in your search. See https://www.ncdc.noaa.gov/cdo-web/datasets for detailed info on each dataset. We provide some information on the attributes in this package; see the [vignette for attributes](https://docs.ropensci.org/rnoaa/articles/ncdc_attributes.html) to find out more
+Each NOAA dataset has a different set of attributes that you can potentially get back in your search. See https://www.ncdc.noaa.gov/cdo-web/datasets for detailed info on each dataset. We provide some information on the attributes in this package; see the vignette for attributes (https://docs.ropensci.org/rnoaa/articles/ncdc_attributes.html) to find out more
 
 
 ## Contributors
 
-* [Scott Chamberlain](https://github.com/sckott)
-* [Brooke Anderson](https://github.com/geanders)
-* [Maëlle Salmon](https://github.com/maelle)
-* [Adam Erickson](https://github.com/adam-erickson)
-* [Nicholas Potter](https://github.com/potterzot)
-* [Joseph Stachelek](https://github.com/jsta)
+* Scott Chamberlain (https://github.com/sckott)
+* Brooke Anderson (https://github.com/geanders)
+* Maëlle Salmon (https://github.com/maelle)
+* Adam Erickson (https://github.com/adam-erickson)
+* Nicholas Potter (https://github.com/potterzot)
+* Joseph Stachelek (https://github.com/jsta)
 
 ## Meta
 
-* Please [report any issues or bugs](https://github.com/ropensci/rnoaa/issues).
+* Please report any issues or bugs: https://github.com/ropensci/rnoaa/issues
 * License: MIT
 * Get citation information for `rnoaa` in R doing `citation(package = 'rnoaa')`
-* Please note that this project is released with a [Contributor Code of Conduct][coc]. By participating in this project you agree to abide by its terms.
+* Please note that this package is released with a Contributor Code of Conduct (https://ropensci.org/code-of-conduct/). By contributing to this project, you agree to abide by its terms.
 
 [![rofooter](https://ropensci.org/public_images/github_footer.png)](https://ropensci.org)
-
-[coc]: https://github.com/ropensci/rnoaa/blob/master/.github/CODE_OF_CONDUCT.md

@@ -38,10 +38,10 @@
 #' - `arc2()`: `arc2_cache`
 #' - `lcd()`: `lcd_cache`
 #' - `bsw()`: `bsw_cache`
-#' - `storm_data()`: `storms_cache`
 #' - `ersst()`: `ersst_cache`
 #' - `tornadoes()`: `torn_cache`
 #' - `ghcnd()`/`ghcnd_search()`: `ghcnd_cache`
+#' - `se_data()`/`se_files()`: `stormevents_cache`
 #' 
 NULL
 
@@ -79,12 +79,6 @@ NULL
 #' @format NULL
 #' @usage NULL
 #' @export
-"storms_cache"
-
-#' @rdname rnoaa_caching
-#' @format NULL
-#' @usage NULL
-#' @export
 "ersst_cache"
 
 #' @rdname rnoaa_caching
@@ -98,3 +92,9 @@ NULL
 #' @usage NULL
 #' @export
 "ghcnd_cache"
+
+#' @rdname rnoaa_caching
+#' @format NULL
+#' @usage NULL
+#' @export
+"stormevents_cache"

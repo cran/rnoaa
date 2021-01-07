@@ -7,7 +7,7 @@ Description: Client for many 'NOAA' data sources including the 'NCDC' climate
     for 'NOAA' sea ice data, the 'NOAA' severe weather inventory, 'NOAA' Historical
     Observing 'Metadata' Repository ('HOMR') data, 'NOAA' storm data via 'IBTrACS',
     tornado data via the 'NOAA' storm prediction center, and more.
-Version: 1.2.0
+Version: 1.3.0
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-US
@@ -25,11 +25,10 @@ Authors@R: c(
     person("Hart", "Edmund", role = "ctb"),
     person("rOpenSci", role = "fnd", comment = "https://ropensci.org")
   )
-URL: https://docs.ropensci.org/rnoaa/ (website),
+URL: https://docs.ropensci.org/rnoaa/ (docs),
         https://github.com/ropensci/rnoaa (devel)
 BugReports: https://github.com/ropensci/rnoaa/issues
 LazyData: true
-VignetteBuilder: knitr
 Imports: utils, crul (>= 0.7.0), lubridate, dplyr, tidyr, tidyselect,
         ggplot2, scales, XML, xml2, jsonlite, rappdirs, gridExtra,
         tibble, isdparser (>= 0.2.0), geonames, hoardr (>= 0.5.2),
@@ -43,7 +42,7 @@ X-schema.org-keywords: earth, science, climate, precipitation,
         temperature, storm, buoy, NCDC, NOAA, tornadoe, sea ice, ISD
 X-schema.org-isPartOf: https://ropensci.org
 NeedsCompilation: no
-Packaged: 2020-10-06 15:17:34 UTC; sckott
+Packaged: 2021-01-07 20:05:37 UTC; sckott
 Author: Scott Chamberlain [aut, cre] (<https://orcid.org/0000-0003-1444-9135>),
   Brooke Anderson [ctb],
   Maëlle Salmon [ctb],
@@ -56,4 +55,4 @@ Author: Scott Chamberlain [aut, cre] (<https://orcid.org/0000-0003-1444-9135>),
   rOpenSci [fnd] (https://ropensci.org)
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
 Repository: CRAN
-Date/Publication: 2020-10-06 15:50:03 UTC
+Date/Publication: 2021-01-07 22:10:05 UTC

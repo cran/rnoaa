@@ -52,7 +52,7 @@ y <- sea_ice(year = 1990, month = "Apr", format = "geotiff-conc")
 }
 }
 \references{
-See the "User Guide" pdf at https://nsidc.org/data/g02135
+See the "User Guide" pdf at
 }
 \seealso{
 \code{\link[=sea_ice_tabular]{sea_ice_tabular()}}

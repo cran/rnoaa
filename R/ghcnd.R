@@ -6,8 +6,8 @@
 #' entire weather dataset for the site.
 #'
 #' @export
-#' @param stationid (character) A character string giving the identification of
-#' the weather station for which the user would like to pull data. To get a full
+#' @param stationid (character) A character vector giving the identification of
+#' the weather stations for which the user would like to pull data. To get a full
 #' and current list of stations, the user can use the [ghcnd_stations()]
 #' function. To identify stations within a certain radius of a location, the
 #' user can use the [meteo_nearby_stations()] function.
@@ -22,7 +22,7 @@
 #' @return A tibble (data.frame) which contains data pulled from NOAA's FTP
 #' server for the queried weather site. A README file with more information
 #' about the format of this file is available from NOAA
-#' (http://www1.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt).
+#' .
 #' This file is formatted so each line of the file gives the daily weather
 #' observations for a single weather variable for all days of one month of
 #' one year. In addition to measurements, columns are included for certain
@@ -31,9 +31,7 @@
 #' 
 #' @section Base URL:
 #' The base url for data requests can be changed. The allowed urls are:
-#' https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/all (default),
-#' ftp://ftp.ncei.noaa.gov/pub/data/ghcn/daily/all,
-#' ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all
+#' (default)
 #' 
 #' You can set the base url using the `RNOAA_GHCND_BASE_URL` environment
 #' variable; see example below.
@@ -53,6 +51,10 @@
 #'
 #' Messages are printed to the console about file path and file last modified time
 #' which you can suppress with \code{suppressMessages()}
+#' 
+#' For those station ids that are not found, we will delete the file locally
+#' so that a bad station id file is not cached. The returned data for a bad
+#' station id will be an empty data.frame and the attributes are empty strings.
 #'
 #' @author Scott Chamberlain \email{myrmecocystus@@gmail.com},
 #' Adam Erickson \email{adam.erickson@@ubc.ca}
@@ -100,21 +102,30 @@
 #' # ghcnd(stations$id[58], verbose = TRUE)
 #' }
 ghcnd <- function(stationid, refresh = FALSE, ...) {
-  csvpath <- ghcnd_local(stationid)
-  if (!is_ghcnd(x = csvpath) || refresh) {
-    res <- ghcnd_GET(stationid, ...)
-  } else {
-    cache_mssg(csvpath)
-    res <- read.csv(csvpath, stringsAsFactors = FALSE,
-                    colClasses = ghcnd_col_classes)
-  }
-  fi <- file.info(csvpath)
-  res <- remove_na_row(res) # remove trailing row of NA's
-  res <- tibble::as_tibble(res)
-  attr(res, 'source') <- csvpath
-  attr(res, 'file_modified') <- fi[['mtime']]
-  return(res)
+  out <- lapply(stationid, function(this_station) {
+    csvpath <- ghcnd_local(this_station)
+    if (!is_ghcnd(x = csvpath) || refresh) {
+      res <- ghcnd_GET(this_station, ...)
+    } else {
+      cache_mssg(csvpath)
+      res <- read.csv(csvpath, stringsAsFactors = FALSE,
+                      colClasses = ghcnd_col_classes)
+    }
+    fi <- file.info(csvpath)
+    if (!is.na(fi$size)) res <- remove_na_row(res)
+    res <- tibble::as_tibble(res)
+    attr(res, 'source') <- if (!is.na(fi$size)) csvpath else ""
+    attr(res, 'file_modified') <- 
+      if (!is.na(fi$size)) as.character(fi[['mtime']]) else ""
+    return(res)
+  })
+  
+  res <- tibble::as_tibble(data.table::rbindlist(out))
+  attr(res, 'source') <- unlist(lapply(out, function(x) attr(x, "source")))
+  attr(res, 'file_modified') <- unlist(lapply(out, function(x) attr(x, "file_modified")))
+  res
 }
+
 
 #' @export
 #' @rdname ghcnd
@@ -191,6 +202,7 @@ ghcnd_GET <- function(stationid, ...){
   fp <- ghcnd_local(stationid)
   cli <- crul::HttpClient$new(ghcnd_remote(stationid), opts = list(...))
   res <- suppressWarnings(cli$get())
+  if (!res$success()) return(data.frame())
   tt <- res$parse("UTF-8")
   vars <- c("id","year","month","element",
             do.call("c",

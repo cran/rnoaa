@@ -106,7 +106,7 @@ having one or a coma separated list of data quality flag. See Details.}
 
 \item{ticket}{(numeric) select profiles with or without a ticket filled in the database. A
 value: 0 (no ticket) or 1 (has a ticket). See
-http://www.ifremer.fr/lpo/naarc/m/docs/api/database.html for more details.}
+for more details.}
 
 \item{limit}{(integer) number to return}
 
@@ -271,7 +271,4 @@ argo_buoy_files(dac = "kma", id = 2900308)
 x <- argo_buoy_files(dac = "meds", id = 4900881)
 argo(dac = "meds", id = 4900881, cycle = 127, dtype = "D")
 }
-}
-\references{
-http://www.ifremer.fr/lpo/naarc/m/docs/api/howto.html
 }

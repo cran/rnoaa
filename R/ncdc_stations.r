@@ -17,7 +17,6 @@
 #' e.g., GHCND:USW00014895
 #' @return A list of metadata.
 #' @family ncdc
-#' @references https://www.ncdc.noaa.gov/cdo-web/webservices/v2
 #' @examples \dontrun{
 #' # Get metadata on all stations
 #' ncdc_stations()

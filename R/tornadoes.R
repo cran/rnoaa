@@ -6,7 +6,6 @@
 #' @export
 #' @param ... Curl options passed on to [crul::verb-GET] (optional)
 #' @return A Spatial object is returned of class SpatialLinesDataFrame.
-#' @references https://www.spc.noaa.gov/gis/svrgis/
 #' @note See [torn_cache] for managing cached files
 #' @examples \dontrun{
 #' shp <- tornadoes()

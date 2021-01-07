@@ -53,6 +53,3 @@ leg <- se_data(year = 2003, type = "legacy")
 leg
 }
 }
-\references{
-https://www.ncdc.noaa.gov/stormevents/
-}

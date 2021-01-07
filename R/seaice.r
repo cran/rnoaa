@@ -11,7 +11,7 @@
 #' @return data.frame if `format="shp"` (a fortified sp object);
 #' `raster::raster()` if not
 #' @seealso [sea_ice_tabular()]
-#' @references See the "User Guide" pdf at https://nsidc.org/data/g02135
+#' @references See the "User Guide" pdf at 
 #' @examples \dontrun{
 #' if (requireNamespace("raster")) {
 #'

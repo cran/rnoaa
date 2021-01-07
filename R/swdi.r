@@ -61,9 +61,7 @@
 #'
 #' If kmz or shp chosen, the file is downloaded to your machine and a message 
 #' is printed.
-#'
-#' @references https://www.ncdc.noaa.gov/ncei-severe-weather-data-inventory
-#' https://www.ncdc.noaa.gov/swdiws/
+#' 
 #'
 #' @examples \dontrun{
 #' # Search for nx3tvs data from 5 May 2006 to 6 May 2006

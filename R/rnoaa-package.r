@@ -1,11 +1,12 @@
 #' @title rnoaa
 #'
-#' @description rnoaa is an R interface to NOAA climate data.
+#' @description rnoaa is an R interface to NOAA climate data. For official
+#' package documentation see the "docs" link in DESCRIPTION
 #'
 #' @section Data Sources:
 #' Many functions in this package interact with the National Climatic Data
 #' Center application programming interface (API) at
-#' https://www.ncdc.noaa.gov/cdo-web/webservices/v2, all of
+#' all of
 #' which functions start with `ncdc_`. An access token, or API key, is
 #' required to use all the `ncdc_` functions. The key is required by NOAA,
 #' not us. Go to the link given above to get an API key.
@@ -43,8 +44,8 @@
 #' border wall shutdown most FTP services were up, while those that were down
 #' were HTTP; though not all HTTP services were down.
 #' 
-#' - HTTP info: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
-#' - FTP info: https://en.wikipedia.org/wiki/File_Transfer_Protocol
+#' - HTTP info: 
+#' - FTP info: 
 #' 
 #' HTTP services (whether service is/was up or down during early 2019 shutdown)
 #' 

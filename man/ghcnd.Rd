@@ -10,8 +10,8 @@ ghcnd(stationid, refresh = FALSE, ...)
 ghcnd_read(path, ...)
 }
 \arguments{
-\item{stationid}{(character) A character string giving the identification of
-the weather station for which the user would like to pull data. To get a full
+\item{stationid}{(character) A character vector giving the identification of
+the weather stations for which the user would like to pull data. To get a full
 and current list of stations, the user can use the \code{\link[=ghcnd_stations]{ghcnd_stations()}}
 function. To identify stations within a certain radius of a location, the
 user can use the \code{\link[=meteo_nearby_stations]{meteo_nearby_stations()}} function.}
@@ -30,7 +30,7 @@ downloaded on your computer}
 A tibble (data.frame) which contains data pulled from NOAA's FTP
 server for the queried weather site. A README file with more information
 about the format of this file is available from NOAA
-(http://www1.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt).
+.
 This file is formatted so each line of the file gives the daily weather
 observations for a single weather variable for all days of one month of
 one year. In addition to measurements, columns are included for certain
@@ -54,6 +54,10 @@ You can access the last modified time for the cached file via
 
 Messages are printed to the console about file path and file last modified time
 which you can suppress with \code{suppressMessages()}
+
+For those station ids that are not found, we will delete the file locally
+so that a bad station id file is not cached. The returned data for a bad
+station id will be an empty data.frame and the attributes are empty strings.
 }
 \note{
 See \link{ghcnd_cache} for managing cached files
@@ -61,9 +65,7 @@ See \link{ghcnd_cache} for managing cached files
 \section{Base URL}{
 
 The base url for data requests can be changed. The allowed urls are:
-https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/all (default),
-ftp://ftp.ncei.noaa.gov/pub/data/ghcn/daily/all,
-ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/all
+(default)
 
 You can set the base url using the \code{RNOAA_GHCND_BASE_URL} environment
 variable; see example below.

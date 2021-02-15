@@ -35,7 +35,7 @@
 #' @note Since this function is pulling a large dataset by ftp, it may take
 #' a while to run.
 #' @references For more documentation on the returned dataset, see
-#' 
+#' http://www1.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt
 #' @examples \dontrun{
 #' # Get stations, ghcnd-stations and ghcnd-inventory merged
 #' (stations <- ghcnd_stations())

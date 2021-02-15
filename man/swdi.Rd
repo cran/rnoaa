@@ -152,3 +152,7 @@ res$data
 class(res$data)
 }
 }
+\references{
+https://www.ncdc.noaa.gov/ncei-severe-weather-data-inventory
+https://www.ncdc.noaa.gov/swdiws/
+}

@@ -6,14 +6,13 @@
 \alias{rnoaa}
 \title{rnoaa}
 \description{
-rnoaa is an R interface to NOAA climate data. For official
-package documentation see the "docs" link in DESCRIPTION
+rnoaa is an R interface to NOAA climate data.
 }
 \section{Data Sources}{
 
 Many functions in this package interact with the National Climatic Data
 Center application programming interface (API) at
-all of
+https://www.ncdc.noaa.gov/cdo-web/webservices/v2, all of
 which functions start with \code{ncdc_}. An access token, or API key, is
 required to use all the \code{ncdc_} functions. The key is required by NOAA,
 not us. Go to the link given above to get an API key.
@@ -54,8 +53,8 @@ HTTP vs. FTP - done this way as we've noticed that during the ealry 2019
 border wall shutdown most FTP services were up, while those that were down
 were HTTP; though not all HTTP services were down.
 \itemize{
-\item HTTP info:
-\item FTP info:
+\item HTTP info: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
+\item FTP info: https://en.wikipedia.org/wiki/File_Transfer_Protocol
 }
 
 HTTP services (whether service is/was up or down during early 2019 shutdown)

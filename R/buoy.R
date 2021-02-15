@@ -42,6 +42,7 @@
 #' - swden - Spectral Wave Density data with Spectral Wave Direction data
 #' - wlevel - Water Level data
 #' 
+#' @references http://www.ndbc.noaa.gov/, http://dods.ndbc.noaa.gov/
 #' @examples \dontrun{
 #' if (crul::ok("https://dods.ndbc.noaa.gov/thredds", timeout_ms = 1000)) {
 #' 

@@ -66,7 +66,9 @@
 #' - NAVD - North American Vertical Datum
 #' - STND - Station datum
 #'
-#' 
+#' @references
+#' https://tidesandcurrents.noaa.gov/api/
+#' https://tidesandcurrents.noaa.gov/map/
 #'
 #' @author Scott Chamberlain, Joseph Stachelek, Tom Philippi
 #'

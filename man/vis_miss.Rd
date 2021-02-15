@@ -25,6 +25,7 @@ it is very easy to customize and change labels, and so on.
 \details{
 \code{vis_miss} visualises a data.frame to display missingness. This is
 taken from the visdat package, currently only available on github:
+https://github.com/tierneyn/visdat
 }
 \examples{
 \dontrun{

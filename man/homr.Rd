@@ -116,3 +116,6 @@ homr(station=20002078, date='all', phrData=FALSE)
 homr(headersOnly=TRUE, state='NC', county='BUNCOMBE', verbose = TRUE)
 }
 }
+\references{
+https://www.ncdc.noaa.gov/homr/api
+}

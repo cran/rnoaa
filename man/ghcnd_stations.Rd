@@ -72,4 +72,5 @@ stations \%>\% filter(name == "CALLATHARRA")
 }
 \references{
 For more documentation on the returned dataset, see
+http://www1.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt
 }

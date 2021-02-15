@@ -160,6 +160,7 @@ if (interactive()) {
 }
 \references{
 ftp://ftp.ncdc.noaa.gov/pub/data/noaa/
+https://www1.ncdc.noaa.gov/pub/data/noaa
 }
 \seealso{
 Other isd: 

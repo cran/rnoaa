@@ -74,7 +74,7 @@ Air Temperature and the data is 64.
 }
 \section{Authentication}{
 
-Get an API key (aka, token) at
+Get an API key (aka, token) at https://www.ncdc.noaa.gov/cdo-web/token
 You can pass your token in as an argument or store it one of two places:
 
 \itemize{
@@ -116,6 +116,9 @@ ncdc_datatypes(stationid=c('COOP:310090','COOP:310184','COOP:310212'))
 ncdc_datatypes(locationid='CITY:AG000001')
 ncdc_datatypes(locationid=c('CITY:AG000001','CITY:AG000004'))
 }
+}
+\references{
+https://www.ncdc.noaa.gov/cdo-web/webservices/v2
 }
 \seealso{
 Other ncdc: 

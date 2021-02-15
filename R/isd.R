@@ -26,7 +26,7 @@
 #' @param ... Curl options passed on to [crul::verb-GET]
 #'
 #' @references ftp://ftp.ncdc.noaa.gov/pub/data/noaa/
-#' 
+#' https://www1.ncdc.noaa.gov/pub/data/noaa
 #' @family isd
 #'
 #' @details `isd` saves the full set of weather data for the queried

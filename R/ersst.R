@@ -10,6 +10,8 @@
 #' @param version (character) ERSST version. one of "v5" (default) or "v4"
 #' @param ... Curl options passed on to [crul::verb-GET]
 #' @return An `ncdf4` object. See \pkg{ncdf4} for parsing the output
+#' @references
+#' https://www.ncdc.noaa.gov/data-access/marineocean-data/extended-reconstructed-sea-surface-temperature-ersst-v5
 #' @details See [ersst_cache] for managing cached files
 #' 
 #' `ersst()` currently defaults to use ERSST v5 - you can set v4 or v5

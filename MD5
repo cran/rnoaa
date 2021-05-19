@@ -1,7 +1,7 @@
-b3cf783500cb404350e9cfbb6e2d7a55 *DESCRIPTION
-35bd8606c71dfbfad3ad27387e177ad4 *LICENSE
+f67e56cec45dd695de51d58d9fcd2da5 *DESCRIPTION
+f0967f589cdcb5ef9995643c97672289 *LICENSE
 64ee5c73d7493f3dd1202a36b845f0a9 *NAMESPACE
-0e58f3f0c74082be923f5b21ea6d57e5 *NEWS.md
+d9f42c7e2807fdc1cc4ff73e5e843f29 *NEWS.md
 1cf1580c44c1dab6cdd156e1eed856d9 *R/arc2.R
 4c2f0aa2affa28f3e81f2fb817f40be9 *R/argo.R
 4de995e7ad9c0bbf0ac3633d8a61da48 *R/bsw.R
@@ -49,7 +49,7 @@ fd78aaf68c06a1d1f60c2298be147001 *R/storm_events.R
 a8b1edcb9b557678b04e0350a88f1157 *R/storms.R
 2a8f529e93cdec7b593121ac540b6a2c *R/storms_meta.R
 2f1b21766202b35ce031fcbc7e929610 *R/swdi.r
-7660f497069f7acbe36bcecd3ad93ed1 *R/tornadoes.R
+10c9265a471f578b4fcd6856aedbf20a *R/tornadoes.R
 2deefbe222204b4c15d6673d5160d232 *R/units-annual.R
 dd301c5f95728ee1d6ac10b232d7b5ed *R/units-ghcnd.R
 866a9f1ee8495ffc5f0378af005c4eba *R/units-gsom.R
@@ -61,7 +61,7 @@ b006c8208687368711a168df49a072b1 *R/units-normal_mly.R
 8bca19ce05e17dc3198cec15823e7187 *R/units-precip_15.R
 46a7857d939123ec5ef58f5dfbd8d5fe *R/units-precip_hly.R
 f81707f7265008b99c47a05be93ca5bc *R/vis_miss.R
-3e3861e6f9488797c61ba8a882df4f61 *R/zzz.r
+2ab5ae2cad58757a448ca7f37ba5fbf2 *R/zzz.r
 2b550456074a354310de041620d707ac *data/fipscodes.rda
 581296b4c4764a7788f5094946cd9d15 *inst/examples/011490-99999-1986.gz
 adbd82d5bc821abeff38de5e909541d3 *inst/examples/AGE00147704.dly
@@ -220,7 +220,7 @@ f965949bfa253e2a92cb6cb18ec0b54f *tests/fixtures/swdi_bbox.yml
 66ae31a81dc08f3e9f319233df2df8c5 *tests/testthat/plot_data.Rds
 96b02942b9a67b8870bc53cf457dbcc3 *tests/testthat/test-arc2.R
 faf8e7f7937e945a08cd33c3f7ba56eb *tests/testthat/test-buoy.R
-c92e0e25a8abcb754ebdeaafa1160a2d *tests/testthat/test-check_response.r
+1e56f472e4b5b01442e70ae1d46acdb9 *tests/testthat/test-check_response.r
 ea86d87cebd3ec75784cbe538b64d742 *tests/testthat/test-check_response_swdi.R
 8d48c35d482ab700e8989765a3b0df86 *tests/testthat/test-coops.R
 9dd92bd94a770ff5832d3ec2588cdb9a *tests/testthat/test-cpc_prcp.R

@@ -108,7 +108,7 @@ check_response <- function(x){
     } else {
       if (
         class(try(out$results, silent = TRUE)) == "try-error" ||
-        is.null(try(out$results, silent = TRUE)) 
+        is.null(try(out$results, silent = TRUE))
       ) {
         warning("Sorry, no data found", call. = FALSE)
       }
@@ -169,11 +169,14 @@ storms_read_csv <- function(x){
   tmp
 }
 
-safe_read_csv <- function(x, header = TRUE, stringsAsFactors = FALSE, sep = ",") {
+# This function is only used in lcd(), see R/lcd.R
+safe_read_csv <- function(x, header = TRUE, stringsAsFactors = FALSE, sep = ",", col_types) {
   assert(x, "character")
+
   tmp <- tryCatch(
-    read.csv(x, header = header, sep = sep,
-      stringsAsFactors = stringsAsFactors),
+    data.table::fread(x, header = header, sep = sep,
+      stringsAsFactors = stringsAsFactors, data.table = FALSE,
+      colClasses = col_types),
     error = function(e) e,
     warning = function(w) w
   )
@@ -183,6 +186,26 @@ safe_read_csv <- function(x, header = TRUE, stringsAsFactors = FALSE, sep = ",")
     stop("file ", x, " malformed; delete file and try again")
   return(tmp)
 }
+
+# This function is only used by lcd() and lcd_columns(), see R/lcd.R
+check_lcd_columns <- function(x) {
+  # check that col_types is a named vector
+  if(is.null(names(x))) {
+    message <- "col_types must be a named vector, see lcd_columns() for an example and expected names"
+  } else {
+    # check that user input values are proper R classes
+    allowable_types <- c("character", "integer", "numeric", "factor", "integer64", "POSIXct")
+    allowed <- x %in% allowable_types
+    if(FALSE %in% allowed) {
+      message <- paste0(names(x[which(!(allowed))]),
+                        " must equal a valid R class ('character', 'integer', 'numeric', 'factor', 'integer64', 'POSIXct')",
+                        collapse = "\n")} else {
+                  message <- NULL }
+  }
+  return(message)
+
+}
+
 
 check_key <- function(x){
   tmp <- if(is.null(x)) Sys.getenv("NOAA_KEY", "") else x
@@ -203,7 +226,7 @@ is_windows <- function() {
   .Platform$OS.type == "windows"
 }
 
-rnoaa_cache_dir <- function() rappdirs::user_cache_dir("rnoaa")
+rnoaa_cache_dir <- function() tools::R_user_dir("rnoaa", which = "cache")
 
 assert_range <- function(x, y) {
   if (!x %in% y) {

@@ -2,16 +2,22 @@
 % Please edit documentation in R/lcd.R
 \name{lcd}
 \alias{lcd}
-\title{Local Climitalogical Data from NOAA}
+\title{Local Climatological Data from NOAA}
 \usage{
-lcd(station, year, ...)
+lcd(station, year, col_types = NULL, ...)
 }
 \arguments{
-\item{station}{(character) station code, e.g., "02413099999". we will
-allow integer/numeric passed here, but station ids can have leading
-zeros, so it's a good idea to keep stations as character class. required}
+\item{station}{(character) station code, e.g., "02413099999". we will allow
+integer/numeric passed here, but station ids can have leading zeros, so
+it's a good idea to keep stations as character class. required}
 
 \item{year}{(integer) year, e.g., 2017. required}
+
+\item{col_types}{(named character vector) defaults to NULL. Use this argument
+to change the returned column type. For example,"character" instead of
+"numeric". See or use \link{lcd_columns} to create a named vector with allowed
+column names. If the user specified type is not compatible, the function
+will choose a type automatically and raise a message. optional}
 
 \item{...}{curl options passed on to \link[crul:verb-GET]{crul::verb-GET}}
 }
@@ -37,11 +43,11 @@ names is the time period, being one of:
 \item shortduration
 }
 
-So the variable you are looking for may not be the first part of the
-column name
+So the variable you are looking for may not be the first part of the column
+name
 }
 \description{
-Local Climitalogical Data from NOAA
+Local Climatological Data from NOAA
 }
 \note{
 See \link{lcd_cache} for managing cached files

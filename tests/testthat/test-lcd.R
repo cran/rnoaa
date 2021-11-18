@@ -1,28 +1,28 @@
 context("lcd")
 
+skip_on_cran()
+
 # clean up first
-# lcd_cache$delete_all()
+lcd_cache$delete_all()
 
 test_that("lcd", {
-  skip_on_cran()
   skip_if_government_down()
 
-  vcr::use_cassette("lcd_1", {
-    aa <- lcd(station = "01338099999", year = 2017)
-  })
+  # vcr::use_cassette("lcd_1", {
+  aa <- lcd(station = "01338099999", year = 2017)
+  # })
 
   expect_is(aa, "tbl_df")
 
-  expect_type(aa$station, 'integer')
-  expect_type(aa$date, 'character')
+  expect_type(aa$station, c('character'))
+  expect_type(aa$date, 'double')
   expect_type(aa$latitude, 'double')
   expect_type(aa$longitude, 'double')
   expect_type(aa$elevation, 'double')
-  expect_type(aa$hourlysealevelpressure, 'double')
+  expect_type(aa$hourlysealevelpressure, 'character')
 })
 
 test_that("lcd fails well", {
-  skip_on_cran()
   skip_if_government_down()
 
   # a station/year combination that doesn't exist
@@ -40,15 +40,15 @@ test_that("lcd fails well", {
                "station must be of class")
   expect_error(lcd(5, list(1)),
                "year must be of class")
+  expect_error(lcd(station = "01338099999", year = 2017, col_types = list(1)),
+               "col_types must be a")
 })
 
 test_that("lcd fails well when trying to read a bad file", {
-  skip_on_cran()
-
   lcd_cache$cache_path_set(full_path = file.path(tempdir(), "foo_bar"))
   lcd_cache$mkdir()
   path <- file.path(tempdir(), "foo_bar", "2020_72517014737.csv")
   file.create(path)
-  expect_error(lcd(72517014737, 2020), "malformed", class = "error")
+  expect_error(lcd(72517014737, 2020), class = "error")
   unlink(path)
 })

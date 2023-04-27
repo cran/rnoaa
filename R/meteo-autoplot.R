@@ -1,13 +1,14 @@
 #' autoplot method for meteo_coverage objects
 #'
-#' @export
-#' @method autoplot meteo_coverage
-#' @param mateo_coverage the object returned from [meteo_coverage()]
-#' @param old_style (logical) create the old style of plots, which is faster, but 
+#' @export autoplot_meteo_coverage
+#' @param meteo_object the object returned from [meteo_coverage()]
+#' @param old_style (logical) create the old style of plots, which is faster, but
 #' does not plot gaps to indicate missing data
 #' @return A ggplot2 plot
-#' @details see [meteo_coverage()] for examples
-autoplot.meteo_coverage <- function(mateo_coverage, old_style = FALSE) {
+#' @details see [meteo_coverage()] for examples.
+autoplot_meteo_coverage <- function(meteo_object, old_style = FALSE) {
+
+  mateo_coverage <- meteo_object
 
   if(old_style){
     # ungroup
@@ -65,7 +66,7 @@ autoplot.meteo_coverage <- function(mateo_coverage, old_style = FALSE) {
 
     # this is just a work-around to prevent R CMD check from giving a NOTE about undefined global variables
     metric <- size <- NULL
-    
+
     df <- dplyr::ungroup(mateo_coverage[['detail']])
     metrics <- df %>%
       dplyr::select(-date, -id, -grep(pattern = 'flag', x = names(df))) %>%

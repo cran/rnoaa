@@ -1,9 +1,10 @@
 context("isd")
 
 # delete any cached files
-# isd_dir <- tools::R_user_dir("rnoaa", which = "cache"/isd)
+isd_cache$delete_all()
+isd_dir <- isd_cache$cache_path_get()
 # list.files(isd_dir, full.names = TRUE)
-# unlink(list.files(isd_dir, full.names = TRUE))
+unlink(list.files(isd_dir, full.names = TRUE))
 
 test_that("isd gets data", {
   skip_on_cran()
@@ -30,3 +31,8 @@ test_that("isd fails well", {
   expect_error(isd(usaf = "702700", wban = "489", year = 2044),
                "download failed for")
 })
+
+# delete any cached files
+isd_cache$delete_all()
+isd_dir <- isd_cache$cache_path_get()
+unlink(list.files(isd_dir, full.names = TRUE))

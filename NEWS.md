@@ -1,15 +1,31 @@
-rnoaa 1.3.8
-==============
+rnoaa 1.4.0
+=======
+
+* All API changed base URL and endpoints so current package does not work to pull new data
+* Started the process of archiving the package
+* Fixed roxygen documentation to have autoplot as function not s3method in the NAMESPACE
+* autoplot.meteo_coverage changed to autoplot_meteo_coverage to avoid S3 generic naming convention
+* Removed argo bouy data functions since API is gone
+
+
+
+rnoaa 1.3.9
+=======
 
 ### BUG FIXES
 
+* changed default location of cache file writing from hoardr to match requirements of CRAN for Mac OS
+* added cache cleanup in tests
+* updated homr API base url to https://www.ncei.noaa.gov/access/homr/services/station/
+
+rnoaa 1.3.8
+=======
 * changed location of temporary cache file writing in the ersst tests to match requirements of CRAN for Mac OS. Missed on v1.3.7 release. 
 * removed rappsdir from Imports now that using tools to create cache directories
 * removed a couple other internal tests from CRAN with skip_on_cran()
 
 
 rnoaa 1.3.7
-==============
 
 ### BUG FIXES
 

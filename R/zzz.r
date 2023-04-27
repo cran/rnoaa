@@ -106,8 +106,9 @@ check_response <- function(x){
         warning("Sorry, no data found", call. = FALSE)
       }
     } else {
+      res <- try(out$results, silent = TRUE)
       if (
-        class(try(out$results, silent = TRUE)) == "try-error" ||
+        inherits(res, "try-error") ||
         is.null(try(out$results, silent = TRUE))
       ) {
         warning("Sorry, no data found", call. = FALSE)
@@ -177,11 +178,11 @@ safe_read_csv <- function(x, header = TRUE, stringsAsFactors = FALSE, sep = ",",
     data.table::fread(x, header = header, sep = sep,
       stringsAsFactors = stringsAsFactors, data.table = FALSE,
       colClasses = col_types),
-    error = function(e) e,
-    warning = function(w) w
+    error = function(e) e
+    # warning = function(w) w
   )
-  if (inherits(tmp, "warning"))
-    stop(tmp$message)
+  # if (inherits(tmp, "warning"))
+    # warning(tmp$message)
   if (inherits(tmp, "error"))
     stop("file ", x, " malformed; delete file and try again")
   return(tmp)
